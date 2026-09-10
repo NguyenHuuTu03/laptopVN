@@ -1,0 +1,83 @@
+.home {
+  padding: 16px 0 40px;
+
+  // Khu vực Category + Banner
+  &__top {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  // Các section sản phẩm
+  &__section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  // Header của section
+  &__section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    a {
+      color: #1677ff;
+      font-size: 14px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // Danh sách sản phẩm
+  &__product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  // Tablet
+  @media (max-width: 992px) {
+    &__top {
+      grid-template-columns: 220px 1fr;
+    }
+
+    &__product-list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  // Mobile
+  @media (max-width: 768px) {
+    &__top {
+      grid-template-columns: 1fr;
+    }
+
+    &__product-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    &__section {
+      padding: 15px;
+    }
+
+    &__section-header {
+      h2 {
+        font-size: 18px;
+      }
+    }
+  }
+}

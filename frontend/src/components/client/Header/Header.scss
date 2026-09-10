@@ -1,0 +1,327 @@
+.header {
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+  position: sticky;
+  z-index: 1000;
+
+  .container {
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  &__top {
+    position: relative;
+    min-height: 76px;
+
+    display: flex;
+    align-items: center;
+  }
+
+  &__logo {
+    flex-shrink: 0;
+
+    a {
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      display: block;
+
+      width: 150px;
+      height: auto;
+
+      object-fit: contain;
+    }
+  }
+
+  &__search {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 600px;
+    max-width: calc(100% - 450px);
+
+    .ant-input-search {
+      width: 100%;
+    }
+
+    .ant-input-wrapper {
+      height: 42px;
+    }
+
+    .ant-input {
+      height: 42px;
+
+      padding: 0 15px;
+
+      font-size: 14px;
+
+      border-color: #d9d9d9;
+      border-radius: 8px 0 0 8px;
+
+      &:hover {
+        border-color: #1677ff;
+      }
+
+      &:focus {
+        border-color: #1677ff;
+        box-shadow: none;
+      }
+    }
+
+    .ant-btn {
+      width: 50px;
+      height: 42px;
+
+      border-radius: 0 8px 8px 0;
+
+      background-color: #1677ff;
+      border-color: #1677ff;
+
+      &:hover {
+        background-color: #4096ff;
+        border-color: #4096ff;
+      }
+    }
+  }
+
+  .search-suggest {
+    position: absolute;
+
+    top: calc(100% + 6px);
+    left: 0;
+
+    width: 100%;
+
+    z-index: 1100;
+
+    display: none;
+
+    background-color: #fff;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+
+    overflow: hidden;
+
+    .suggest-list {
+      padding: 10px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-left: auto;
+
+    white-space: nowrap;
+  }
+
+  &__actions-cart {
+    display: flex;
+    align-items: center;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 52px;
+      height: 42px;
+
+      padding: 0 12px;
+
+      color: #333;
+
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+
+      background-color: #fff;
+
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #1677ff;
+        border-color: #1677ff;
+        background-color: #f5f9ff;
+      }
+    }
+
+    .ant-space {
+      display: flex;
+      align-items: center;
+    }
+
+    .anticon-shopping-cart {
+      font-size: 24px;
+    }
+
+    .ant-badge {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__actions-login {
+    display: flex;
+    align-items: center;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      height: 42px;
+
+      padding: 0 14px;
+
+      color: #000;
+
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+
+      background-color: #fff;
+
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #1677ff;
+        border-color: #1677ff;
+        background-color: #f5f9ff;
+      }
+    }
+
+    .ant-space {
+      display: flex;
+      align-items: center;
+    }
+
+    .anticon-user {
+      font-size: 20px;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+
+  @media (max-width: 992px) {
+    &__top {
+      gap: 18px;
+    }
+
+    &__logo {
+      img {
+        width: 130px;
+      }
+    }
+
+    &__search {
+      max-width: none;
+    }
+
+    &__actions {
+      gap: 8px;
+    }
+
+    &__actions-cart {
+      a {
+        padding: 0 10px;
+      }
+    }
+
+    &__actions-login {
+      a {
+        padding: 0 10px;
+      }
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__top {
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 12px 0;
+    }
+
+    &__logo {
+      img {
+        width: 120px;
+      }
+    }
+
+    &__search {
+      grid-column: 1 / -1;
+      grid-row: 2;
+
+      width: 100%;
+      max-width: none;
+    }
+
+    &__actions {
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 0 10px;
+    }
+
+    &__top {
+      gap: 10px;
+    }
+
+    &__logo {
+      img {
+        width: 105px;
+      }
+    }
+
+    &__actions-cart {
+      a {
+        min-width: 40px;
+        width: 40px;
+
+        padding: 0;
+      }
+
+      .anticon-shopping-cart {
+        font-size: 21px;
+      }
+    }
+
+    &__actions-login {
+      a {
+        width: 40px;
+
+        padding: 0;
+      }
+    }
+
+    &__search {
+      .ant-input {
+        font-size: 13px;
+      }
+
+      .ant-input-search-button {
+        width: 45px;
+      }
+    }
+  }
+}
