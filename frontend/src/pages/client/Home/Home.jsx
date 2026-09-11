@@ -13,6 +13,8 @@ function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [laptopProducts, setLaptopProducts] = useState([]);
   const [pcProducts, setPCProducts] = useState([]);
+  const [mouseProducts, setMouseProducts] = useState([]);
+  const [keyboardProducts, setKeyboardProducts] = useState([]);
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -30,12 +32,29 @@ function Home() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const laptopData = await getCollectionProducts("laptop");
+        const laptopData = await getCollectionProducts("laptop", {
+          sort: "sold-desc",
+          limit: 5,
+        });
         setLaptopProducts(laptopData);
 
-        const pcData = await getCollectionProducts("pc");
+        const pcData = await getCollectionProducts("pc", {
+          sort: "sold-desc",
+          limit: 5,
+        });
         setPCProducts(pcData);
-        console.log(pcData);
+
+        const mouseData = await getCollectionProducts("chuot-may-tinh", {
+          sort: "sold-desc",
+          limit: 5,
+        });
+        setMouseProducts(mouseData);
+
+        const keyboardData = await getCollectionProducts("ban-phim", {
+          sort: "sold-desc",
+          limit: 5,
+        });
+        setKeyboardProducts(keyboardData);
       } catch (error) {
         console.error("Lỗi lấy sản phẩm bán chạy:", error);
       }
@@ -94,6 +113,40 @@ function Home() {
 
             <div className="home__product-list">
               {pcProducts.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Mouse */}
+        {mouseProducts.length > 0 && (
+          <section className="home__section">
+            <div className="home__section-header">
+              <h2>Chuột bán chạy</h2>
+
+              <Link to="/collections/chuot-may-tinh">Xem tất cả</Link>
+            </div>
+
+            <div className="home__product-list">
+              {mouseProducts.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Keyboard */}
+        {keyboardProducts.length > 0 && (
+          <section className="home__section">
+            <div className="home__section-header">
+              <h2>Bàn phím bán chạy</h2>
+
+              <Link to="/collections/ban-phim">Xem tất cả</Link>
+            </div>
+
+            <div className="home__product-list">
+              {keyboardProducts.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>

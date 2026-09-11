@@ -1,0 +1,210 @@
+.filter-sidebar {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+
+  // =========================
+  // HEADER
+  // =========================
+
+  &__header {
+    padding: 16px 18px;
+    border-bottom: 1px solid #eee;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+
+    i {
+      font-size: 17px;
+      color: #333;
+    }
+  }
+
+  // =========================
+  // ANT DESIGN COLLAPSE
+  // =========================
+
+  .ant-collapse {
+    border: 0;
+    background: #fff;
+  }
+
+  .ant-collapse-item {
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  // Tiêu đề từng nhóm
+  .ant-collapse-header {
+    display: flex;
+    align-items: center;
+
+    padding: 15px 18px !important;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #222 !important;
+
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+  }
+
+  // Icon mũi tên
+  .ant-collapse-expand-icon {
+    color: #666;
+    font-size: 12px;
+  }
+
+  // Nội dung bên trong
+  .ant-collapse-content {
+    border-top: 0;
+    background: #fff;
+  }
+
+  .ant-collapse-content-box {
+    padding: 4px 18px 18px !important;
+  }
+
+  // =========================
+  // FILTER GROUP
+  // =========================
+
+  .filter-group {
+    width: 100%;
+  }
+
+  // =========================
+  // CHECKBOX
+  // =========================
+
+  .filter-checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    width: 100%;
+  }
+
+  .filter-checkbox .ant-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 20px;
+    color: #444;
+
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #1677ff;
+    }
+  }
+
+  .filter-checkbox .ant-checkbox {
+    top: 0;
+  }
+
+  .filter-checkbox .ant-checkbox-inner {
+    width: 17px;
+    height: 17px;
+
+    border: 1px solid #c9c9c9;
+    border-radius: 4px;
+  }
+
+  .filter-checkbox .ant-checkbox-wrapper:hover .ant-checkbox-inner {
+    border-color: #1677ff;
+  }
+
+  .filter-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #1677ff;
+    border-color: #1677ff;
+  }
+
+  // =========================
+  // RADIO
+  // =========================
+
+  .filter-radio {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    width: 100%;
+  }
+
+  .filter-radio .ant-radio-wrapper {
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 20px;
+    color: #444;
+
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #1677ff;
+    }
+  }
+
+  .filter-radio .ant-radio-inner {
+    width: 17px;
+    height: 17px;
+
+    border-color: #c9c9c9;
+  }
+
+  .filter-radio .ant-radio-wrapper:hover .ant-radio-inner {
+    border-color: #1677ff;
+  }
+
+  .filter-radio .ant-radio-checked .ant-radio-inner {
+    border-color: #1677ff;
+  }
+
+  .filter-radio .ant-radio-inner::after {
+    background-color: #1677ff;
+  }
+
+  // =========================
+  // MOBILE
+  // =========================
+
+  @media (max-width: 768px) {
+    &__header {
+      padding: 14px 16px;
+    }
+
+    &__title {
+      font-size: 15px;
+    }
+
+    .ant-collapse-header {
+      padding: 14px 16px !important;
+    }
+
+    .ant-collapse-content-box {
+      padding: 4px 16px 16px !important;
+    }
+  }
+}

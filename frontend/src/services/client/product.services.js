@@ -13,12 +13,9 @@ export const getFeaturedProducts = async () => {
   return result.data?.products || [];
 };
 
-export const getCollectionProducts = async (slug) => {
+export const getCollectionProducts = async (slug, params = {}) => {
   const response = await api.get(`/collections/${slug}`, {
-    params: {
-      sort: "sold-desc",
-      limit: 5,
-    },
+    params,
   });
 
   const result = response.data;

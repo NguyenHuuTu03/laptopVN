@@ -23,13 +23,24 @@ module.exports.collections = async (req, res) => {
     }
     // search
 
-    //filter
+    // filter
+
     if (req.query.categoryId) {
       find.categoryId = req.query.categoryId;
     }
 
-    if (req.query.brandId) {
-      find.brandId = req.query.brandId;
+    if (req.query.brand) {
+      const brandSlugs = req.query.brand.split(",");
+
+      const brands = await Brands.find({
+        slug: { $in: brandSlugs },
+        deleted: false,
+        status: "active",
+      }).select("_id");
+
+      find.brandId = {
+        $in: brands.map((brand) => brand._id),
+      };
     }
 
     if (req.query.featured === "true") {
@@ -47,7 +58,7 @@ module.exports.collections = async (req, res) => {
         priceFind.$lte = Number(req.query.maxPrice);
       }
 
-      const variants = await ProductVariant.find({
+      const variants = await ProductVariants.find({
         price: priceFind,
       }).select("productId");
 
@@ -59,7 +70,8 @@ module.exports.collections = async (req, res) => {
         $in: productIds,
       };
     }
-    //filter
+
+    // filter
 
     //pagination
     const page = Math.max(Number(req.query.page) || 1, 1);
@@ -148,12 +160,9 @@ module.exports.collections = async (req, res) => {
           },
         },
       ]);
+    } else {
+      products = await Products.find(find).skip(skip).limit(limit).lean();
     }
-    // const products = await Products.find(find)
-    //   .sort(sort)
-    //   .skip(skip)
-    //   .limit(limit)
-    //   .lean();
 
     for (const product of products) {
       const variant = await ProductVariants.findOne({
