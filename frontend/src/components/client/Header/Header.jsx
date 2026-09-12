@@ -2,13 +2,67 @@ import { Input, Badge, Space } from "antd";
 
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./Header.scss";
+import { useEffect, useRef, useState } from "react";
+import Suggest from "../Suggest/Suggest";
 
 const { Search } = Input;
 
 function Header() {
+  const [keyword, setKeyword] = useState("");
+  const [showSuggest, setShowSuggest] = useState(false);
+  const searchRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSuggest(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearch = (keyword) => {
+    const value = keyword.trim();
+
+    if (!value) return;
+
+    navigate(`/products?keyword=${value}`);
+
+    setShowSuggest(false);
+  };
+
+  const handleSelectSuggest = () => {
+    setShowSuggest(false);
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    setKeyword(value);
+
+    // Có keyword thì hiện Suggest
+    if (value.trim()) {
+      setShowSuggest(true);
+    } else {
+      setShowSuggest(false);
+    }
+  };
+
+  const handleFocus = () => {
+    if (keyword.trim()) {
+      setShowSuggest(true);
+    }
+  };
   return (
     <header className="header">
       <div className="container">
@@ -21,14 +75,19 @@ function Header() {
           </div>
 
           {/* SEARCH */}
-          <div className="header__search">
-            <Search placeholder="Tìm kiếm sản phẩm..." enterButton />
+          <div className="header__search" ref={searchRef}>
+            <Search
+              placeholder="Tìm kiếm sản phẩm..."
+              enterButton
+              value={keyword}
+              onChange={handleChange}
+              onSearch={handleSearch}
+              onFocus={handleFocus}
+            />
 
-            <div className="search-suggest">
-              <div className="suggest-list">
-                {/* Sau này render sản phẩm gợi ý */}
-              </div>
-            </div>
+            {showSuggest && (
+              <Suggest keyword={keyword} onSelect={handleSelectSuggest} />
+            )}
           </div>
 
           {/* ACTIONS */}

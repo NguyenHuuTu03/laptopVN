@@ -90,32 +90,6 @@
     }
   }
 
-  .search-suggest {
-    position: absolute;
-
-    top: calc(100% + 6px);
-    left: 0;
-
-    width: 100%;
-
-    z-index: 1100;
-
-    display: none;
-
-    background-color: #fff;
-
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-
-    overflow: hidden;
-
-    .suggest-list {
-      padding: 10px;
-    }
-  }
-
   &__actions {
     display: flex;
     align-items: center;

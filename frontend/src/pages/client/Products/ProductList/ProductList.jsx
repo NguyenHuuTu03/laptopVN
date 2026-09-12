@@ -36,6 +36,7 @@ function ProductList() {
     searchParams.get("brand")?.split(",").filter(Boolean) || [];
   const categorySlugs =
     searchParams.get("category")?.split(",").filter(Boolean) || [];
+  const keyword = searchParams.get("keyword") || "";
   const minPrice = searchParams.get("minPrice") || "";
   const maxPrice = searchParams.get("maxPrice") || "";
   const selectedPrice =
@@ -47,6 +48,11 @@ function ProductList() {
         setLoading(true);
 
         const params = {};
+
+        if (keyword) {
+          params.keyword = keyword;
+        }
+
         if (brandSlugs.length > 0) {
           params.brand = brandSlugs.join(",");
         }

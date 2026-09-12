@@ -192,3 +192,57 @@ module.exports.detailProduct = async (req, res) => {
     });
   }
 };
+
+//[GET] /api/products/suggest
+module.exports.suggest = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      status: "active",
+    };
+
+    const keyword = req.query.keyword.trim();
+    if (!keyword) {
+      return res.json({
+        code: 200,
+        data: {
+          products: [],
+        },
+      });
+    }
+    const keywordReg = new RegExp(req.query.keyword, "i");
+    const slugReg = new RegExp(
+      convertToSlugHelpers.convertToSlug(req.query.keyword),
+      "i",
+    );
+    find.$or = [{ title: keywordReg }, { slug: slugReg }];
+
+    const products = await Products.find(find)
+      .limit(5)
+      .select("title thumbnail slug")
+      .lean();
+
+    for (const product of products) {
+      const variant = await ProductVariants.findOne({
+        productId: product._id,
+      }).sort({ price: 1 });
+      product.price = variant.price;
+      product.discount = variant.discount || 0;
+      product.newPrice = Math.round(
+        variant.price * (1 - variant.discount / 100),
+      );
+    }
+    res.json({
+      code: 200,
+      message: "Thành công!",
+      data: {
+        products,
+      },
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Thất bại!",
+    });
+  }
+};

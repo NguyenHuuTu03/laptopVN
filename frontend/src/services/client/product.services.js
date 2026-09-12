@@ -32,3 +32,13 @@ export const getAllProducts = async (params = {}) => {
 
   return result.data || { products: [], pagination: {} };
 };
+
+export const suggestProducts = async (keyword) => {
+  const response = await api.get("/products/suggest", {
+    params: {
+      keyword,
+    },
+  });
+
+  return response.data.data?.products || [];
+};
