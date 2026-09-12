@@ -20,5 +20,15 @@ export const getCollectionProducts = async (slug, params = {}) => {
 
   const result = response.data;
 
-  return result.data?.products || [];
+  return result.data || { products: [], pagination: {} };
+};
+
+export const getAllProducts = async (params = {}) => {
+  const response = await api.get(`/products`, {
+    params,
+  });
+
+  const result = response.data;
+
+  return result.data || { products: [], pagination: {} };
 };

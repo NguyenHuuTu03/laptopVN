@@ -10,6 +10,7 @@ function AppRoutes() {
       <Route element={<ClientLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/collections/:slug" element={<ProductList />} />
+        <Route path="/products" element={<ProductList />} />
       </Route>
     </Routes>
   );

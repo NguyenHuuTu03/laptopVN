@@ -36,25 +36,25 @@ function Home() {
           sort: "sold-desc",
           limit: 5,
         });
-        setLaptopProducts(laptopData);
+        setLaptopProducts(laptopData.products);
 
         const pcData = await getCollectionProducts("pc", {
           sort: "sold-desc",
           limit: 5,
         });
-        setPCProducts(pcData);
+        setPCProducts(pcData.products);
 
         const mouseData = await getCollectionProducts("chuot-may-tinh", {
           sort: "sold-desc",
           limit: 5,
         });
-        setMouseProducts(mouseData);
+        setMouseProducts(mouseData.products);
 
         const keyboardData = await getCollectionProducts("ban-phim", {
           sort: "sold-desc",
           limit: 5,
         });
-        setKeyboardProducts(keyboardData);
+        setKeyboardProducts(keyboardData.products);
       } catch (error) {
         console.error("Lỗi lấy sản phẩm bán chạy:", error);
       }
@@ -75,7 +75,7 @@ function Home() {
           <section className="home__section">
             <div className="home__section-header">
               <h2>Sản phẩm nổi bật</h2>
-              <Link to={`/products?featured=true`}>Xem tất cả</Link>
+              <Link to={`/products`}>Xem tất cả</Link>
             </div>
 
             <div className="home__product-list">

@@ -1,9 +1,9 @@
 const Products = require("../../../../models/product.model");
 const ProductVariants = require("../../../../models/product_variants.model");
 const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
-const Reviews = require("../../../../models/review.model");
-
-//[GET] /api/products
+const Brands = require("../../../../models/brand.model");
+const Categories = require("../../../../models/category.model");
+// //[GET] /api/products
 module.exports.index = async (req, res) => {
   try {
     let find = {
@@ -23,12 +23,30 @@ module.exports.index = async (req, res) => {
     // search
 
     //filter
-    if (req.query.categoryId) {
-      find.categoryId = req.query.categoryId;
+    if (req.query.category) {
+      const categorySlugs = req.query.category.split(",");
+      const categories = await Categories.find({
+        slug: { $in: categorySlugs },
+        deleted: false,
+        status: "active",
+      }).select("_id");
+      find.categoryId = {
+        $in: categories.map((category) => category._id),
+      };
     }
 
-    if (req.query.brandId) {
-      find.brandId = req.query.brandId;
+    if (req.query.brand) {
+      const brandSlugs = req.query.brand.split(",");
+
+      const brands = await Brands.find({
+        slug: { $in: brandSlugs },
+        deleted: false,
+        status: "active",
+      }).select("_id");
+
+      find.brandId = {
+        $in: brands.map((brand) => brand._id),
+      };
     }
 
     if (req.query.featured === "true") {
@@ -46,7 +64,7 @@ module.exports.index = async (req, res) => {
         priceFind.$lte = Number(req.query.maxPrice);
       }
 
-      const variants = await ProductVariant.find({
+      const variants = await ProductVariants.find({
         price: priceFind,
       }).select("productId");
 

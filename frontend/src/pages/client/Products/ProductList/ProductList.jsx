@@ -1,108 +1,152 @@
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
-import { getCollectionProducts } from "../../../../services/client/product.services";
+import {
+  getAllProducts,
+  getCollectionProducts,
+} from "../../../../services/client/product.services";
 import ProductCard from "../../../../components/client/ProductCard/ProductCard";
 import banner from "../../../../assets/images/banner10.webp";
 import "./ProductList.scss";
-import FilterSidebar from "../../../../components/client/FilterSidbar/FilterSidebar";
+import FilterSidebar from "../../../../components/client/FilterSidebar/FilterSidebar";
+import Pagination from "../../../../components/client/Pagination/Pagination";
 
 function ProductList() {
   const { slug } = useParams();
-
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState({
-    brands: [],
-    minPrice: undefined,
-    maxPrice: undefined,
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    limit: 12,
+    totalProducts: 0,
+    totalPages: 0,
   });
 
-  const brandIds = searchParams.get("brand")?.split(",").filter(Boolean) || [];
+  const location = useLocation();
+  const isAllProductsPage = location.pathname === "/products";
 
+  // Lấy dữ liệu filter trực tiếp từ URL
+  const brandSlugs =
+    searchParams.get("brand")?.split(",").filter(Boolean) || [];
+  const categorySlugs =
+    searchParams.get("category")?.split(",").filter(Boolean) || [];
   const minPrice = searchParams.get("minPrice") || "";
   const maxPrice = searchParams.get("maxPrice") || "";
+  const selectedPrice =
+    minPrice && maxPrice ? `${minPrice}-${maxPrice}` : undefined;
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
 
-        const params = {
-          minPrice: filters.minPrice,
-          maxPrice: filters.maxPrice,
-        };
-
-        // Nếu có chọn hãng
-        if (filters.brands.length > 0) {
-          params.brand = filters.brands.join(",");
+        const params = {};
+        if (brandSlugs.length > 0) {
+          params.brand = brandSlugs.join(",");
         }
+        if (isAllProductsPage && categorySlugs.length > 0) {
+          params.category = categorySlugs.join(",");
+        }
+        if (minPrice) {
+          params.minPrice = minPrice;
+        }
+        if (maxPrice) {
+          params.maxPrice = maxPrice;
+        }
+        params.page = Number(searchParams.get("page")) || 1;
+        params.limit = 12;
+        // BẮT BUỘC có AWAIT ở đây
+        const data = isAllProductsPage
+          ? await getAllProducts(params)
+          : await getCollectionProducts(slug, params);
 
-        console.log("params:", params);
+        setProducts(data.products || []);
 
-        const data = await getCollectionProducts(slug, params);
-
-        setProducts(data);
+        setPagination(
+          data.pagination || {
+            currentPage: 1,
+            limit: 12,
+            totalProducts: 0,
+            totalPages: 0,
+          },
+        );
       } catch (error) {
         console.error("Lỗi lấy sản phẩm:", error);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [slug, filters]);
+  }, [slug, searchParams, isAllProductsPage]);
 
-  const selectedPrice =
-    minPrice && maxPrice ? `${minPrice}-${maxPrice}` : undefined;
-
-  const handleBrandChange = (brand) => {
-    setFilters((prev) => ({
-      ...prev,
-      brands: brand,
-    }));
-
+  // Chọn Hãng
+  const handleBrandChange = (brands) => {
     const params = new URLSearchParams(searchParams);
-
-    if (brand.length > 0) {
-      params.set("brand", brand.join(","));
+    if (brands.length > 0) {
+      params.set("brand", brands.join(","));
     } else {
       params.delete("brand");
     }
-
     setSearchParams(params);
   };
 
-  // Khi chọn giá
-  const handlePriceChange = (minPrice, maxPrice) => {
-    setFilters((prev) => ({
-      ...prev,
-      minPrice,
-      maxPrice,
-    }));
+  // Chọn Danh mục
+  const handleCategoryChange = (categories) => {
+    const params = new URLSearchParams(searchParams);
+    if (categories.length > 0) {
+      params.set("category", categories.join(","));
+    } else {
+      params.delete("category");
+    }
+    setSearchParams(params);
+  };
 
+  // Chọn Khoảng giá
+  const handlePriceChange = (minPrice, maxPrice) => {
+    const params = new URLSearchParams(searchParams);
+    if (minPrice !== undefined && maxPrice !== undefined) {
+      params.set("minPrice", minPrice);
+      params.set("maxPrice", maxPrice);
+    } else {
+      params.delete("minPrice");
+      params.delete("maxPrice");
+    }
+    setSearchParams(params);
+  };
+
+  const handlePageChange = (page) => {
     const params = new URLSearchParams(searchParams);
 
-    params.set("minPrice", minPrice);
-    params.set("maxPrice", maxPrice);
+    params.set("page", page);
 
     setSearchParams(params);
   };
+
+  console.log(pagination.totalProducts);
 
   return (
     <div className="product-list">
       <div className="product-list__container">
         {/* Breadcrumb */}
         <div className="product-list__breadcrumb">
-          <span>Trang chủ</span>
+          <Link to={`/`}>Trang chủ</Link>
           <span>/</span>
-          <span>{slug}</span>
+          <span>{slug ? slug : "Danh sách sản phẩm"}</span>
         </div>
 
         {/* Title */}
         <h1 className="product-list__title">
-          {slug.charAt(0).toUpperCase() + slug.slice(1)}
+          {slug
+            ? slug.charAt(0).toUpperCase() + slug.slice(1)
+            : "Danh sách sản phẩm"}
         </h1>
 
         {/* Banner */}
@@ -114,10 +158,12 @@ function ProductList() {
         <div className="product-list__main">
           {/* Sidebar */}
           <FilterSidebar
-            selectedBrandIds={brandIds}
+            selectedBrand={brandSlugs}
             selectedPrice={selectedPrice}
+            selectedCategory={categorySlugs}
             onBrandChange={handleBrandChange}
             onPriceChange={handlePriceChange}
+            onCategoryChange={handleCategoryChange}
           />
 
           {/* Products */}
@@ -125,22 +171,16 @@ function ProductList() {
             {/* Toolbar */}
             <div className="product-list__toolbar">
               <div className="product-list__result">
-                Tìm thấy <strong>{products.length}</strong> kết quả
+                Tìm thấy <strong>{pagination.totalProducts}</strong> kết quả
               </div>
 
               <div className="product-list__sort">
                 <button className="active">Mới nhất</button>
-
                 <span>•</span>
-
                 <button>Giá tăng dần</button>
-
                 <span>•</span>
-
                 <button>Giá giảm dần</button>
-
                 <span>•</span>
-
                 <button>Tên A-Z</button>
               </div>
             </div>
@@ -149,11 +189,19 @@ function ProductList() {
             {loading ? (
               <div className="product-list__loading">Đang tải sản phẩm...</div>
             ) : (
-              <div className="product-list__products">
-                {products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
-                ))}
-              </div>
+              <>
+                <div className="product-list__products">
+                  {products.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
+                </div>
+                <Pagination
+                  currentPage={pagination.currentPage}
+                  pageSize={pagination.limit}
+                  total={pagination.totalProducts}
+                  onChange={handlePageChange}
+                />
+              </>
             )}
           </section>
         </div>

@@ -14,3 +14,9 @@ export const getAllBrands = async () => {
 
   return response.data.data?.brands || [];
 };
+
+export const getCategoryBySlug = async (slug) => {
+  const response = await api.get(`/categories/${slug}`);
+
+  return response.data.data?.category;
+};

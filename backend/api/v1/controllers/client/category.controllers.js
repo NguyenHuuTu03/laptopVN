@@ -36,3 +36,33 @@ module.exports.category = async (req, res) => {
     });
   }
 };
+
+//[GET] /api/categories/:slug
+module.exports.detail = async (req, res) => {
+  try {
+    const category = await Categories.findOne({
+      slug: req.params.slug,
+      deleted: false,
+      status: "active",
+    });
+
+    if (!category) {
+      return res.json({
+        code: 404,
+        message: "Không tìm thấy danh mục!",
+      });
+    }
+    res.json({
+      code: 200,
+      message: "Thành công!",
+      data: {
+        category,
+      },
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Thất bại!",
+    });
+  }
+};
