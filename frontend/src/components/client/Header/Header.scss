@@ -1,8 +1,11 @@
+// Header.scss
+
 .header {
   width: 100%;
   background-color: #fff;
   border-bottom: 1px solid #eaeaea;
   position: sticky;
+  top: 0;
   z-index: 1000;
 
   .container {
@@ -31,7 +34,7 @@
     img {
       display: block;
 
-      width: 150px;
+      width: 200px;
       height: auto;
 
       object-fit: contain;
@@ -146,6 +149,45 @@
     }
   }
 
+  /* 🔥 BỔ SUNG SCSS CHO NÚT USER (DROPDOWN KHU VỰC ĐÃ ĐĂNG NHẬP) */
+  &__user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 42px;
+    padding: 0 14px;
+    cursor: pointer;
+
+    color: #333;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+
+    transition: all 0.2s ease;
+    user-select: none;
+
+    &:hover {
+      color: #1677ff;
+      border-color: #1677ff;
+      background-color: #f5f9ff;
+    }
+
+    .ant-space {
+      display: flex;
+      align-items: center;
+    }
+
+    .anticon-user {
+      font-size: 20px;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+
   &__actions-login {
     display: flex;
     align-items: center;
@@ -190,6 +232,7 @@
     }
   }
 
+  /* RESPONSIVE MEDIA QUERIES */
   @media (max-width: 992px) {
     &__top {
       gap: 18px;
@@ -215,13 +258,16 @@
       }
     }
 
+    &__user,
     &__actions-login {
+      padding: 0 10px;
+
       a {
         padding: 0 10px;
       }
 
       span {
-        display: none;
+        display: none; // Ẩn tên khi màn hình nhỏ hơn 992px
       }
     }
   }
@@ -280,10 +326,13 @@
       }
     }
 
+    &__user,
     &__actions-login {
+      width: 40px;
+      padding: 0;
+
       a {
         width: 40px;
-
         padding: 0;
       }
     }

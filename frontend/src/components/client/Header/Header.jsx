@@ -1,21 +1,28 @@
-import { Input, Badge, Space } from "antd";
+import { Input, Badge, Space, Dropdown, message } from "antd";
 
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import "./Header.scss";
 import { useEffect, useRef, useState } from "react";
 import Suggest from "../Suggest/Suggest";
+import { getProfile, logout } from "../../../services/client/user.services";
 
 const { Search } = Input;
 
 function Header() {
   const [keyword, setKeyword] = useState("");
+
   const [showSuggest, setShowSuggest] = useState(false);
+
+  const [user, setUser] = useState(null);
+
   const searchRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -24,12 +31,20 @@ function Header() {
       }
     };
 
+    const checkLogin = async () => {
+      const result = await getProfile();
+      if (result.code === 200) {
+        setUser(result.data.user);
+      }
+    };
+    checkLogin();
+
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [location.pathname]);
 
   const handleSearch = (keyword) => {
     const value = keyword.trim();
@@ -63,6 +78,65 @@ function Header() {
       setShowSuggest(true);
     }
   };
+
+  const userMenu = {
+    items: [
+      {
+        key: "profile",
+        label: "Tài khoản của tôi",
+        icon: <i className="fa-solid fa-user"></i>,
+      },
+      {
+        key: "orders",
+        label: "Đơn hàng của tôi",
+        icon: <i className="fa-solid fa-box-open"></i>,
+      },
+      {
+        key: "logout",
+        label: "Đăng xuất",
+        icon: <i className="fa-solid fa-right-from-bracket"></i>,
+      },
+    ],
+  };
+
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+
+      if (result.code === 200) {
+        message.success(result.message || "Đăng xuất thành công!");
+
+        setUser(null);
+
+        navigate("/");
+      } else {
+        message.error(result.message || "Đăng xuất thất bại!");
+      }
+    } catch (error) {
+      console.error("Lỗi đăng xuất:", error);
+
+      message.error(error.response?.data?.message || "Đăng xuất thất bại!");
+    }
+  };
+
+  const handleMenuClick = ({ key }) => {
+    if (key === "profile") {
+      navigate("/users/profile");
+    }
+
+    if (key === "orders") {
+      navigate("/orders");
+    }
+
+    if (key === "cart") {
+      navigate("/cart");
+    }
+
+    if (key === "logout") {
+      handleLogout();
+    }
+  };
+
   return (
     <header className="header">
       <div className="container">
@@ -104,14 +178,32 @@ function Header() {
             </div>
 
             {/* LOGIN */}
-            <div className="header__actions-login">
-              <Link to="/users/login">
-                <Space>
-                  <UserOutlined />
-                  <span>Đăng nhập</span>
-                </Space>
-              </Link>
-            </div>
+            {user ? (
+              <Dropdown
+                menu={{
+                  items: userMenu.items,
+                  onClick: handleMenuClick,
+                }}
+                placement="bottomRight"
+                trigger={["click"]}
+              >
+                <div className="header__user">
+                  <Space>
+                    <UserOutlined />
+                    <span>{user.fullName}</span>
+                  </Space>
+                </div>
+              </Dropdown>
+            ) : (
+              <div className="header__actions-login">
+                <Link to="/users/login">
+                  <Space>
+                    <UserOutlined />
+                    <span>Đăng nhập</span>
+                  </Space>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
