@@ -1,0 +1,131 @@
+.product-detail__technical {
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+
+  .product-technical__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: linear-gradient(180deg, #fafcff, #f5f8fc);
+    border-bottom: 1px solid #eee;
+
+    i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      font-size: 15px;
+      color: #1677ff;
+      background: #e6f1ff;
+      border-radius: 8px;
+    }
+
+    .description span {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+  }
+
+  .product-technical__content {
+    padding: 16px 20px;
+
+    .ant-collapse {
+      overflow: hidden;
+      background: #fff;
+      border: none;
+    }
+
+    .ant-collapse-item {
+      border-bottom: 1px solid #f0f0f0;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .ant-collapse-header {
+      padding: 13px 6px !important;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #1677ff;
+      }
+    }
+
+    .ant-collapse-content {
+      border-top: 1px solid #f5f5f5;
+    }
+
+    .ant-collapse-content-box {
+      padding: 0 !important;
+    }
+
+    // =========================
+    // SPEC VALUE (thay cho specs-content cũ)
+    // =========================
+
+    .specs-value {
+      padding: 12px 14px;
+
+      font-size: 14px;
+      line-height: 1.6;
+
+      color: #333;
+      background: #fafbfd;
+    }
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 10px;
+
+    .product-technical__header {
+      padding: 13px 15px;
+
+      i {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .description span {
+        font-size: 16.5px;
+      }
+    }
+
+    .product-technical__content {
+      padding: 12px 15px;
+
+      .specs-value {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-technical__header {
+      padding: 12px;
+
+      .description span {
+        font-size: 16px;
+      }
+    }
+
+    .product-technical__content {
+      padding: 10px 12px;
+
+      .specs-value {
+        padding: 9px 10px;
+        font-size: 13px;
+      }
+    }
+  }
+}

@@ -42,3 +42,13 @@ export const suggestProducts = async (keyword) => {
 
   return response.data.data?.products || [];
 };
+
+export const getProductDetail = async (slug) => {
+  const response = await api.get(`/products/${slug}`);
+  return response.data;
+};
+
+export const getProductRelated = async (slug) => {
+  const response = await api.get(`/products/${slug}/related`);
+  return response.data;
+};

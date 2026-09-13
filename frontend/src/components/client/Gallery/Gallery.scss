@@ -1,0 +1,176 @@
+.gallery {
+  width: 100%;
+
+  // =========================
+  // ẢNH LỚN
+  // =========================
+  &__main {
+    width: 100%;
+    height: 450px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    background-color: #fff;
+    overflow: hidden;
+
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      padding: 25px 60px;
+
+      object-fit: contain;
+    }
+
+    // Nút Previous / Next
+    .swiper-button-prev,
+    .swiper-button-next {
+      width: 40px;
+      height: 40px;
+
+      border-radius: 50%;
+
+      background-color: rgba(0, 0, 0, 0.35);
+
+      transition: all 0.2s ease;
+
+      &::after {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.55);
+      }
+    }
+
+    .swiper-button-prev {
+      left: 12px;
+    }
+
+    .swiper-button-next {
+      right: 12px;
+    }
+  }
+
+  // =========================
+  // THUMBNAIL
+  // =========================
+  &__thumbs {
+    width: 100%;
+    margin-top: 12px;
+
+    .swiper-slide {
+      height: 80px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+
+      background-color: #fff;
+
+      cursor: pointer;
+
+      opacity: 0.6;
+
+      transition: all 0.2s ease;
+
+      overflow: hidden;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        padding: 5px;
+
+        object-fit: contain;
+      }
+    }
+
+    // Thumbnail đang được chọn
+    .swiper-slide-thumb-active {
+      opacity: 1;
+
+      border-color: #1677ff;
+    }
+  }
+
+  // =========================
+  // TABLET
+  // =========================
+  @media (max-width: 992px) {
+    &__main {
+      height: 400px;
+
+      img {
+        padding: 20px 50px;
+      }
+    }
+
+    &__thumbs {
+      .swiper-slide {
+        height: 70px;
+      }
+    }
+  }
+
+  // =========================
+  // MOBILE
+  // =========================
+  @media (max-width: 768px) {
+    &__main {
+      height: 350px;
+
+      img {
+        padding: 20px 40px;
+      }
+    }
+
+    &__thumbs {
+      .swiper-slide {
+        height: 65px;
+      }
+    }
+  }
+
+  // =========================
+  // MOBILE NHỎ
+  // =========================
+  @media (max-width: 480px) {
+    &__main {
+      height: 280px;
+
+      img {
+        padding: 15px 30px;
+      }
+
+      .swiper-button-prev,
+      .swiper-button-next {
+        width: 32px;
+        height: 32px;
+
+        &::after {
+          font-size: 13px;
+        }
+      }
+    }
+
+    &__thumbs {
+      .swiper-slide {
+        height: 55px;
+      }
+    }
+  }
+}

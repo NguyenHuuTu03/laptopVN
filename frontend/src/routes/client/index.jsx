@@ -5,6 +5,7 @@ import Home from "../../pages/client/Home/Home";
 import ProductList from "../../pages/client/Products/ProductList/ProductList";
 import Login from "../../pages/client/Users/Login/Login";
 import Register from "../../pages/client/Users/Register/Register";
+import ProductDetail from "../../pages/client/Products/ProductDetail/ProductDetail";
 
 function AppRoutes() {
   return (
@@ -12,7 +13,10 @@ function AppRoutes() {
       <Route element={<ClientLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/collections/:slug" element={<ProductList />} />
-        <Route path="/products" element={<ProductList />} />
+        <Route path="/products">
+          <Route path="" element={<ProductList />} />
+          <Route path=":slugProduct" element={<ProductDetail />} />
+        </Route>
         <Route path="/users">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

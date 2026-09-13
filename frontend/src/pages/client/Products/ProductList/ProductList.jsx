@@ -136,8 +136,6 @@ function ProductList() {
     setSearchParams(params);
   };
 
-  console.log(pagination.totalProducts);
-
   return (
     <div className="product-list">
       <div className="product-list__container">

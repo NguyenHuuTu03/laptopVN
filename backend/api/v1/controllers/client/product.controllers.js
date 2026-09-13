@@ -175,7 +175,13 @@ module.exports.detailProduct = async (req, res) => {
 
     const variants = await ProductVariants.find({
       productId: product.id,
-    });
+    }).lean();
+
+    for (const variant of variants) {
+      variant.priceNew = Math.floor(
+        variant.price * (1 - variant.discount / 100),
+      );
+    }
 
     res.json({
       code: 200,
@@ -242,6 +248,59 @@ module.exports.suggest = async (req, res) => {
   } catch (error) {
     res.json({
       code: 500,
+      message: "Thất bại!",
+    });
+  }
+};
+
+//[GET] /api/products/:slugProduct/related
+module.exports.related = async (req, res) => {
+  try {
+    const { slugProduct } = req.params;
+
+    const product = await Products.findOne({
+      slug: slugProduct,
+      deleted: false,
+      status: "active",
+    }).lean();
+
+    if (!product) {
+      return res.json({
+        code: 404,
+        message: "Không tìm thấy sản phẩm!",
+      });
+    }
+
+    const products = await Products.find({
+      _id: { $ne: product._id },
+      categoryId: product.categoryId,
+      deleted: false,
+      status: "active",
+    }).lean();
+
+    for (const product of products) {
+      const variant = await ProductVariants.findOne({
+        productId: product._id,
+      }).sort({ price: 1 });
+      product.price = variant.price;
+      product.discount = variant.discount || 0;
+      product.newPrice = Math.round(
+        variant.price * (1 - variant.discount / 100),
+      );
+    }
+
+    console.log(products);
+
+    res.json({
+      code: 200,
+      message: "Thành công!",
+      data: {
+        products,
+      },
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
       message: "Thất bại!",
     });
   }
