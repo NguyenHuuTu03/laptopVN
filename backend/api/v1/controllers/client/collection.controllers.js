@@ -81,6 +81,8 @@ module.exports.collections = async (req, res) => {
 
     const slug = req.params.slug;
 
+    let collection;
+
     const category = await Categories.findOne({
       slug: slug,
       deleted: false,
@@ -89,6 +91,12 @@ module.exports.collections = async (req, res) => {
 
     if (category) {
       find.categoryId = category.id;
+
+      collection = {
+        title: category.title,
+        slug: category.slug,
+        type: "category",
+      };
     } else {
       const brand = await Brands.findOne({
         slug: slug,
@@ -98,6 +106,12 @@ module.exports.collections = async (req, res) => {
 
       if (brand) {
         find.brandId = brand.id;
+
+        collection = {
+          title: brand.title,
+          slug: brand.slug,
+          type: "brand",
+        };
       } else {
         return res.json({
           code: 404,
@@ -186,6 +200,7 @@ module.exports.collections = async (req, res) => {
           totalProducts,
           totalPages,
         },
+        collection,
       },
     });
   } catch (error) {

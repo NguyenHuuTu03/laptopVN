@@ -1,82 +1,74 @@
 .product-detail__description {
-  width: 100%;
-  overflow: hidden;
   background: #fff;
-  border: 1px solid #eee;
-  border-radius: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
 
-  .product-description__header {
+.product-description {
+  &__header {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 16px 20px;
-    background: linear-gradient(180deg, #fafcff, #f5f8fc);
+
     border-bottom: 1px solid #eee;
 
     i {
+      width: 34px;
+      height: 34px;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
-      font-size: 15px;
-      color: #1677ff;
-      background: #e6f1ff;
+
       border-radius: 8px;
+      background: #eaf3ff;
+      color: #1677ff;
+      font-size: 15px;
     }
 
-    .description span {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1a1a1a;
+    .description {
+      span {
+        font-size: 18px;
+        font-weight: 600;
+        color: #222;
+      }
     }
   }
 
-  .product-description__content {
+  &__content {
     padding: 20px;
 
     p {
       margin: 0;
       font-size: 15px;
-      line-height: 1.85;
-      color: #444;
+      line-height: 1.7;
+      color: #555;
       white-space: pre-line;
     }
   }
+}
 
-  @media (max-width: 768px) {
-    border-radius: 10px;
-    .product-description__header {
-      padding: 13px 15px;
-      i {
-        width: 30px;
-        height: 30px;
-        font-size: 14px;
-      }
-      .description span {
-        font-size: 16.5px;
-      }
-    }
-    .product-description__content {
-      padding: 15px;
-      p {
-        font-size: 14px;
-        line-height: 1.75;
-      }
-    }
+@media (max-width: 576px) {
+  .product-detail__description {
+    border-radius: 8px;
   }
 
-  @media (max-width: 480px) {
-    .product-description__header {
-      padding: 12px;
+  .product-description {
+    &__header {
+      padding: 14px 16px;
+
       .description span {
         font-size: 16px;
       }
     }
-    .product-description__content {
-      padding: 13px;
+
+    &__content {
+      padding: 16px;
+
       p {
-        font-size: 13px;
+        font-size: 14px;
       }
     }
   }

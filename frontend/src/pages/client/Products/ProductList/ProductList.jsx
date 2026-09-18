@@ -11,13 +11,14 @@ import {
   getCollectionProducts,
 } from "../../../../services/client/product.services";
 import ProductCard from "../../../../components/client/ProductCard/ProductCard";
-import banner from "../../../../assets/images/banner10.webp";
+import banner from "../../../../assets/images/banner4.jpg";
 import "./ProductList.scss";
 import FilterSidebar from "../../../../components/client/FilterSidebar/FilterSidebar";
 import Pagination from "../../../../components/client/Pagination/Pagination";
 
 function ProductList() {
   const { slug } = useParams();
+  const [collection, setCollection] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -73,6 +74,7 @@ function ProductList() {
           : await getCollectionProducts(slug, params);
 
         setProducts(data.products || []);
+        setCollection(data.collection || null);
 
         setPagination(
           data.pagination || {
@@ -143,14 +145,12 @@ function ProductList() {
         <div className="product-list__breadcrumb">
           <Link to={`/`}>Trang chủ</Link>
           <span>/</span>
-          <span>{slug ? slug : "Danh sách sản phẩm"}</span>
+          <span>{collection?.title || "Danh sách sản phẩm"}</span>
         </div>
 
         {/* Title */}
         <h1 className="product-list__title">
-          {slug
-            ? slug.charAt(0).toUpperCase() + slug.slice(1)
-            : "Danh sách sản phẩm"}
+          {collection?.title || "Danh sách sản phẩm"}
         </h1>
 
         {/* Banner */}

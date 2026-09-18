@@ -1,159 +1,80 @@
 .gallery {
-  width: 100%;
-
-  // =========================
-  // ẢNH LỚN
-  // =========================
   &__main {
     width: 100%;
-    height: 450px;
-
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-
-    background-color: #fff;
+    height: 430px;
+    border-radius: 10px;
     overflow: hidden;
+    background: #fff;
 
     .swiper-slide {
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #fff;
     }
 
     img {
       width: 100%;
       height: 100%;
-      padding: 25px 60px;
-
       object-fit: contain;
+      padding: 20px;
     }
 
-    // Nút Previous / Next
     .swiper-button-prev,
     .swiper-button-next {
-      width: 40px;
-      height: 40px;
-
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-
-      background-color: rgba(0, 0, 0, 0.35);
-
-      transition: all 0.2s ease;
+      background: rgba(0, 0, 0, 0.45);
 
       &::after {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 700;
       }
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.55);
+        background: rgba(0, 0, 0, 0.65);
       }
-    }
-
-    .swiper-button-prev {
-      left: 12px;
-    }
-
-    .swiper-button-next {
-      right: 12px;
     }
   }
 
-  // =========================
-  // THUMBNAIL
-  // =========================
   &__thumbs {
-    width: 100%;
-    margin-top: 12px;
+    margin-top: 14px;
+    height: 82px;
 
     .swiper-slide {
-      height: 80px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border: 1px solid #e5e7eb;
+      border: 1px solid #e5e5e5;
       border-radius: 8px;
-
-      background-color: #fff;
-
-      cursor: pointer;
-
-      opacity: 0.6;
-
-      transition: all 0.2s ease;
-
       overflow: hidden;
-
-      &:hover {
-        opacity: 1;
-      }
+      cursor: pointer;
+      background: #fff;
+      transition: 0.2s;
 
       img {
         width: 100%;
         height: 100%;
-        padding: 5px;
-
         object-fit: contain;
+        padding: 5px;
       }
-    }
 
-    // Thumbnail đang được chọn
-    .swiper-slide-thumb-active {
-      opacity: 1;
-
-      border-color: #1677ff;
-    }
-  }
-
-  // =========================
-  // TABLET
-  // =========================
-  @media (max-width: 992px) {
-    &__main {
-      height: 400px;
-
-      img {
-        padding: 20px 50px;
+      &.swiper-slide-thumb-active {
+        border: 2px solid #1677ff;
       }
-    }
 
-    &__thumbs {
-      .swiper-slide {
-        height: 70px;
+      &:hover {
+        border-color: #1677ff;
       }
     }
   }
+}
 
-  // =========================
-  // MOBILE
-  // =========================
-  @media (max-width: 768px) {
+@media (max-width: 576px) {
+  .gallery {
     &__main {
-      height: 350px;
+      height: 300px;
 
       img {
-        padding: 20px 40px;
-      }
-    }
-
-    &__thumbs {
-      .swiper-slide {
-        height: 65px;
-      }
-    }
-  }
-
-  // =========================
-  // MOBILE NHỎ
-  // =========================
-  @media (max-width: 480px) {
-    &__main {
-      height: 280px;
-
-      img {
-        padding: 15px 30px;
+        padding: 10px;
       }
 
       .swiper-button-prev,
@@ -168,9 +89,8 @@
     }
 
     &__thumbs {
-      .swiper-slide {
-        height: 55px;
-      }
+      height: 65px;
+      margin-top: 10px;
     }
   }
 }

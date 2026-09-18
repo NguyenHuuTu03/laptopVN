@@ -35,7 +35,7 @@ function Gallery({ images = [] }) {
       {images.length > 1 && (
         <Swiper
           onSwiper={setThumbsSwiper}
-          loop={images.length > 1}
+          loop={false}
           spaceBetween={10}
           slidesPerView={4}
           freeMode={true}
