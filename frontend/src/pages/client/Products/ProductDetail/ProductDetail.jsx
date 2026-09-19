@@ -6,6 +6,8 @@ import "./ProductDetail.scss";
 import ProductSpecifications from "../../../../components/client/ProductSpecifications/ProductSpecifications";
 import ProductDescription from "../../../../components/client/ProductSpecifications/ProductDescription";
 import ProductRelated from "../../../../components/client/ProductRelated/ProductRelated";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../../actions/cartActions";
 
 function ProductDetail() {
   const [loading, setLoading] = useState(true);
@@ -14,7 +16,6 @@ function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState("");
   const { slugProduct } = useParams();
 
-  // Hàm hỗ trợ bóc tách thuộc tính từ variant (xử lý không phân biệt hoa/thường)
   const getVariantAttributes = (variant) => {
     let ram = "";
     let storage = "";
@@ -31,12 +32,10 @@ function ProductDetail() {
     return { version, color };
   };
 
-  // Hàm kiểm tra variant có còn hàng hay không
   const isVariantInStock = (variant) => {
     if (!variant) return false;
     if (variant.stock !== undefined) return variant.stock > 0;
-    if (variant.quantity !== undefined) return variant.quantity > 0;
-    return true; // Mặc định là còn hàng nếu API chưa có trường stock/quantity
+    return true;
   };
 
   useEffect(() => {
@@ -50,7 +49,6 @@ function ProductDetail() {
 
           const variants = result.data.variants || [];
           if (variants.length > 0) {
-            // Mặc định chọn variant đầu tiên còn hàng
             const firstAvailableVariant =
               variants.find((v) => isVariantInStock(v)) || variants[0];
 
@@ -78,14 +76,12 @@ function ProductDetail() {
     fetchProduct();
   }, [slugProduct]);
 
-  // Lấy danh sách các phiên bản (RAM/Storage) và Màu sắc duy nhất từ data
   const versions = [];
   const colors = [];
 
   if (data?.variants) {
     data.variants.forEach((variant) => {
       const { version, color } = getVariantAttributes(variant);
-
       if (version && !versions.some((item) => item.version === version)) {
         versions.push({
           version: version,
@@ -99,7 +95,6 @@ function ProductDetail() {
     });
   }
 
-  // Tìm variant khớp chính xác nhất với Version và Color đang chọn
   const selectedVariant =
     data?.variants?.find((variant) => {
       const { version, color } = getVariantAttributes(variant);
@@ -111,19 +106,16 @@ function ProductDetail() {
     data?.variants?.[0] ||
     null;
 
-  const isCurrentInStock = isVariantInStock(selectedVariant);
+  const isCurrentInStock = isVariantInStock(selectedVariant); // kiểm tra phiên bản lựa chọn còn hàng k
 
-  // Khi chọn lại Phiên bản -> TỰ ĐỘNG chọn màu hợp lệ đầu tiên của phiên bản đó
   const handleVersionChange = (newVersion) => {
     setSelectedVersion(newVersion);
 
-    // Lấy tất cả variant thuộc version mới này CÒN HÀNG
     const availableVariants = data?.variants?.filter((v) => {
       const { version } = getVariantAttributes(v);
       return version === newVersion && isVariantInStock(v);
     });
 
-    // Kiểm tra xem màu đang chọn có thuộc version mới này không
     const isColorStillAvailable = availableVariants?.some((v) => {
       const { color } = getVariantAttributes(v);
       return color === selectedColor;
@@ -150,6 +142,16 @@ function ProductDetail() {
     return `${new Intl.NumberFormat("vi-VN").format(price)}đ`;
   };
 
+  const dispatch = useDispatch();
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        productId: data.product._id,
+        variantId: selectedVariant._id,
+        quantity: 1,
+      }),
+    );
+  };
   return (
     <>
       {loading ? (
@@ -167,7 +169,10 @@ function ProductDetail() {
 
                 <div className="product-detail__main">
                   <div className="product-detail__gallery">
-                    <Gallery images={data.product?.images} />
+                    <Gallery
+                      images={data.product?.images}
+                      selectedVariant={selectedVariant}
+                    />
                   </div>
                   <div className="product-detail__info">
                     <div className="product-detail__header">
@@ -204,7 +209,6 @@ function ProductDetail() {
                         <strong className="label">Lựa chọn phiên bản</strong>
                         <div className="product-detail__version">
                           {versions.map((verItem, index) => {
-                            // Phiên bản bấm được nếu có BẤT KỲ variant nào thuộc version này còn hàng
                             const isAvailable = data?.variants?.some((v) => {
                               const { version } = getVariantAttributes(v);
                               return (
@@ -242,7 +246,6 @@ function ProductDetail() {
                         <strong className="label">Lựa chọn màu</strong>
                         <div className="product-detail__version">
                           {colors.map((color) => {
-                            // Màu bấm được NẾU VÀ CHỈ NẾU màu đó có tồn tại trong Phiên bản đang được chọn (selectedVersion)
                             const isAvailable = data?.variants?.some((v) => {
                               const { version: vVer, color: vColor } =
                                 getVariantAttributes(v);
@@ -277,6 +280,7 @@ function ProductDetail() {
                           type="button"
                           title={isCurrentInStock ? "Thêm vào giỏ" : "Hết hàng"}
                           disabled={!isCurrentInStock}
+                          onClick={() => handleAddToCart()}
                         >
                           <i className="fa-solid fa-cart-plus"></i>
                           {isCurrentInStock ? "Thêm vào giỏ" : "Hết hàng"}

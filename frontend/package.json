@@ -16,7 +16,9 @@
     "lucide-react": "^1.43.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-redux": "^9.3.0",
     "react-router-dom": "^7.18.3",
+    "redux": "^5.0.1",
     "sass": "^1.104.0",
     "swiper": "^14.2.0"
   },

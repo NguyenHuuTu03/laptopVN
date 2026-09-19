@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
@@ -9,19 +9,42 @@ import "./Gallery.scss";
 
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
-function Gallery({ images = [] }) {
+function Gallery({ images = [], selectedVariant }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const mainSwiperRef = useRef(null);
+
+  useEffect(() => {
+    if (!selectedVariant || !mainSwiperRef.current) return;
+
+    const variantImage = selectedVariant.thumbnail;
+
+    if (!variantImage) return;
+
+    const index = images.findIndex((img) => {
+      return img === variantImage;
+    });
+
+    if (index !== -1) {
+      mainSwiperRef.current.slideTo(index);
+    }
+  }, [selectedVariant, images]);
+
   return (
     <>
       <Swiper
+        onSwiper={(swiper) => {
+          mainSwiperRef.current = swiper;
+        }}
         style={{
           "--swiper-navigation-color": "#fff",
           "--swiper-pagination-color": "#fff",
         }}
-        loop={true}
+        loop={false}
         spaceBetween={10}
         navigation={true}
-        thumbs={{ swiper: thumbsSwiper }}
+        thumbs={{
+          swiper: thumbsSwiper,
+        }}
         modules={[FreeMode, Navigation, Thumbs]}
         className="gallery__main"
       >
@@ -53,4 +76,5 @@ function Gallery({ images = [] }) {
     </>
   );
 }
+
 export default Gallery;

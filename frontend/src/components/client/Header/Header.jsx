@@ -8,6 +8,7 @@ import "./Header.scss";
 import { useEffect, useRef, useState } from "react";
 import Suggest from "../Suggest/Suggest";
 import { getProfile, logout } from "../../../services/client/user.services";
+import { useSelector } from "react-redux";
 
 const { Search } = Input;
 
@@ -23,6 +24,12 @@ function Header() {
   const navigate = useNavigate();
 
   const location = useLocation();
+
+  const cartItems = useSelector((state) => state.cartReducer);
+  const totalQuantity = cartItems.items.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -170,7 +177,7 @@ function Header() {
             <div className="header__actions-cart">
               <Link to="/cart">
                 <Space>
-                  <Badge count={0} showZero>
+                  <Badge count={totalQuantity} showZero>
                     <ShoppingCartOutlined />
                   </Badge>
                 </Space>
