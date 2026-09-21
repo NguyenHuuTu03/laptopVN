@@ -2,12 +2,18 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 
-import { login } from "../../../../services/client/user.services";
+import { getProfile, login } from "../../../../services/client/user.services";
 
 import "./Login.scss";
+import { getCart, mergeCart } from "../../../../services/client/cart.services";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../../../actions/authActions";
+import { setCart } from "../../../../actions/cartActions";
 
 function Login() {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -44,6 +50,33 @@ function Login() {
       const result = await login(formData);
 
       if (result.code === 200) {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        if (cart.length > 0) {
+          const mergeResult = await mergeCart(cart);
+
+          if (mergeResult.code !== 200) {
+            message.error("Đồng bộ giỏ hàng thất bại!");
+            return;
+          } else {
+            localStorage.removeItem("cart");
+          }
+        }
+
+        const profileResult = await getProfile();
+        if (profileResult.code === 200) {
+          dispatch(
+            setAuth({
+              isLoggedIn: true,
+              user: profileResult.data.user,
+            }),
+          );
+        }
+
+        const cartResult = await getCart();
+
+        if (cartResult.code === 200) {
+          dispatch(setCart(cartResult.data.items));
+        }
         message.success("Đăng nhập thành công!");
 
         navigate("/");

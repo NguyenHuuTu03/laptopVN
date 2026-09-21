@@ -1,54 +1,46 @@
-import api from "../api";
+import { get } from "../../utils/request";
 
 export const getFeaturedProducts = async () => {
-  const response = await api.get("/products", {
+  const result = await get("/products", {
     params: {
       featured: true,
       limit: 5,
     },
   });
 
-  const result = response.data;
-
   return result.data?.products || [];
 };
 
 export const getCollectionProducts = async (slug, params = {}) => {
-  const response = await api.get(`/collections/${slug}`, {
+  const result = await get(`/collections/${slug}`, {
     params,
   });
-
-  const result = response.data;
 
   return result.data || { products: [], pagination: {} };
 };
 
 export const getAllProducts = async (params = {}) => {
-  const response = await api.get(`/products`, {
+  const result = await get(`/products`, {
     params,
   });
-
-  const result = response.data;
 
   return result.data || { products: [], pagination: {} };
 };
 
 export const suggestProducts = async (keyword) => {
-  const response = await api.get("/products/suggest", {
+  const result = await get("/products/suggest", {
     params: {
       keyword,
     },
   });
 
-  return response.data.data?.products || [];
+  return result.data?.products || [];
 };
 
 export const getProductDetail = async (slug) => {
-  const response = await api.get(`/products/${slug}`);
-  return response.data;
+  return await get(`/products/${slug}`);
 };
 
 export const getProductRelated = async (slug) => {
-  const response = await api.get(`/products/${slug}/related`);
-  return response.data;
+  return await get(`/products/${slug}/related`);
 };

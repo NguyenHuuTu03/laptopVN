@@ -7,8 +7,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import { useEffect, useRef, useState } from "react";
 import Suggest from "../Suggest/Suggest";
-import { getProfile, logout } from "../../../services/client/user.services";
-import { useSelector } from "react-redux";
+import { logout } from "../../../services/client/user.services";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth } from "../../../actions/authActions";
 
 const { Search } = Input;
 
@@ -17,7 +18,7 @@ function Header() {
 
   const [showSuggest, setShowSuggest] = useState(false);
 
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
   const searchRef = useRef(null);
 
@@ -25,11 +26,16 @@ function Header() {
 
   const location = useLocation();
 
-  const cartItems = useSelector((state) => state.cartReducer);
-  const totalQuantity = cartItems.items.reduce(
-    (total, item) => total + item.quantity,
+  const dispatch = useDispatch();
+
+  const cartItems = useSelector((state) => state.cartReducer.items);
+  // console.log(cartItems);
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + (Number(item.quantity) || 0),
     0,
   );
+
+  const { isLoggedIn, user } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -38,13 +44,13 @@ function Header() {
       }
     };
 
-    const checkLogin = async () => {
-      const result = await getProfile();
-      if (result.code === 200) {
-        setUser(result.data.user);
-      }
-    };
-    checkLogin();
+    // const checkLogin = async () => {
+    //   const result = await getProfile();
+    //   if (result.code === 200) {
+    //     setUser(result.data.user);
+    //   }
+    // };
+    // checkLogin();
 
     document.addEventListener("mousedown", handleClickOutside);
 
@@ -113,7 +119,12 @@ function Header() {
       if (result.code === 200) {
         message.success(result.message || "Đăng xuất thành công!");
 
-        setUser(null);
+        dispatch(
+          setAuth({
+            isLoggedIn: false,
+            user: null,
+          }),
+        );
 
         navigate("/");
       } else {
@@ -185,7 +196,7 @@ function Header() {
             </div>
 
             {/* LOGIN */}
-            {user ? (
+            {isLoggedIn && user ? (
               <Dropdown
                 menu={{
                   items: userMenu.items,

@@ -1,7 +1,6 @@
-import api from "../api";
+import { get } from "../../utils/request";
 
 export const getCategories = async () => {
-  const response = await api.get("/categories");
-  const result = response.data;
+  const result = await get("/categories");
   return result.data?.categories || [];
 };

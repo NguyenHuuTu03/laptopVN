@@ -289,8 +289,6 @@ module.exports.related = async (req, res) => {
       );
     }
 
-    console.log(products);
-
     res.json({
       code: 200,
       message: "Thành công!",

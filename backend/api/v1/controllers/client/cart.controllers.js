@@ -5,7 +5,7 @@ const Brands = require("../../../../models/brand.model");
 const Carts = require("../../../../models/cart.model");
 const CartItems = require("../../../../models/cart_item.model");
 const Users = require("../../../../models/user.model");
-
+const Coupons = require("../../../../models/coupon.model");
 //[GET] /api/cart (khi đã đăng nhập)
 module.exports.cart = async (req, res) => {
   try {
@@ -45,22 +45,49 @@ module.exports.cart = async (req, res) => {
         status: "active",
       });
 
+      const priceNew = Math.round(item.price * (1 - item.discount / 100));
+
       result.push({
-        productId: product.id,
-        variantId: variant.id,
+        title: product.title,
         quantity: item.quantity,
         price: item.price,
+        priceNew: priceNew,
         discount: item.discount || 0,
         thumbnail: variant.thumbnail || product.thumbnail,
+        sku: variant.sku,
         attributes: variant.attributes,
       });
     }
+
+    const subtotal = result.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
+    const productDiscount = result.reduce(
+      (total, item) => total + (item.price - item.priceNew) * item.quantity,
+      0,
+    );
+    const totalQuantity = result.reduce(
+      (total, item) => total + item.quantity,
+      0,
+    );
+
+    const total = subtotal - productDiscount;
+
+    const saving = productDiscount;
 
     res.json({
       code: 200,
       message: "Lấy giỏ hàng thành công!",
       data: {
         items: result,
+        summary: {
+          subtotal,
+          productDiscount,
+          totalQuantity,
+          total,
+          saving,
+        },
       },
     });
   } catch (error) {
@@ -104,6 +131,12 @@ module.exports.merge = async (req, res) => {
         status: "active",
       });
 
+      const variant = await ProductVariants.findOne({
+        _id: variantId,
+        productId: productId,
+        status: "active",
+      });
+
       const cartItem = await CartItems.findOne({
         cartId: cart.id,
         productId: productId,
@@ -119,8 +152,8 @@ module.exports.merge = async (req, res) => {
           productId: productId,
           variantId: variantId || null,
           quantity: Number(quantity),
-          price: product.price,
-          discount: product.discount || 0,
+          price: variant.price,
+          discount: variant.discount || 0,
           isSelected: true,
         });
       }
@@ -130,12 +163,19 @@ module.exports.merge = async (req, res) => {
       cartId: cart.id,
     });
 
+    const result = cartItems.map((item) => {
+      return {
+        productId: item.productId,
+        variantId: item.variantId,
+        quantity: item.quantity,
+      };
+    });
+
     res.json({
       code: 200,
       message: "Merge giỏ hàng thành công!",
       data: {
-        cart,
-        items: cartItems,
+        items: result,
       },
     });
   } catch (error) {
@@ -196,11 +236,19 @@ module.exports.sync = async (req, res) => {
       cartId: cart.id,
     });
 
+    const result = cartItems.map((item) => {
+      return {
+        productId: item.productId,
+        variantId: item.variantId,
+        quantity: item.quantity,
+      };
+    });
+
     res.json({
       code: 200,
       message: "Đồng bộ giỏ hàng thành công!",
       data: {
-        items: cartItems,
+        items: result,
       },
     });
   } catch (error) {
@@ -214,7 +262,7 @@ module.exports.sync = async (req, res) => {
 //[POST] /api/cart/preview (lấy sản phẩm trong giỏ khi chưa đăng nhập)
 module.exports.preview = async (req, res) => {
   try {
-    const { items = [] } = req.body.cart;
+    const { items = [], couponCode = "" } = req.body.cart;
     if (items.length < 1) {
       res.json({
         code: 400,
@@ -238,23 +286,117 @@ module.exports.preview = async (req, res) => {
         productId: productId,
         status: "active",
       });
-
+      const priceNew = Math.round(variant.price * (1 - variant.discount / 100));
       result.push({
-        productId: product.id,
-        variantId: variantId,
         quantity: Number(quantity),
         title: product.title,
         thumbnail: variant.thumbnail || product.thumbnail,
         price: variant.price,
+        priceNew: priceNew,
         discount: variant.discount,
         attributes: variant.attributes,
+        sku: variant.sku,
       });
     }
+
+    const subtotal = result.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
+    const productDiscount = result.reduce(
+      (total, item) => total + (item.price - item.priceNew) * item.quantity,
+      0,
+    );
+    const totalQuantity = result.reduce(
+      (total, item) => total + item.quantity,
+      0,
+    );
+
+    const afterProductDiscount = subtotal - productDiscount;
+
+    let voucherDiscount = 0;
+
+    if (couponCode) {
+      const coupon = await Coupons.findOne({
+        code: couponCode,
+        deleted: false,
+        status: "active",
+      });
+
+      if (!coupon) {
+        return res.json({
+          code: 400,
+          message: "Mã giảm giá không tồn tại!",
+        });
+      }
+
+      const now = new Date();
+
+      if (coupon.startDate && now < coupon.startDate) {
+        return res.json({
+          code: 400,
+          message: "Mã giảm giá chưa có hiệu lực!",
+        });
+      }
+
+      if (coupon.endDate && now > coupon.endDate) {
+        return res.json({
+          code: 400,
+          message: "Mã giảm giá đã hết hạn!",
+        });
+      }
+
+      if (coupon.quantity != null && coupon.usedCount >= coupon.quantity) {
+        return res.json({
+          code: 400,
+          message: "Mã giảm giá đã hết lượt sử dụng!",
+        });
+      }
+
+      if (coupon.minOrderValue && afterProductDiscount < coupon.minOrderValue) {
+        return res.json({
+          code: 400,
+          message: `Đơn hàng phải từ ${coupon.minOrderValue.toLocaleString(
+            "vi-VN",
+          )}đ để sử dụng mã này!`,
+        });
+      }
+
+      if (coupon.discountType === "percent") {
+        voucherDiscount = Math.round(
+          afterProductDiscount * (coupon.discountValue / 100),
+        );
+
+        if (coupon.maxDiscount && voucherDiscount > coupon.maxDiscount) {
+          voucherDiscount = coupon.maxDiscount;
+        }
+      }
+
+      if (coupon.discountType === "fixed") {
+        voucherDiscount = coupon.discountValue;
+      }
+
+      if (voucherDiscount > afterProductDiscount) {
+        voucherDiscount = afterProductDiscount;
+      }
+    }
+
+    const total = afterProductDiscount - voucherDiscount;
+
+    const saving = productDiscount + voucherDiscount;
     res.json({
       code: 200,
       message: "Lấy dữ liệu giỏ hàng thành công!",
       data: {
         items: result,
+        summary: {
+          subtotal,
+          productDiscount,
+          voucherDiscount,
+          total,
+          saving,
+          totalQuantity,
+        },
       },
     });
   } catch (error) {
