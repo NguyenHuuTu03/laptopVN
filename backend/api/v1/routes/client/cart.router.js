@@ -7,8 +7,13 @@ router.get("/", authMiddleware.requireAuth, controllers.cart);
 router.post("/merge", authMiddleware.requireAuth, controllers.merge);
 router.post("/sync", authMiddleware.requireAuth, controllers.sync);
 router.post("/preview", controllers.preview);
-router.post("/add", authMiddleware.requireAuth, controllers.add);
 router.post(
+  "/apply-coupon",
+  authMiddleware.requireAuth,
+  controllers.applyCoupon,
+);
+router.post("/add", authMiddleware.requireAuth, controllers.add);
+router.patch(
   "/update/:cartItemId",
   authMiddleware.requireAuth,
   controllers.update,

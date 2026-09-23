@@ -10,6 +10,7 @@ import Suggest from "../Suggest/Suggest";
 import { logout } from "../../../services/client/user.services";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../../../actions/authActions";
+import { clearCart } from "../../../actions/cartActions";
 
 const { Search } = Input;
 
@@ -17,8 +18,6 @@ function Header() {
   const [keyword, setKeyword] = useState("");
 
   const [showSuggest, setShowSuggest] = useState(false);
-
-  // const [user, setUser] = useState(null);
 
   const searchRef = useRef(null);
 
@@ -28,14 +27,13 @@ function Header() {
 
   const dispatch = useDispatch();
 
-  const cartItems = useSelector((state) => state.cartReducer.items);
-  // console.log(cartItems);
+  const { isLoggedIn, user } = useSelector((state) => state.authReducer);
+  const cartItems = useSelector((state) => state.cartReducer);
+
   const totalQuantity = cartItems.reduce(
-    (total, item) => total + (Number(item.quantity) || 0),
+    (total, item) => total + item.quantity,
     0,
   );
-
-  const { isLoggedIn, user } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -43,14 +41,6 @@ function Header() {
         setShowSuggest(false);
       }
     };
-
-    // const checkLogin = async () => {
-    //   const result = await getProfile();
-    //   if (result.code === 200) {
-    //     setUser(result.data.user);
-    //   }
-    // };
-    // checkLogin();
 
     document.addEventListener("mousedown", handleClickOutside);
 
@@ -117,6 +107,7 @@ function Header() {
       const result = await logout();
 
       if (result.code === 200) {
+        dispatch(clearCart());
         message.success(result.message || "Đăng xuất thành công!");
 
         dispatch(

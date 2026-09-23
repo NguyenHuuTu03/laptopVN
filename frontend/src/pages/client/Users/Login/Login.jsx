@@ -5,9 +5,9 @@ import { message } from "antd";
 import { getProfile, login } from "../../../../services/client/user.services";
 
 import "./Login.scss";
-import { getCart, mergeCart } from "../../../../services/client/cart.services";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../../../actions/authActions";
+import { getCart, mergeCart } from "../../../../services/client/cart.services";
 import { setCart } from "../../../../actions/cartActions";
 
 function Login() {
@@ -77,6 +77,7 @@ function Login() {
         if (cartResult.code === 200) {
           dispatch(setCart(cartResult.data.items));
         }
+
         message.success("Đăng nhập thành công!");
 
         navigate("/");

@@ -6,8 +6,10 @@ import "./ProductDetail.scss";
 import ProductSpecifications from "../../../../components/client/ProductSpecifications/ProductSpecifications";
 import ProductDescription from "../../../../components/client/ProductSpecifications/ProductDescription";
 import ProductRelated from "../../../../components/client/ProductRelated/ProductRelated";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../../../actions/cartActions";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, setCart } from "../../../../actions/cartActions";
+import { addCart, getCart } from "../../../../services/client/cart.services";
+import { message } from "antd";
 
 function ProductDetail() {
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,8 @@ function ProductDetail() {
   const [selectedVersion, setSelectedVersion] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const { slugProduct } = useParams();
+
+  const isLoggedIn = useSelector((state) => state.authReducer.isLoggedIn);
 
   const getVariantAttributes = (variant) => {
     let ram = "";
@@ -143,15 +147,31 @@ function ProductDetail() {
   };
 
   const dispatch = useDispatch();
-  const handleAddToCart = () => {
-    dispatch(
-      addToCart({
+  const handleAddToCart = async () => {
+    try {
+      const item = {
         productId: data.product._id,
         variantId: selectedVariant._id,
         quantity: 1,
-      }),
-    );
+      };
+      if (!isLoggedIn) {
+        dispatch(addToCart(item));
+      } else {
+        const result = await addCart(item);
+        if (result?.code === 200) {
+          const cartResult = await getCart();
+
+          if (cartResult.code === 200) {
+            dispatch(setCart(cartResult.data.items));
+          }
+          message.success("Thêm sản phẩm vào giỏ hàng thành công!");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <>
       {loading ? (
