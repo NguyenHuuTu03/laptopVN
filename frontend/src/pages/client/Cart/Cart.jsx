@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  applyCoupon,
   deleteCartItem,
   getCart,
   previewCart,
@@ -22,9 +21,6 @@ function Cart() {
   const [data, setData] = useState([]);
 
   const [summary, setSummary] = useState(null);
-  const [activeVoucher, setActiveVoucher] = useState("");
-  const [couponCode, setCouponCode] = useState("");
-  const [voucherMessage, setVoucherMessage] = useState("");
 
   const { isLoggedIn } = useSelector((state) => state.authReducer);
   const cartItems = useSelector((state) => state.cartReducer);
@@ -59,56 +55,6 @@ function Cart() {
     fetchCart();
   }, [isLoggedIn, cartItems]);
 
-  const handleApplyVoucher = async () => {
-    const code = couponCode.trim();
-
-    try {
-      if (!code) {
-        setVoucherMessage("Vui lòng nhập mã giảm giá!");
-        return;
-      }
-      let result;
-
-      if (isLoggedIn) {
-        result = await applyCoupon([], code);
-      } else {
-        result = await previewCart(cartItems, code);
-      }
-
-      if (result.code === 200) {
-        setSummary(result.data.summary);
-        setActiveVoucher(code);
-        setVoucherMessage("");
-      } else {
-        setVoucherMessage("Mã giảm giá không hợp lệ!");
-      }
-    } catch (error) {
-      console.log("APPLY VOUCHER ERROR:", error);
-      setVoucherMessage("Mã giảm giá không hợp lệ!");
-    }
-  };
-
-  const handleRemoveVoucher = async () => {
-    try {
-      let result;
-
-      if (isLoggedIn) {
-        result = await getCart();
-      } else {
-        result = await previewCart(cartItems);
-      }
-
-      if (result.code === 200) {
-        setData(result.data.items);
-        setSummary(result.data.summary);
-        setActiveVoucher("");
-        setCouponCode("");
-        setVoucherMessage("");
-      }
-    } catch (error) {
-      console.log("REMOVE VOUCHER ERROR:", error);
-    }
-  };
   const formatPrice = (price) => {
     if (price === undefined || price === null) {
       return "Liên hệ";
@@ -227,7 +173,6 @@ function Cart() {
   };
   handleVersion();
 
-  // console.log(data);
   return (
     <>
       {loading ? (
@@ -317,67 +262,6 @@ function Cart() {
                           Thông tin đơn hàng
                         </div>
 
-                        <div className="cart-voucher">
-                          {activeVoucher ? (
-                            <div className="cart-voucher__applied">
-                              <span className="cart-voucher__icon">
-                                <i className="fa-solid fa-ticket"></i>
-                              </span>
-                              <span className="cart-voucher__info">
-                                <strong>{activeVoucher}</strong>
-                                <span>Mã giảm giá đã áp dụng</span>
-                              </span>
-                              <button
-                                className="cart-voucher__remove"
-                                aria-label="Bỏ mã giảm giá"
-                                onClick={handleRemoveVoucher}
-                              >
-                                <i className="fa-solid fa-xmark"></i>
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <div className="cart-voucher__form">
-                                <input
-                                  type="text"
-                                  value={couponCode}
-                                  onChange={(e) =>
-                                    setCouponCode(e.target.value)
-                                  }
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                      handleApplyVoucher();
-                                    }
-                                  }}
-                                  placeholder="Nhập mã giảm giá"
-                                  autoComplete="off"
-                                  aria-label="Mã giảm giá"
-                                />
-                                <button
-                                  className="btn-outline"
-                                  onClick={handleApplyVoucher}
-                                >
-                                  Áp dụng
-                                </button>
-                              </div>
-                              {voucherMessage && (
-                                <p className="cart-voucher__message">
-                                  {voucherMessage}
-                                </p>
-                              )}
-                            </>
-                          )}
-
-                          {/* {appliedVoucher && !activeVoucher && (
-                        <p className="cart-voucher__note">
-                          Mã {appliedVoucher.code} cần đơn từ{" "}
-                          {formatPrice(appliedVoucher.minOrder)}. Thêm{" "}
-                          {formatPrice(appliedVoucher.minOrder - summary.total)}{" "}
-                          để dùng lại mã này.
-                        </p>
-                      )} */}
-                        </div>
-
                         <div className="cart-summary__body">
                           <div className="cart-summary__row">
                             <span>
@@ -392,14 +276,7 @@ function Cart() {
                               - {formatPrice(summary?.productDiscount || 0)}
                             </span>
                           </div>
-                          {summary?.voucherDiscount > 0 && (
-                            <div className="cart-summary__row cart-summary__row--voucher">
-                              <span>Mã {activeVoucher}</span>
-                              <span>
-                                - {formatPrice(summary.voucherDiscount)}
-                              </span>
-                            </div>
-                          )}
+
                           <div className="cart-summary__row cart-summary__row--total">
                             <span>Tổng tiền</span>
                             <span className="cart-summary__total">

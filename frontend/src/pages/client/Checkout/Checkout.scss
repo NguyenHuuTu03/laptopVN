@@ -1,0 +1,845 @@
+.checkout-page {
+  min-height: 100vh;
+  padding: 24px 0 50px;
+  background: #f5f6f8;
+
+  &__container {
+    width: 1200px;
+    max-width: calc(100% - 32px);
+    margin: 0 auto;
+  }
+
+  /* ==============================
+     BREADCRUMB
+  ============================== */
+
+  &__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 18px;
+
+    font-size: 14px;
+    color: #777;
+
+    a {
+      color: #0d6efd;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    span:last-child {
+      color: #333;
+      font-weight: 500;
+    }
+  }
+
+  /* ==============================
+     TITLE
+  ============================== */
+
+  &__title {
+    margin: 0 0 24px;
+
+    color: #222;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  /* ==============================
+     MAIN
+  ============================== */
+
+  &__main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__right {
+    position: sticky;
+    top: 20px;
+  }
+}
+
+/* =================================
+   CHECKOUT BOX
+================================= */
+
+.checkout-box {
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  &__header {
+    margin: 0;
+    padding: 16px 20px;
+
+    border-bottom: 1px solid #eee;
+
+    color: #222;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  &__body {
+    padding: 20px;
+  }
+}
+
+/* =================================
+   THÔNG TIN NHẬN HÀNG
+================================= */
+
+.checkout-page__left {
+  .checkout-box:first-child {
+    .checkout-box__body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+
+      input[type="text"],
+      input[type="tel"],
+      textarea {
+        display: block;
+
+        width: 100%;
+        box-sizing: border-box;
+
+        padding: 12px 14px;
+
+        border: 1px solid #d9dde3;
+        border-radius: 6px;
+
+        outline: none;
+
+        background: #fff;
+        color: #333;
+
+        font-family: inherit;
+        font-size: 14px;
+
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+
+        &::placeholder {
+          color: #999;
+        }
+
+        &:hover {
+          border-color: #b8bec7;
+        }
+
+        &:focus {
+          border-color: #0d6efd;
+          box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+        }
+      }
+
+      input[type="text"],
+      input[type="tel"] {
+        height: 44px;
+      }
+
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+/* =================================
+   PHƯƠNG THỨC THANH TOÁN
+================================= */
+
+.checkout-page__left {
+  .checkout-box:nth-child(2) {
+    .checkout-box__body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      > label {
+        display: flex;
+        align-items: center;
+
+        min-height: 54px;
+        box-sizing: border-box;
+
+        padding: 10px 14px;
+
+        border: 1px solid #e1e4e8;
+        border-radius: 7px;
+
+        background: #fff;
+
+        cursor: pointer;
+
+        transition:
+          border-color 0.2s ease,
+          background-color 0.2s ease,
+          box-shadow 0.2s ease;
+
+        &:hover {
+          border-color: #0d6efd;
+          background: #f8fbff;
+        }
+
+        &:has(input:checked) {
+          border-color: #0d6efd;
+          background: #f8fbff;
+          box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.08);
+        }
+
+        > input[type="radio"] {
+          width: 17px;
+          height: 17px;
+
+          margin: 0 12px 0 0;
+
+          accent-color: #0d6efd;
+
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+
+        > span {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+
+          color: #333;
+          font-size: 14px;
+          line-height: 1.4;
+
+          i {
+            color: #198754;
+            font-size: 17px;
+          }
+
+          img {
+            width: 42px;
+            height: 26px;
+
+            object-fit: contain;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* =================================
+   ORDER SUMMARY
+================================= */
+
+.checkout-summary {
+  &__products {
+    padding: 16px 20px;
+
+    border-bottom: 1px solid #eee;
+  }
+
+  &__body {
+    padding: 16px 20px;
+
+    border-bottom: 1px solid #eee;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+    margin-bottom: 13px;
+
+    color: #555;
+    font-size: 14px;
+
+    span:last-child {
+      color: #333;
+      font-weight: 500;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &--total {
+      margin-top: 16px;
+      padding-top: 16px;
+
+      border-top: 1px solid #eee;
+
+      span {
+        color: #222;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      strong {
+        color: #0d6efd;
+        font-size: 21px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &__footer {
+    padding: 20px;
+  }
+
+  &__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    margin-top: 14px;
+
+    color: #555;
+    font-size: 14px;
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #0d6efd;
+    }
+
+    i {
+      font-size: 13px;
+    }
+  }
+}
+
+/* =================================
+   CHECKOUT PRODUCT
+================================= */
+
+.checkout-product {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+
+  align-items: center;
+  gap: 12px;
+
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+
+  &__image {
+    position: relative;
+
+    width: 64px;
+    height: 64px;
+
+    img {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      box-sizing: border-box;
+
+      object-fit: contain;
+
+      border: 1px solid #eee;
+      border-radius: 6px;
+
+      background: #fff;
+    }
+
+    > span {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+
+      min-width: 22px;
+      height: 22px;
+
+      padding: 0 5px;
+      box-sizing: border-box;
+
+      border-radius: 20px;
+
+      background: #6c757d;
+      color: #fff;
+
+      font-size: 11px;
+      line-height: 1;
+
+      i {
+        font-size: 8px;
+      }
+    }
+  }
+
+  &__info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    strong {
+      overflow: hidden;
+
+      color: #222;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      overflow: hidden;
+
+      color: #777;
+      font-size: 12px;
+      line-height: 1.3;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &__price {
+    color: #222;
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
+  }
+}
+
+/* =================================
+   VOUCHER
+================================= */
+
+.checkout-voucher {
+  padding: 16px 20px;
+
+  border-bottom: 1px solid #eee;
+
+  /* Mã đã áp dụng */
+  &__applied {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #b7dfc5;
+    border-radius: 6px;
+
+    background: #f0faf3;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 6px;
+
+    background: #198754;
+    color: #fff;
+
+    flex-shrink: 0;
+
+    i {
+      font-size: 15px;
+    }
+  }
+
+  &__info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    flex: 1;
+
+    strong {
+      overflow: hidden;
+
+      color: #198754;
+      font-size: 14px;
+      font-weight: 600;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      color: #777;
+      font-size: 12px;
+    }
+  }
+}
+
+/* =================================
+   VOUCHER FORM
+   Dùng class cart-voucher vì JSX
+   hiện tại đang sử dụng class này
+================================= */
+
+.cart-voucher__form {
+  display: flex;
+  align-items: stretch;
+
+  gap: 8px;
+
+  input {
+    min-width: 0;
+    flex: 1;
+
+    height: 42px;
+    box-sizing: border-box;
+
+    padding: 0 12px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 6px;
+
+    outline: none;
+
+    background: #fff;
+    color: #333;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: #999;
+    }
+
+    &:hover {
+      border-color: #b8bec7;
+    }
+
+    &:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    }
+  }
+}
+
+/* =================================
+   BUTTON OUTLINE
+================================= */
+
+.btn-outline {
+  height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid #0d6efd;
+  border-radius: 6px;
+
+  background: #fff;
+  color: #0d6efd;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover {
+    background: #0d6efd;
+    color: #fff;
+  }
+}
+
+/* =================================
+   VOUCHER MESSAGE
+================================= */
+
+.cart-voucher__message {
+  margin: 8px 0 0;
+
+  color: #dc3545;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* =================================
+   REMOVE VOUCHER
+================================= */
+
+.cart-voucher__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 5px;
+
+  background: transparent;
+  color: #777;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover {
+    background: #ffe5e5;
+    color: #dc3545;
+  }
+
+  i {
+    font-size: 14px;
+  }
+}
+
+/* =================================
+   PRIMARY BUTTON
+================================= */
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 44px;
+
+  box-sizing: border-box;
+
+  padding: 10px 18px;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: #0d6efd;
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background: #0b5ed7;
+
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* =================================
+   TABLET
+================================= */
+
+@media (max-width: 992px) {
+  .checkout-page {
+    &__main {
+      grid-template-columns: 1fr;
+    }
+
+    &__right {
+      position: static;
+    }
+  }
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 576px) {
+  .checkout-page {
+    padding: 16px 0 30px;
+
+    &__container {
+      max-width: calc(100% - 20px);
+    }
+
+    &__breadcrumb {
+      margin-bottom: 14px;
+
+      font-size: 13px;
+    }
+
+    &__title {
+      margin-bottom: 18px;
+
+      font-size: 22px;
+    }
+
+    &__left {
+      gap: 16px;
+    }
+  }
+
+  .checkout-box {
+    border-radius: 7px;
+
+    &__header {
+      padding: 14px 16px;
+
+      font-size: 16px;
+    }
+
+    &__body {
+      padding: 16px;
+    }
+  }
+
+  /* Payment */
+  .checkout-page__left {
+    .checkout-box:nth-child(2) {
+      .checkout-box__body {
+        > label {
+          padding: 10px 12px;
+
+          > span {
+            font-size: 13px;
+
+            img {
+              width: 38px;
+              height: 24px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* Product */
+  .checkout-product {
+    grid-template-columns: 54px minmax(0, 1fr);
+
+    gap: 10px;
+
+    &__image {
+      width: 54px;
+      height: 54px;
+    }
+
+    &__price {
+      grid-column: 2;
+
+      font-size: 13px;
+    }
+  }
+
+  /* Voucher */
+  .checkout-voucher {
+    padding: 14px 16px;
+  }
+
+  .cart-voucher__form {
+    gap: 6px;
+
+    input {
+      height: 40px;
+
+      padding: 0 10px;
+
+      font-size: 13px;
+    }
+  }
+
+  .btn-outline {
+    height: 40px;
+
+    padding: 0 12px;
+
+    font-size: 13px;
+  }
+
+  /* Summary */
+  .checkout-summary {
+    &__products,
+    &__body,
+    &__footer {
+      padding: 16px;
+    }
+
+    &__row {
+      font-size: 13px;
+
+      &--total {
+        span {
+          font-size: 15px;
+        }
+
+        strong {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}

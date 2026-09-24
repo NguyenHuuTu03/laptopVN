@@ -102,191 +102,6 @@ module.exports.cart = async (req, res) => {
   }
 };
 
-//[POST] /api/cart/apply-coupon
-module.exports.applyCoupon = async (req, res) => {
-  try {
-    const { items = [], couponCode = "" } = req.body.cart;
-    let cartItems = items;
-
-    if (req.userId) {
-      const cart = await Carts.findOne({
-        userId: req.userId,
-      });
-
-      if (!cart) {
-        return res.json({
-          code: 400,
-          message: "Giỏ hàng đang trống!",
-        });
-      }
-      const record = await CartItems.find({
-        cartId: cart._id,
-      });
-
-      cartItems = record.map((item) => {
-        return {
-          productId: item.productId,
-          variantId: item.variantId,
-          quantity: item.quantity,
-        };
-      });
-    }
-
-    const code = couponCode.trim();
-
-    if (!code) {
-      return res.json({
-        code: 400,
-        message: "Vui lòng nhập mã giảm giá!",
-      });
-    }
-
-    const result = [];
-
-    for (const item of cartItems) {
-      const { productId, variantId, quantity } = item;
-
-      const product = await Products.findOne({
-        _id: productId,
-        deleted: false,
-        status: "active",
-      });
-
-      if (!product) {
-        return res.json({
-          code: 400,
-          message: "Sản phẩm không tồn tại!",
-        });
-      }
-
-      const variant = await ProductVariants.findOne({
-        _id: variantId,
-        productId: productId,
-        status: "active",
-      });
-
-      if (!variant) {
-        return res.json({
-          code: 400,
-          message: `Không tìm thấy phiên bản của sản phẩm "${product.title}"!`,
-        });
-      }
-
-      const priceNew = Math.round(variant.price * (1 - variant.discount / 100));
-      result.push({
-        quantity: Number(quantity),
-        price: variant.price,
-        priceNew: priceNew,
-      });
-    }
-
-    const subtotal = result.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0,
-    );
-
-    const productDiscount = result.reduce(
-      (total, item) => total + (item.price - item.priceNew) * item.quantity,
-      0,
-    );
-    const totalQuantity = result.reduce(
-      (total, item) => total + item.quantity,
-      0,
-    );
-
-    const afterProductDiscount = subtotal - productDiscount;
-
-    const coupon = await Coupons.findOne({
-      code: code,
-      deleted: false,
-      status: "active",
-    });
-
-    if (!coupon) {
-      return res.json({
-        code: 400,
-        message: "Mã giảm giá không tồn tại!",
-      });
-    }
-
-    const now = new Date();
-
-    if (coupon.startDate && now < coupon.startDate) {
-      return res.json({
-        code: 400,
-        message: "Mã giảm giá chưa bắt đầu!",
-      });
-    }
-
-    if (coupon.endDate && now > coupon.endDate) {
-      return res.json({
-        code: 400,
-        message: "Mã giảm giá đã hết hạn!",
-      });
-    }
-
-    if (coupon.quantity != null && coupon.usedCount >= coupon.quantity) {
-      return res.json({
-        code: 400,
-        message: "Mã giảm giá đã hết lượt sử dụng!",
-      });
-    }
-
-    if (coupon.minOrderValue && afterProductDiscount < coupon.minOrderValue) {
-      return res.json({
-        code: 400,
-        message: `Đơn hàng phải có giá trị tối thiểu ${new Intl.NumberFormat(
-          "vi-VN",
-        ).format(coupon.minOrderValue)}đ!`,
-      });
-    }
-
-    let voucherDiscount = 0;
-
-    if (coupon.discountType === "percent") {
-      voucherDiscount = Math.round(
-        afterProductDiscount * (coupon.discountValue / 100),
-      );
-
-      if (coupon.maxDiscount && voucherDiscount > coupon.maxDiscount) {
-        voucherDiscount = coupon.maxDiscount;
-      }
-    }
-
-    if (coupon.discountType === "fixed") {
-      voucherDiscount = coupon.discountValue;
-    }
-
-    if (voucherDiscount > afterProductDiscount) {
-      voucherDiscount = afterProductDiscount;
-    }
-
-    const total = afterProductDiscount - voucherDiscount;
-
-    const saving = productDiscount + voucherDiscount;
-
-    res.json({
-      code: 200,
-      message: "Áp dụng mã giảm giá thành công!",
-      data: {
-        summary: {
-          subtotal,
-          productDiscount,
-          voucherDiscount,
-          total,
-          saving,
-          totalQuantity,
-        },
-      },
-    });
-  } catch (error) {
-    return res.json({
-      code: 500,
-      message: "Áp dụng mã giảm giá thất bại!",
-    });
-  }
-};
-
 //[POST] /api/cart/merge
 module.exports.merge = async (req, res) => {
   try {
@@ -451,7 +266,7 @@ module.exports.sync = async (req, res) => {
 //[POST] /api/cart/preview (lấy sản phẩm trong giỏ khi chưa đăng nhập)
 module.exports.preview = async (req, res) => {
   try {
-    const { items = [], couponCode = "" } = req.body.cart;
+    const { items = [] } = req.body.cart;
     if (items.length < 1) {
       res.json({
         code: 400,
@@ -504,78 +319,9 @@ module.exports.preview = async (req, res) => {
       0,
     );
 
-    const afterProductDiscount = subtotal - productDiscount;
+    const total = subtotal - productDiscount;
 
-    let voucherDiscount = 0;
-
-    if (couponCode) {
-      const coupon = await Coupons.findOne({
-        code: couponCode,
-        deleted: false,
-        status: "active",
-      });
-
-      if (!coupon) {
-        return res.json({
-          code: 400,
-          message: "Mã giảm giá không tồn tại!",
-        });
-      }
-
-      const now = new Date();
-
-      if (coupon.startDate && now < coupon.startDate) {
-        return res.json({
-          code: 400,
-          message: "Mã giảm giá chưa có hiệu lực!",
-        });
-      }
-
-      if (coupon.endDate && now > coupon.endDate) {
-        return res.json({
-          code: 400,
-          message: "Mã giảm giá đã hết hạn!",
-        });
-      }
-
-      if (coupon.quantity != null && coupon.usedCount >= coupon.quantity) {
-        return res.json({
-          code: 400,
-          message: "Mã giảm giá đã hết lượt sử dụng!",
-        });
-      }
-
-      if (coupon.minOrderValue && afterProductDiscount < coupon.minOrderValue) {
-        return res.json({
-          code: 400,
-          message: `Đơn hàng phải từ ${coupon.minOrderValue.toLocaleString(
-            "vi-VN",
-          )}đ để sử dụng mã này!`,
-        });
-      }
-
-      if (coupon.discountType === "percent") {
-        voucherDiscount = Math.round(
-          afterProductDiscount * (coupon.discountValue / 100),
-        );
-
-        if (coupon.maxDiscount && voucherDiscount > coupon.maxDiscount) {
-          voucherDiscount = coupon.maxDiscount;
-        }
-      }
-
-      if (coupon.discountType === "fixed") {
-        voucherDiscount = coupon.discountValue;
-      }
-
-      if (voucherDiscount > afterProductDiscount) {
-        voucherDiscount = afterProductDiscount;
-      }
-    }
-
-    const total = afterProductDiscount - voucherDiscount;
-
-    const saving = productDiscount + voucherDiscount;
+    const saving = productDiscount;
     res.json({
       code: 200,
       message: "Lấy dữ liệu giỏ hàng thành công!",
@@ -584,7 +330,6 @@ module.exports.preview = async (req, res) => {
         summary: {
           subtotal,
           productDiscount,
-          voucherDiscount,
           total,
           saving,
           totalQuantity,

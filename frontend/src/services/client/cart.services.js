@@ -12,14 +12,10 @@ export const mergeCart = async (cartItems) => {
   return result;
 };
 
-export const previewCart = async (cartItems, couponCode = "") => {
+export const previewCart = async (cartItems) => {
   const cart = {
     items: cartItems,
   };
-
-  if (couponCode.trim()) {
-    cart.couponCode = couponCode.trim();
-  }
 
   const result = await post("/cart/preview", {
     cart,
@@ -38,16 +34,5 @@ export const updateQuantityCart = async (cartItemId, quantity) => {
 
 export const deleteCartItem = async (cartItemId) => {
   const result = await del(`/cart/delete/${cartItemId}`);
-  return result;
-};
-
-export const applyCoupon = async (cartItems, couponCode) => {
-  const result = await post("/cart/apply-coupon", {
-    cart: {
-      items: cartItems,
-      couponCode: couponCode.trim(),
-    },
-  });
-
   return result;
 };
