@@ -8,6 +8,9 @@ import Register from "../../pages/client/Users/Register/Register";
 import ProductDetail from "../../pages/client/Products/ProductDetail/ProductDetail";
 import Cart from "../../pages/client/Cart/Cart";
 import Checkout from "../../pages/client/Checkout/Checkout";
+import PaymentResult from "../../pages/client/PaymentResult/PaymentResult";
+import OrderDetail from "../../pages/client/Orders/OrderDetail/OrderDetail";
+import MyOrder from "../../pages/client/Orders/MyOrders/MyOrders";
 
 function AppRoutes() {
   return (
@@ -25,6 +28,15 @@ function AppRoutes() {
         </Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
+        <Route path="/orders">
+          <Route path="success/:orderCode" element={<PaymentResult />}></Route>
+          <Route
+            path="payment-result/:orderCode"
+            element={<PaymentResult />}
+          ></Route>
+          <Route path=":orderCode" element={<OrderDetail />}></Route>
+          <Route path="" element={<MyOrder />}></Route>
+        </Route>
       </Route>
     </Routes>
   );

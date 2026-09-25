@@ -1,3 +1,5 @@
+const Carts = require("../../../../models/cart.model");
+const CartItems = require("../../../../models/cart_item.model");
 const Orders = require("../../../../models/order.model");
 const { VNPay, HashAlgorithm, ProductCode } = require("vnpay");
 
@@ -111,11 +113,22 @@ module.exports.vnpayReturn = async (req, res) => {
 
     if (verify.isSuccess) {
       await Orders.updateOne(
-        { _id: order._id },
+        { _id: order._id, paymentStatus: "WAITING_PAYMENT" },
         {
           paymentStatus: "PAID",
+          orderStatus: "PENDING",
         },
       );
+
+      const cart = await Carts.findOne({
+        userId: order.userId,
+      });
+
+      if (cart) {
+        await CartItems.deleteMany({
+          cartId: cart._id,
+        });
+      }
 
       return res.redirect(
         `http://localhost:5173/orders/payment-result/${order.orderCode}?status=success`,
@@ -123,7 +136,7 @@ module.exports.vnpayReturn = async (req, res) => {
     }
 
     await Orders.updateOne(
-      { _id: orderId },
+      { _id: order._id },
       {
         paymentStatus: "FAILED",
       },

@@ -1,4 +1,4 @@
-import { get, post } from "../../utils/request";
+import { get, post, patch } from "../../utils/request";
 
 export const getCheckout = async () => {
   const result = await get(`/order/checkout`);
@@ -13,5 +13,17 @@ export const applyCoupon = async (couponCode) => {
 export const postOrder = async (data) => {
   const result = await post("/order", data);
 
+  return result;
+};
+export const getOrderDetail = async (orderCode) => {
+  const result = await get(`/order/${orderCode}`);
+  return result;
+};
+export const patchOrderCancel = async (orderCode) => {
+  const result = await patch(`/order/cancel/${orderCode}`);
+  return result;
+};
+export const getMyOrders = async () => {
+  const result = await get(`/order/my-orders`);
   return result;
 };

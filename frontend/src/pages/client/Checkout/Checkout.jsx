@@ -10,6 +10,8 @@ import {
 } from "../../../services/client/order.services";
 import { useNavigate } from "react-router-dom";
 import { paymentVNPay } from "../../../services/client/payment.services";
+import { useDispatch } from "react-redux";
+import { setCart } from "../../../actions/cartActions";
 
 function Checkout() {
   const [data, setData] = useState(null);
@@ -19,6 +21,7 @@ function Checkout() {
   const [voucherMessage, setVoucherMessage] = useState("");
   const [summary, setSummary] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,6 +112,7 @@ function Checkout() {
 
     if (result.code === 200) {
       if (result.data.paymentMethod === "COD") {
+        dispatch(setCart([]));
         navigate(`/orders/success/${result.data.orderCode}`);
 
         return;

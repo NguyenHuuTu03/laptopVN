@@ -448,13 +448,18 @@ module.exports.order = async (req, res) => {
       })),
     );
 
-    await CartItems.deleteMany({
-      cartId: cart._id,
-    });
+    if (paymentMethod === "COD") {
+      await CartItems.deleteMany({
+        cartId: cart._id,
+      });
+    }
 
     res.json({
       code: 200,
-      message: "Đặt hàng thành công!",
+      message:
+        paymentMethod === "COD"
+          ? "Đặt hàng thành công!"
+          : "Tạo đơn hàng, chờ thanh toán!",
       data: {
         orderId: order.id,
         orderCode: order.orderCode,
@@ -499,6 +504,7 @@ module.exports.myOrders = async (req, res) => {
           _id: item.variantId,
         });
 
+        const priceNew = Math.round(item.price * (1 - item.discount / 100));
         items.push({
           productId: product.id,
           variantId: item.variantId,
@@ -506,7 +512,9 @@ module.exports.myOrders = async (req, res) => {
           thumbnail: variant.thumbnail || product.thumbnail,
           quantity: item.quantity,
           price: item.price,
+          priceNew: priceNew,
           discount: item.discount,
+          attributes: variant.attributes,
         });
       }
 
@@ -534,14 +542,14 @@ module.exports.myOrders = async (req, res) => {
   }
 };
 
-//[GET] /api/order/:orderId
+//[GET] /api/order/:orderCode
 module.exports.orderDetail = async (req, res) => {
   try {
     const userId = req.userId;
-    const { orderId } = req.params;
+    const { orderCode } = req.params;
 
     const order = await Orders.findOne({
-      _id: orderId,
+      orderCode: orderCode,
       userId: userId,
     });
 
@@ -568,16 +576,53 @@ module.exports.orderDetail = async (req, res) => {
         productId: item.productId,
       });
 
+      const priceNew = Math.round(item.price * (1 - item.discount / 100));
       result.push({
         productId: item.productId,
         variantId: item.variantId,
         title: product.title,
         thumbnail: variant.thumbnail || product.thumbnail,
         price: item.price,
+        priceNew: priceNew,
         discount: item.discount,
         quantity: item.quantity,
+        attributes: variant.attributes,
       });
     }
+
+    const totalQuantity = result.reduce(
+      (total, item) => total + item.quantity,
+      0,
+    );
+    const subtotal = result.reduce(
+      (total, item) => total + item.priceNew * item.quantity,
+      0,
+    );
+    let voucherDiscount = 0;
+    if (order.couponId) {
+      const coupon = await Coupons.findOne({
+        _id: order.couponId,
+        deleted: false,
+        status: "active",
+      });
+
+      if (coupon.discountType === "percent") {
+        voucherDiscount = Math.round(subtotal * (coupon.discountValue / 100));
+
+        if (coupon.maxDiscount && voucherDiscount > coupon.maxDiscount) {
+          voucherDiscount = coupon.maxDiscount;
+        }
+      }
+
+      if (coupon.discountType === "fixed") {
+        voucherDiscount = coupon.discountValue;
+      }
+
+      if (voucherDiscount > subtotal) {
+        voucherDiscount = subtotal;
+      }
+    }
+
     res.json({
       code: 200,
       message: "Lấy chi tiết đơn hàng thành công!",
@@ -585,13 +630,13 @@ module.exports.orderDetail = async (req, res) => {
         order: {
           orderId: order._id,
           orderCode: order.orderCode,
-
+          subtotal,
           shippingName: order.shippingName,
           shippingPhone: order.shippingPhone,
           shippingAddress: order.shippingAddress,
-
+          totalQuantity,
           totalPrice: order.totalPrice,
-
+          voucherDiscount,
           couponId: order.couponId,
 
           paymentMethod: order.paymentMethod,
@@ -615,14 +660,14 @@ module.exports.orderDetail = async (req, res) => {
   }
 };
 
-//[PATCH] /api/order/cancel/:orderId
+//[PATCH] /api/order/cancel/:orderCode
 module.exports.cancel = async (req, res) => {
   try {
     const userId = req.userId;
-    const { orderId } = req.params;
+    const { orderCode } = req.params;
 
     const order = await Orders.findOne({
-      _id: orderId,
+      orderCode: orderCode,
       userId: userId,
     });
 
