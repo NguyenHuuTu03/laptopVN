@@ -21,3 +21,13 @@ export const updateProfile = async (data) => {
 export const changePassword = async (data) => {
   return await patch("/users/change-password", data);
 };
+
+export const forgotPassword = async (email) => {
+  return await post("/users/forgot-password", { email });
+};
+export const verifyOtp = async (data) => {
+  return await post("/users/verify-otp", data);
+};
+export const resetPassword = async (data) => {
+  return await post("/users/reset-password", data);
+};

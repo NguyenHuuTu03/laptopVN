@@ -11,6 +11,9 @@ import Checkout from "../../pages/client/Checkout/Checkout";
 import PaymentResult from "../../pages/client/PaymentResult/PaymentResult";
 import OrderDetail from "../../pages/client/Orders/OrderDetail/OrderDetail";
 import Profile from "../../pages/client/Users/Profile/Profile";
+import ForgotPassword from "../../pages/client/Users/ForgotPassword/ForgotPassword";
+import VerifyOTP from "../../pages/client/Users/VerifyOTP/VerifyOTP";
+import ResetPassword from "../../pages/client/Users/ResetPassword/ResetPassword";
 
 function AppRoutes() {
   return (
@@ -40,6 +43,9 @@ function AppRoutes() {
         <Route path="users">
           <Route path="profile" element={<Profile />}></Route>
           <Route path="change-password" element={<Profile />}></Route>
+          <Route path="forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="verify-otp" element={<VerifyOTP />}></Route>
+          <Route path="reset-password" element={<ResetPassword />}></Route>
         </Route>
       </Route>
     </Routes>

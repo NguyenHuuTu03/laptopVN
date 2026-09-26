@@ -191,7 +191,7 @@ module.exports.forgotPassword = async (req, res) => {
     const forgot = new ForgotPassword({
       email: email,
       otp: otp,
-      expireAt: new Date(Date.now() + 10 * 60 * 1000),
+      expireAt: new Date(Date.now() + 1 * 60 * 1000),
     });
 
     await forgot.save();
@@ -217,9 +217,10 @@ module.exports.forgotPassword = async (req, res) => {
 module.exports.verifyOtp = async (req, res) => {
   try {
     const otp = req.body.otp;
-    const email = req.query.email;
+    const email = req.body.email;
     const forgot = await ForgotPassword.findOne({
       email: email,
+      isVerified: false,
     });
 
     if (!forgot) {
@@ -264,7 +265,7 @@ module.exports.verifyOtp = async (req, res) => {
 //[POST] /api/users/reset-password
 module.exports.resetPassword = async (req, res) => {
   try {
-    const email = req.query.email;
+    const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
 
