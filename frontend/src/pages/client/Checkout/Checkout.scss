@@ -16,24 +16,25 @@
   &__breadcrumb {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 
     margin-bottom: 18px;
 
     font-size: 14px;
-    color: #777;
+    color: #adadad;
+    font-weight: 550;
 
     a {
-      color: #0d6efd;
+      color: #5e5d5d;
       text-decoration: none;
 
       &:hover {
-        text-decoration: underline;
+        color: #0958d9;
       }
     }
 
-    span:last-child {
-      color: #333;
+    span:first-child {
+      color: #222;
       font-weight: 500;
     }
   }

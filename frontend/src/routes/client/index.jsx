@@ -10,7 +10,7 @@ import Cart from "../../pages/client/Cart/Cart";
 import Checkout from "../../pages/client/Checkout/Checkout";
 import PaymentResult from "../../pages/client/PaymentResult/PaymentResult";
 import OrderDetail from "../../pages/client/Orders/OrderDetail/OrderDetail";
-import MyOrder from "../../pages/client/Orders/MyOrders/MyOrders";
+import Profile from "../../pages/client/Users/Profile/Profile";
 
 function AppRoutes() {
   return (
@@ -35,7 +35,11 @@ function AppRoutes() {
             element={<PaymentResult />}
           ></Route>
           <Route path=":orderCode" element={<OrderDetail />}></Route>
-          <Route path="" element={<MyOrder />}></Route>
+          <Route path="" element={<Profile />}></Route>
+        </Route>
+        <Route path="users">
+          <Route path="profile" element={<Profile />}></Route>
+          <Route path="change-password" element={<Profile />}></Route>
         </Route>
       </Route>
     </Routes>

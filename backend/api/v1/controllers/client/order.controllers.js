@@ -482,9 +482,23 @@ module.exports.myOrders = async (req, res) => {
   try {
     const userId = req.userId;
 
+    const page = Math.max(Number(req.query.page) || 1, 1);
+    const limit = Math.min(Math.max(Number(req.query.limit) || 2, 1), 20);
+
+    const skip = (page - 1) * limit;
+
+    const totalOrders = await Orders.countDocuments({
+      userId: userId,
+    });
+
+    const totalPages = Math.ceil(totalOrders / limit);
+
     const orders = await Orders.find({
       userId: userId,
-    }).sort({ createdAt: -1 });
+    })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
     const result = [];
 
@@ -532,7 +546,15 @@ module.exports.myOrders = async (req, res) => {
     res.json({
       code: 200,
       message: "Lấy danh sách đơn hàng thành công!",
-      data: { result },
+      data: {
+        result,
+        pagination: {
+          currentPage: page,
+          limit: limit,
+          totalOrders: totalOrders,
+          totalPages: totalPages,
+        },
+      },
     });
   } catch (error) {
     res.json({

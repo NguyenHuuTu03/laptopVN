@@ -23,7 +23,7 @@ export const patchOrderCancel = async (orderCode) => {
   const result = await patch(`/order/cancel/${orderCode}`);
   return result;
 };
-export const getMyOrders = async () => {
-  const result = await get(`/order/my-orders`);
+export const getMyOrders = async (page = 1, limit = 2) => {
+  const result = await get(`/order/my-orders?page=${page}&limit=${limit}`);
   return result;
 };

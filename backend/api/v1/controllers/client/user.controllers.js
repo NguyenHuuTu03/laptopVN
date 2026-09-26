@@ -152,7 +152,13 @@ module.exports.profile = async (req, res) => {
       code: 200,
       message: "Thành công!",
       data: {
-        user,
+        user: {
+          fullName: user.fullName,
+          email: user.email,
+          phone: user.phone ? user.phone : "",
+          address: user.address ? user.address : "",
+          avatar: user.avatar ? user.avatar : "",
+        },
       },
     });
   } catch (error) {
@@ -399,7 +405,7 @@ module.exports.updateProfile = async (req, res) => {
 
     const { fullName, phone, address, avatar } = req.body;
 
-    const user = await User.findOne({
+    const user = await Users.findOne({
       _id: userId,
     }).select("-password");
 
@@ -411,19 +417,19 @@ module.exports.updateProfile = async (req, res) => {
       return;
     }
 
-    if (fullName !== undefined) {
+    if (fullName) {
       user.fullName = fullName;
     }
 
-    if (phone !== undefined) {
+    if (phone) {
       user.phone = phone;
     }
 
-    if (address !== undefined) {
+    if (address) {
       user.address = address;
     }
 
-    if (avatar !== undefined) {
+    if (avatar) {
       user.avatar = avatar;
     }
 
@@ -433,11 +439,13 @@ module.exports.updateProfile = async (req, res) => {
       code: 200,
       message: "Cập nhật thông tin thành công",
       data: {
-        id: user.id,
-        fullName: user.fullName,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
+        user: {
+          fullName: user.fullName,
+          email: user.email,
+          phone: user.phone,
+          address: user.address,
+          avatar: user.avatar,
+        },
       },
     });
   } catch (error) {
