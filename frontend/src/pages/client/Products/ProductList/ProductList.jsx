@@ -40,6 +40,7 @@ function ProductList() {
   const keyword = searchParams.get("keyword") || "";
   const minPrice = searchParams.get("minPrice") || "";
   const maxPrice = searchParams.get("maxPrice") || "";
+  const sort = searchParams.get("sort") || "position-desc";
   const selectedPrice =
     minPrice && maxPrice ? `${minPrice}-${maxPrice}` : undefined;
 
@@ -68,6 +69,8 @@ function ProductList() {
         }
         params.page = Number(searchParams.get("page")) || 1;
         params.limit = 12;
+        params.sort = sort;
+
         // BẮT BUỘC có AWAIT ở đây
         const data = isAllProductsPage
           ? await getAllProducts(params)
@@ -130,6 +133,15 @@ function ProductList() {
     setSearchParams(params);
   };
 
+  const handleSortChange = (sortType) => {
+    const params = new URLSearchParams(searchParams);
+
+    params.set("sort", sortType);
+    params.set("page", "1");
+
+    setSearchParams(params);
+  };
+
   const handlePageChange = (page) => {
     const params = new URLSearchParams(searchParams);
 
@@ -179,13 +191,39 @@ function ProductList() {
               </div>
 
               <div className="product-list__sort">
-                <button className="active">Mới nhất</button>
+                <button
+                  className={sort === "position-desc" ? "active" : ""}
+                  onClick={() => handleSortChange("position-desc")}
+                >
+                  Mới nhất
+                </button>
+
+                {/* <span>•</span>
+
+                <button
+                  className={sort === "price-asc" ? "active" : ""}
+                  onClick={() => handleSortChange("price-asc")}
+                >
+                  Giá tăng dần
+                </button>
+
                 <span>•</span>
-                <button>Giá tăng dần</button>
+
+                <button
+                  className={sort === "price-desc" ? "active" : ""}
+                  onClick={() => handleSortChange("price-desc")}
+                >
+                  Giá giảm dần
+                </button> */}
+
                 <span>•</span>
-                <button>Giá giảm dần</button>
-                <span>•</span>
-                <button>Tên A-Z</button>
+
+                <button
+                  className={sort === "title-asc" ? "active" : ""}
+                  onClick={() => handleSortChange("title-asc")}
+                >
+                  Tên A-Z
+                </button>
               </div>
             </div>
 

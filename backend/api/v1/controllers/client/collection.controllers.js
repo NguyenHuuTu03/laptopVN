@@ -73,6 +73,17 @@ module.exports.collections = async (req, res) => {
 
     // filter
 
+    //sort
+    let sort = { position: -1 };
+    if (req.query.sort) {
+      const [sortKey, sortValue] = req.query.sort.split("-");
+
+      sort = {
+        [sortKey]: sortValue === "asc" ? 1 : -1,
+      };
+    }
+    //sort
+
     //pagination
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 12, 1);
@@ -175,7 +186,11 @@ module.exports.collections = async (req, res) => {
         },
       ]);
     } else {
-      products = await Products.find(find).skip(skip).limit(limit).lean();
+      products = await Products.find(find)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean();
     }
 
     for (const product of products) {

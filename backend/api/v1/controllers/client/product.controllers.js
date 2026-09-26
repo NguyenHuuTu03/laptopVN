@@ -78,6 +78,17 @@ module.exports.index = async (req, res) => {
     }
     //filter
 
+    //sort
+    let sort = { position: -1 };
+    if (req.query.sort) {
+      const [sortKey, sortValue] = req.query.sort.split("-");
+
+      sort = {
+        [sortKey]: sortValue === "asc" ? 1 : -1,
+      };
+    }
+    //sort
+
     //pagination
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 12, 1);
@@ -88,7 +99,11 @@ module.exports.index = async (req, res) => {
 
     const totalPages = Math.ceil(totalProducts / limit);
 
-    const products = await Products.find(find).skip(skip).limit(limit).lean();
+    const products = await Products.find(find)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean();
 
     for (const product of products) {
       const variant = await ProductVariants.findOne({

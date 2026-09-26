@@ -131,7 +131,10 @@ function CategoryMenu() {
           ) : brands.length > 0 ? (
             <div className="category-menu__brand-list">
               {brands.map((brand) => (
-                <Link key={brand._id} to={`/collections/${brand.slug}`}>
+                <Link
+                  key={brand._id}
+                  to={`/collections/${activeCategory.slug}?brand=${brand.slug}`}
+                >
                   {brand.title}
                 </Link>
               ))}
