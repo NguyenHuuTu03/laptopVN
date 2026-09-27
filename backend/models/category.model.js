@@ -12,6 +12,7 @@ const categorySchema = new mongoose.Schema({
   slug: {
     type: String,
     slug: "title",
+    unique: true,
   },
   deleted: {
     type: Boolean,

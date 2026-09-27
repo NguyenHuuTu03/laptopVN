@@ -1,8 +1,9 @@
 .product-detail__technical {
   background: #fff;
+  border: 1px solid #e8e8e8;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 .product-technical {
@@ -10,6 +11,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
     padding: 16px 20px;
 
     border-bottom: 1px solid #eee;
@@ -22,17 +24,21 @@
       align-items: center;
       justify-content: center;
 
+      flex-shrink: 0;
+
       border-radius: 8px;
       background: #eaf3ff;
       color: #1677ff;
+
       font-size: 15px;
     }
 
     .description {
       span {
+        color: #222;
         font-size: 18px;
         font-weight: 600;
-        color: #222;
+        line-height: 1.4;
       }
     }
   }
@@ -41,41 +47,136 @@
     padding: 16px 20px 20px;
 
     .ant-collapse {
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
       overflow: hidden;
-      border: 1px solid #e5e5e5;
+      background: #fff;
     }
 
     .ant-collapse-item {
+      border-bottom: 1px solid #e5e7eb;
+
       &:last-child {
         border-bottom: none;
+      }
+
+      &.ant-collapse-item-active {
+        .ant-collapse-header {
+          color: #1677ff;
+          background: #f5f9ff;
+        }
       }
     }
 
     .ant-collapse-header {
-      padding: 12px 14px !important;
-      font-size: 14px;
-      font-weight: 500;
-      color: #333;
+      display: flex;
+      align-items: center;
+
+      padding: 13px 14px !important;
+
+      color: #333 !important;
       background: #fafafa;
 
+      font-size: 14px;
+      font-weight: 600;
+
+      transition: all 0.2s ease;
+
       &:hover {
-        color: #1677ff;
+        color: #1677ff !important;
+        background: #f5f9ff;
       }
     }
 
     .ant-collapse-content {
       border-top: 1px solid #eee;
+      background: #fff;
     }
 
     .ant-collapse-content-box {
-      padding: 12px 14px !important;
+      padding: 0 !important;
+    }
+
+    // Danh sách thông số
+    .specs-list {
+      width: 100%;
+    }
+
+    .specs-item {
+      display: grid;
+      grid-template-columns: 35% 65%;
+
+      min-height: 46px;
+
+      border-bottom: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: #fafafa;
+      }
+    }
+
+    .specs-label,
+    .specs-value {
+      display: flex;
+      align-items: center;
+
+      padding: 11px 14px;
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .specs-label {
+      color: #555;
+      background: #fafafa;
+
+      font-weight: 500;
+
+      border-right: 1px solid #f0f0f0;
     }
 
     .specs-value {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #666;
+      color: #333;
+      font-weight: 400;
+
+      word-break: break-word;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .product-detail__technical {
+    border-radius: 10px;
+  }
+
+  .product-technical {
+    &__header {
+      padding: 15px 16px;
+
+      .description {
+        span {
+          font-size: 17px;
+        }
+      }
+    }
+
+    &__content {
+      padding: 14px 16px 16px;
+
+      .specs-item {
+        grid-template-columns: 40% 60%;
+      }
+
+      .specs-label,
+      .specs-value {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
     }
   }
 }
@@ -87,22 +188,63 @@
 
   .product-technical {
     &__header {
-      padding: 14px 16px;
+      padding: 14px 15px;
 
-      .description span {
-        font-size: 16px;
+      i {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+      }
+
+      .description {
+        span {
+          font-size: 16px;
+        }
       }
     }
 
     &__content {
-      padding: 12px;
+      padding: 10px;
+
+      .ant-collapse {
+        border-radius: 7px;
+      }
 
       .ant-collapse-header {
+        padding: 12px !important;
+
         font-size: 13px;
       }
 
+      .specs-item {
+        grid-template-columns: 42% 58%;
+      }
+
+      .specs-label,
       .specs-value {
+        padding: 9px 10px;
+
         font-size: 13px;
+        line-height: 1.45;
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .product-technical {
+    &__content {
+      padding: 8px;
+
+      .specs-item {
+        grid-template-columns: 45% 55%;
+      }
+
+      .specs-label,
+      .specs-value {
+        padding: 8px;
+
+        font-size: 12px;
       }
     }
   }

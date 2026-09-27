@@ -4,10 +4,19 @@ import "./ProductSpecifications.scss";
 
 function ProductSpecifications({ data }) {
   const specifications = data.product.specifications;
-  const items = specifications.map((item, index) => ({
+  const items = specifications.map((spec, index) => ({
     key: String(index + 1),
-    label: item.key,
-    children: <div className="specs-value">{item.value}</div>,
+    label: spec.group,
+    children: (
+      <div className="specs-list">
+        {spec.items.map((item, itemIndex) => (
+          <div className="specs-item" key={itemIndex}>
+            <div className="specs-label">{item.key}</div>
+            <div className="specs-value">{item.value}</div>
+          </div>
+        ))}
+      </div>
+    ),
   }));
 
   return (

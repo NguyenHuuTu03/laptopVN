@@ -24,6 +24,7 @@ const brandSchema = new mongoose.Schema(
     slug: {
       type: String,
       slug: "title",
+      unique: true,
     },
   },
   {

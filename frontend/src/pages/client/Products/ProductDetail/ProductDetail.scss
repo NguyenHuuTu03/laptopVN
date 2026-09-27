@@ -49,7 +49,6 @@
 
     background: #fff;
     border-radius: 10px;
-
     overflow: hidden;
 
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
@@ -62,7 +61,6 @@
   &__gallery {
     min-width: 0;
     padding: 24px;
-
     border-right: 1px solid #eee;
   }
 
@@ -73,13 +71,13 @@
   &__info {
     min-width: 0;
     padding: 24px;
+
     display: flex;
     flex-direction: column;
   }
 
   &__header {
     padding-bottom: 16px;
-
     border-bottom: 1px solid #eee;
   }
 
@@ -89,7 +87,6 @@
     font-size: 23px;
     line-height: 1.4;
     font-weight: 600;
-
     color: #222;
   }
 
@@ -123,7 +120,6 @@
   &__priceNew {
     font-size: 28px;
     line-height: 1;
-
     font-weight: 700;
     color: #d70018;
   }
@@ -131,7 +127,6 @@
   &__priceOld {
     font-size: 15px;
     color: #888;
-
     text-decoration: line-through;
   }
 
@@ -160,12 +155,10 @@
 
     .label {
       display: block;
-
       margin-bottom: 10px;
 
       font-size: 15px;
       font-weight: 600;
-
       color: #333;
     }
   }
@@ -176,14 +169,21 @@
     gap: 8px;
   }
 
-  // Button phiên bản / màu
+  // =========================
+  // OPTION BUTTON
+  // =========================
+
   .item-option {
     position: relative;
 
     min-width: 105px;
     min-height: 52px;
-
     padding: 8px 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     border: 1px solid #d9d9d9;
     border-radius: 6px;
@@ -191,18 +191,12 @@
     background: #fff;
 
     cursor: pointer;
+    font-family: inherit;
 
     transition:
       border-color 0.2s ease,
       background 0.2s ease,
       box-shadow 0.2s ease;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    font-family: inherit;
 
     span {
       font-size: 14px;
@@ -212,7 +206,6 @@
 
     p {
       margin: 4px 0 0;
-
       font-size: 12px;
       color: #666;
     }
@@ -221,10 +214,6 @@
       border-color: #1677ff;
       background: #f7fbff;
     }
-
-    // =========================
-    // ACTIVE (Đang chọn)
-    // =========================
 
     &.active {
       border: 1.5px solid #1677ff;
@@ -241,8 +230,8 @@
         content: "✓";
 
         position: absolute;
-        right: 0;
         top: 0;
+        right: 0;
 
         width: 18px;
         height: 18px;
@@ -261,14 +250,12 @@
       }
     }
 
-    // =========================
-    // DISABLED (Không khả dụng - BỔ SUNG MỚI)
-    // =========================
-
     &.disabled {
       opacity: 0.45;
+
       background: #fafafa;
       border-color: #e5e5e5;
+
       cursor: not-allowed;
 
       span,
@@ -295,10 +282,9 @@
   &__order {
     display: grid;
     grid-template-columns: 1fr 1fr;
-
     gap: 10px;
 
-    margin-top: 100px; // Điều chỉnh lại margin-top hợp lý hơn (thay vì 135px quá xa)
+    margin-top: 100px;
 
     button {
       width: 100%;
@@ -320,11 +306,12 @@
       &:active {
         transform: scale(0.98);
       }
-    }
 
-    // =========================
-    // ADD CART
-    // =========================
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
 
     .add-to__cart {
       button {
@@ -334,7 +321,6 @@
         gap: 8px;
 
         border: 1px solid #1677ff;
-
         background: #fff;
         color: #1677ff;
 
@@ -348,14 +334,9 @@
       }
     }
 
-    // =========================
-    // BUY NOW
-    // =========================
-
     .add-buy {
       button {
         border: 1px solid #d70018;
-
         background: #d70018;
         color: #fff;
 
@@ -368,13 +349,12 @@
   }
 
   // =========================
-  // DESCRIPTION + SPECS
+  // DESCRIPTION + SPECIFICATIONS
   // =========================
 
   &__content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
+    display: flex;
+    flex-direction: column;
     gap: 16px;
 
     margin-top: 16px;
@@ -397,7 +377,7 @@
     }
 
     &__content {
-      grid-template-columns: 1fr;
+      gap: 16px;
     }
   }
 }
@@ -414,19 +394,36 @@
       max-width: calc(100% - 20px);
     }
 
+    // =========================
+    // BREADCRUMB
+    // =========================
+
     &__breadcrumb {
       margin-bottom: 10px;
+      gap: 7px;
 
       font-size: 13px;
     }
+
+    // =========================
+    // MAIN
+    // =========================
 
     &__main {
       border-radius: 8px;
     }
 
+    // =========================
+    // GALLERY
+    // =========================
+
     &__gallery {
       padding: 14px;
     }
+
+    // =========================
+    // INFO
+    // =========================
 
     &__info {
       padding: 16px;
@@ -435,6 +432,10 @@
     &__title {
       font-size: 19px;
     }
+
+    // =========================
+    // PRICE
+    // =========================
 
     &__price {
       padding: 15px 0;
@@ -447,6 +448,10 @@
     &__priceOld {
       font-size: 13px;
     }
+
+    // =========================
+    // OPTION
+    // =========================
 
     &__option {
       margin-bottom: 16px;
@@ -475,9 +480,12 @@
       }
     }
 
+    // =========================
+    // ORDER
+    // =========================
+
     &__order {
       grid-template-columns: 1fr;
-
       margin-top: 20px;
 
       button {
@@ -485,9 +493,11 @@
       }
     }
 
-    &__content {
-      grid-template-columns: 1fr;
+    // =========================
+    // CONTENT
+    // =========================
 
+    &__content {
       gap: 12px;
       margin-top: 12px;
     }
