@@ -1,11 +1,10 @@
 module.exports.generateRandomString = (length) => {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
 
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(
-      Math.floor(Math.random() * characters.length)
-    );
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
 
   return result;
@@ -15,9 +14,17 @@ module.exports.generateRandomNumber = (length) => {
   let result = "";
 
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(
-      Math.floor(Math.random() * characters.length)
-    );
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return result;
+};
+module.exports.generateSKU = (length) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "";
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
 
   return result;

@@ -9,6 +9,7 @@ const brandSchema = new mongoose.Schema(
     description: String,
     country: String,
     website: String,
+    position: Number,
     status: String,
     deleted: {
       type: Boolean,

@@ -193,3 +193,122 @@ module.exports.create = async (req, res) => {
     });
   }
 };
+
+//[PATCH] /api/admin/products/:productId
+module.exports.edit = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Products.findOne({
+      _id: productId,
+      deleted: false,
+    });
+    if (!product) {
+      res.json({
+        code: 404,
+        message: "Không tìm thấy sản phẩm!",
+      });
+      return;
+    }
+
+    if (req.body.images) {
+      product.images = req.body.images;
+    }
+
+    if (req.body.thumbnail) {
+      product.thumbnail = req.body.thumbnail;
+    }
+
+    await product.save();
+
+    res.json({
+      code: 200,
+      message: "Cập nhật sản phẩm thành công!",
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Cập nhật sản phẩm thất bại!",
+    });
+  }
+};
+
+//[DELETE] /api/admin/products/:productId
+module.exports.delete = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Products.findOne({
+      _id: productId,
+      deleted: false,
+    });
+
+    if (!product) {
+      res.json({
+        code: 404,
+        message: "Không tìm thấy sản phẩm!",
+      });
+      return;
+    }
+
+    product.deleted = true;
+    await product.save();
+    res.json({
+      code: 200,
+      message: "Xoá sản phẩm thành công!",
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Xoá sản phẩm thất bại!",
+    });
+  }
+};
+
+// [GET] /api/admin/products/:productId
+module.exports.detail = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Products.findOne({
+      _id: productId,
+      deleted: false,
+    }).lean();
+    if (!product) {
+      res.json({
+        code: 404,
+        message: "Không tìm thấy sản phẩm!",
+      });
+      return;
+    }
+
+    const brand = await Brands.findOne({
+      _id: product.brandId,
+      deleted: false,
+    }).select("title");
+
+    const category = await Categories.findOne({
+      _id: product.categoryId,
+      deleted: false,
+    }).select("title");
+
+    product.brandName = brand.title;
+    product.categoryName = category.title;
+
+    const variants = await ProductVariants.find({
+      productId: product._id,
+      status: "active",
+    });
+
+    res.json({
+      code: 200,
+      message: "Thành công!",
+      data: {
+        product,
+        variants,
+      },
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Thất bại!",
+    });
+  }
+};
