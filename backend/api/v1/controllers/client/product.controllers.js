@@ -3,6 +3,7 @@ const ProductVariants = require("../../../../models/product_variants.model");
 const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
 const Brands = require("../../../../models/brand.model");
 const Categories = require("../../../../models/category.model");
+const sortHelpers = require("../../../../helpers/sort");
 // //[GET] /api/products
 module.exports.index = async (req, res) => {
   try {
@@ -89,21 +90,7 @@ module.exports.index = async (req, res) => {
     }
     //sort
 
-    //pagination
-    const page = Math.max(Number(req.query.page) || 1, 1);
-    const limit = Math.max(Number(req.query.limit) || 12, 1);
-    const skip = (page - 1) * limit;
-    //pagination
-
-    const totalProducts = await Products.countDocuments(find);
-
-    const totalPages = Math.ceil(totalProducts / limit);
-
-    const products = await Products.find(find)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean();
+    const products = await Products.find(find).sort(sort).lean();
 
     for (const product of products) {
       const variant = await ProductVariants.findOne({
@@ -131,11 +118,22 @@ module.exports.index = async (req, res) => {
       // product.reviewCount = reviewCount;
       // product.averageRating = Number(averageRating.toFixed(1));
     }
+    sortHelpers.sortPrice(products, sort);
+
+    //pagination
+    const page = Math.max(Number(req.query.page) || 1, 1);
+    const limit = Math.max(Number(req.query.limit) || 12, 1);
+    const skip = (page - 1) * limit;
+    //pagination
+
+    const totalProducts = products.length;
+    const totalPages = Math.ceil(totalProducts / limit);
+    const productsPagination = products.slice(skip, skip + limit);
     res.json({
       code: 200,
       message: "Thành công!",
       data: {
-        products,
+        products: productsPagination,
         pagination: {
           currentPage: page,
           limit,

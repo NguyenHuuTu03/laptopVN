@@ -3,6 +3,7 @@ const Categories = require("../../../../models/category.model");
 const Brands = require("../../../../models/brand.model");
 const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
 const ProductVariants = require("../../../../models/product_variants.model");
+const sortHelpers = require("../../../../helpers/sort");
 
 //[GET] /api/collections/:slug
 module.exports.collections = async (req, res) => {
@@ -84,12 +85,6 @@ module.exports.collections = async (req, res) => {
     }
     //sort
 
-    //pagination
-    const page = Math.max(Number(req.query.page) || 1, 1);
-    const limit = Math.max(Number(req.query.limit) || 12, 1);
-    const skip = (page - 1) * limit;
-    //pagination
-
     const slug = req.params.slug;
 
     let collection;
@@ -130,68 +125,8 @@ module.exports.collections = async (req, res) => {
         });
       }
     }
-    const totalProducts = await Products.countDocuments(find);
 
-    const totalPages = Math.ceil(totalProducts / limit);
-
-    let products;
-
-    if (req.query.sort === "sold-desc") {
-      products = await Products.aggregate([
-        // 1. Lọc sản phẩm
-        {
-          $match: find,
-        },
-
-        // 2. Lấy các variant của sản phẩm
-        {
-          $lookup: {
-            from: ProductVariants.collection.name,
-            localField: "_id",
-            foreignField: "productId",
-            as: "variants",
-          },
-        },
-
-        // 3. Tính tổng sold của tất cả variant
-        {
-          $addFields: {
-            sold: {
-              $sum: "$variants.sold",
-            },
-          },
-        },
-
-        // 4. Sắp xếp bán chạy nhất
-        {
-          $sort: {
-            sold: -1,
-          },
-        },
-
-        // 5. Phân trang
-        {
-          $skip: skip,
-        },
-
-        {
-          $limit: limit,
-        },
-
-        // 6. Không trả variants về frontend
-        {
-          $project: {
-            variants: 0,
-          },
-        },
-      ]);
-    } else {
-      products = await Products.find(find)
-        .sort(sort)
-        .skip(skip)
-        .limit(limit)
-        .lean();
-    }
+    const products = await Products.find(find).sort(sort).lean();
 
     for (const product of products) {
       const variant = await ProductVariants.findOne({
@@ -203,12 +138,23 @@ module.exports.collections = async (req, res) => {
         variant.price * (1 - variant.discount / 100),
       );
     }
+    sortHelpers.sortPrice(products, sort);
+
+    //pagination
+    const page = Math.max(Number(req.query.page) || 1, 1);
+    const limit = Math.max(Number(req.query.limit) || 12, 1);
+    const skip = (page - 1) * limit;
+    //pagination
+    const totalProducts = products.length;
+
+    const totalPages = Math.ceil(totalProducts / limit);
+    const productsPagination = products.slice(skip, skip + limit);
 
     res.json({
       code: 200,
       message: "Thành công!",
       data: {
-        products,
+        products: productsPagination,
         pagination: {
           currentPage: page,
           limit,

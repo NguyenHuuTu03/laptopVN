@@ -1,13 +1,13 @@
 module.exports.sortPrice = (products, sort) => {
   if (sort.price === 1) {
     products.sort((a, b) => {
-      return a.price - b.price;
+      return a.newPrice - b.newPrice;
     });
   }
 
   if (sort.price === -1) {
     products.sort((a, b) => {
-      return b.price - a.price;
+      return b.newPrice - a.newPrice;
     });
   }
 };

@@ -198,7 +198,7 @@ function ProductList() {
                   Mới nhất
                 </button>
 
-                {/* <span>•</span>
+                <span>•</span>
 
                 <button
                   className={sort === "price-asc" ? "active" : ""}
@@ -214,7 +214,7 @@ function ProductList() {
                   onClick={() => handleSortChange("price-desc")}
                 >
                   Giá giảm dần
-                </button> */}
+                </button>
 
                 <span>•</span>
 
