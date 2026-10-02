@@ -9,7 +9,7 @@ import ProductRelated from "../../../../components/client/ProductRelated/Product
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../../../../actions/cartActions";
 import { addCart, getCart } from "../../../../services/client/cart.services";
-import { message } from "antd";
+import { notification } from "antd";
 
 function ProductDetail() {
   const [loading, setLoading] = useState(true);
@@ -158,6 +158,9 @@ function ProductDetail() {
       };
       if (!isLoggedIn) {
         dispatch(addToCart(item));
+        notification.success({
+          title: "Thêm sản phẩm vào giỏ hàng thành công!",
+        });
       } else {
         const result = await addCart(item);
         if (result?.code === 200) {
@@ -166,7 +169,13 @@ function ProductDetail() {
           if (cartResult.code === 200) {
             dispatch(setCart(cartResult.data.items));
           }
-          message.success("Thêm sản phẩm vào giỏ hàng thành công!");
+          notification.success({
+            title: result.message,
+          });
+        } else {
+          notification.error({
+            title: result.message,
+          });
         }
       }
     } catch (error) {

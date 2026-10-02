@@ -1,4 +1,4 @@
-import { Input, Badge, Space, Dropdown, message } from "antd";
+import { Input, Badge, Space, Dropdown, message, notification } from "antd";
 
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 
@@ -108,7 +108,9 @@ function Header() {
 
       if (result.code === 200) {
         dispatch(clearCart());
-        message.success(result.message || "Đăng xuất thành công!");
+        notification.success({
+          title: result.message,
+        });
 
         dispatch(
           setClientAuth({
@@ -119,7 +121,9 @@ function Header() {
 
         navigate("/");
       } else {
-        message.error(result.message || "Đăng xuất thất bại!");
+        notification.error({
+          title: result.message,
+        });
       }
     } catch (error) {
       console.error("Lỗi đăng xuất:", error);

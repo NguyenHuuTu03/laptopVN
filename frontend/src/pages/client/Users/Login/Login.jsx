@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { message } from "antd";
+import { notification } from "antd";
 
 import { getProfile, login } from "../../../../services/client/user.services";
 
@@ -34,16 +34,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email.trim()) {
-      message.error("Vui lòng nhập email!");
-      return;
-    }
-
-    if (!formData.password) {
-      message.error("Vui lòng nhập mật khẩu!");
-      return;
-    }
-
     try {
       setLoading(true);
 
@@ -55,7 +45,9 @@ function Login() {
           const mergeResult = await mergeCart(cart);
 
           if (mergeResult.code !== 200) {
-            message.error("Đồng bộ giỏ hàng thất bại!");
+            notification.error({
+              title: "Đồng bộ giỏ hàng thất bại!",
+            });
             return;
           } else {
             localStorage.removeItem("cart");
@@ -78,18 +70,21 @@ function Login() {
           dispatch(setCart(cartResult.data.items));
         }
 
-        message.success("Đăng nhập thành công!");
+        notification.success({
+          title: result.message,
+        });
 
         navigate("/");
       } else {
-        message.error(result.message || "Đăng nhập thất bại!");
+        notification.error({
+          title: result.message,
+        });
       }
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
-
-      message.error(
-        error.response?.data?.message || "Email hoặc mật khẩu không chính xác!",
-      );
+      notification.error({
+        title: "Email hoặc mật khẩu không chính xác!",
+      });
     } finally {
       setLoading(false);
     }
@@ -97,15 +92,15 @@ function Login() {
 
   return (
     <div className="login">
-      <div className="login__container">
-        <div className="login__form">
-          <div className="login__header">
+      <div className="login-container">
+        <div className="login-form">
+          <div className="login-header">
             <h1>Đăng nhập</h1>
             <p>Đăng nhập để tiếp tục mua sắm</p>
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="login__field">
+            <div className="login-field">
               <label htmlFor="email">Email</label>
 
               <input
@@ -115,10 +110,11 @@ function Login() {
                 placeholder="Nhập email"
                 value={formData.email}
                 onChange={handleChange}
+                required
               />
             </div>
 
-            <div className="login__field">
+            <div className="login-field">
               <label htmlFor="password">Mật khẩu</label>
 
               <input
@@ -128,19 +124,20 @@ function Login() {
                 placeholder="Nhập mật khẩu"
                 value={formData.password}
                 onChange={handleChange}
+                required
               />
             </div>
 
-            <div className="login__forgot">
+            <div className="login-forgot">
               <Link to="/users/forgot-password">Quên mật khẩu?</Link>
             </div>
 
-            <button type="submit" className="login__submit" disabled={loading}>
+            <button type="submit" className="login-submit" disabled={loading}>
               {loading ? "Đang đăng nhập..." : "Đăng nhập"}
             </button>
           </form>
 
-          <div className="login__register">
+          <div className="login-register">
             <span>Chưa có tài khoản?</span>
 
             <Link to="/users/register">Đăng ký ngay</Link>

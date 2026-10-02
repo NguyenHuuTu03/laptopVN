@@ -14,6 +14,7 @@ import Register from "../pages/client/Users/Register/Register";
 import ResetPassword from "../pages/client/Users/ResetPassword/ResetPassword";
 import VerifyOTP from "../pages/client/Users/VerifyOTP/VerifyOTP";
 import PrivateRoute from "./PrivateRoute";
+import LoginAdmin from "../pages/admin/Auth/LoginAdmin/LoginAdmin";
 
 export const routes = [
   {
@@ -64,6 +65,10 @@ export const routes = [
     path: "/admin",
     children: [
       {
+        path: "auth",
+        children: [{ path: "login", element: <LoginAdmin /> }],
+      },
+      {
         element: <PrivateRoute />,
         children: [
           {
@@ -71,7 +76,7 @@ export const routes = [
             children: [
               {
                 index: true,
-                element: <div>Admin Dashboard</div>,
+                element: <div>Dashboard</div>,
               },
             ],
           },

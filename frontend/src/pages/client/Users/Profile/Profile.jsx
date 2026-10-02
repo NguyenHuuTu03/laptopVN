@@ -7,7 +7,7 @@ import {
   logout,
   updateProfile,
 } from "../../../../services/client/user.services";
-import { message } from "antd";
+import { notification } from "antd";
 import { clearCart } from "../../../../actions/cartActions";
 import { useDispatch } from "react-redux";
 import { setClientAuth } from "../../../../actions/authActions";
@@ -80,7 +80,9 @@ function Profile() {
 
       if (result.code === 200) {
         dispatch(clearCart());
-        message.success(result.message || "Đăng xuất thành công!");
+        notification.success({
+          title: result.message,
+        });
 
         dispatch(
           setClientAuth({
@@ -91,12 +93,16 @@ function Profile() {
 
         navigate("/");
       } else {
-        message.error(result.message || "Đăng xuất thất bại!");
+        notification.error({
+          title: result.message,
+        });
       }
     } catch (error) {
       console.error("Lỗi đăng xuất:", error);
 
-      message.error(error.response?.data?.message || "Đăng xuất thất bại!");
+      notification.error({
+        title: "Đăng xuất thất bại!",
+      });
     }
   };
 
@@ -115,9 +121,13 @@ function Profile() {
       const profile = await getProfile();
       if (profile.code === 200) {
         setUser(profile.data.user);
-        message.success("Cập nhật thông tin thành công!");
+        notification.success({
+          title: profile.message,
+        });
       } else {
-        message.warning(profile.message);
+        notification.error({
+          title: profile.message,
+        });
       }
     }
   };
@@ -131,10 +141,14 @@ function Profile() {
     };
     const result = await changePassword(data);
     if (result.code === 200) {
-      message.success(result.message);
+      notification.success({
+        title: result.message,
+      });
       handleLogout();
     } else {
-      message.warning(result.message);
+      notification.error({
+        title: result.message,
+      });
     }
   };
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { message } from "antd";
+import { notification } from "antd";
 
 import "./Register.scss";
 import { register } from "../../../../services/client/user.services";
@@ -28,23 +28,8 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.fullName.trim()) {
-      message.error("Vui lòng nhập họ tên!");
-      return;
-    }
-
-    if (!formData.email.trim()) {
-      message.error("Vui lòng nhập email!");
-      return;
-    }
-
-    if (!formData.password) {
-      message.error("Vui lòng nhập mật khẩu!");
-      return;
-    }
-
     if (formData.password.length < 6) {
-      message.error("Mật khẩu phải có ít nhất 6 ký tự!");
+      notification.error("Mật khẩu phải có ít nhất 6 ký tự!");
       return;
     }
 
@@ -56,16 +41,22 @@ function Register() {
       console.log("REGISTER RESPONSE:", result);
 
       if (result.code === 200) {
-        message.success(result.message || "Đăng ký thành công!");
+        notification.success({
+          title: result.message,
+        });
 
         navigate("/users/login");
       } else {
-        message.error(result.message || "Đăng ký thất bại!");
+        notification.error({
+          title: result.message,
+        });
       }
     } catch (error) {
       console.error("Lỗi đăng ký:", error);
 
-      message.error(error.response?.data?.message || "Đăng ký thất bại!");
+      notification.error({
+        title: "Đăng ký thất bại!",
+      });
     } finally {
       setLoading(false);
     }
@@ -94,6 +85,7 @@ function Register() {
                 placeholder="Nhập họ và tên"
                 value={formData.fullName}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -108,6 +100,7 @@ function Register() {
                 placeholder="Nhập email"
                 value={formData.email}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -122,6 +115,7 @@ function Register() {
                 placeholder="Nhập mật khẩu"
                 value={formData.password}
                 onChange={handleChange}
+                required
               />
             </div>
 

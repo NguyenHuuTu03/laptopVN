@@ -6,7 +6,7 @@ import {
   getOrderDetail,
   patchOrderCancel,
 } from "../../../../services/client/order.services";
-import { message } from "antd";
+import { notification } from "antd";
 
 function OrderDetail() {
   const { orderCode } = useParams();
@@ -86,18 +86,26 @@ function OrderDetail() {
         return status;
     }
   };
-  // const { order, items } = data?;
   const handleCancelOrder = async () => {
     const result = await patchOrderCancel(data?.order.orderCode);
 
     if (result.code === 200) {
-      const result = await getOrderDetail(orderCode);
-      console.log(result.data.order);
+      const orderDetail = await getOrderDetail(orderCode);
 
-      if (result.code === 200) {
-        setData(result.data);
-        message.success("Huỷ đơn hàng thành công!");
+      if (orderDetail.code === 200) {
+        setData(orderDetail.data);
+        notification.success({
+          title: result.message,
+        });
+      } else {
+        notification.error({
+          title: result.message,
+        });
       }
+    } else {
+      notification.error({
+        title: result.message,
+      });
     }
   };
   return (

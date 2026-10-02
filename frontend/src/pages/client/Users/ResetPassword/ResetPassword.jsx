@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { resetPassword } from "../../../../services/client/user.services";
-import { message } from "antd";
+import { notification } from "antd";
 
 import "./ResetPassword.scss";
 
@@ -18,11 +18,15 @@ function ResetPassword() {
 
     const result = await resetPassword(data);
     if (result.code === 200) {
-      message.success(result.message);
+      notification.success({
+        title: result.message,
+      });
       sessionStorage.removeItem("forgotPasswordEmail");
       navigate(`/users/login`);
     } else {
-      message.error(result.message);
+      notification.error({
+        title: result.message,
+      });
     }
   };
   return (

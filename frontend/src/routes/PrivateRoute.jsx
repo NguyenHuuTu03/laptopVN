@@ -10,9 +10,9 @@ function PrivateRoute() {
     isAdmin ? state.authReducer.admin : state.authReducer.client,
   );
 
-  // if (!auth.checked) {
-  //   return <div>Loading...</div>;
-  // }
+  if (!auth.checked) {
+    return <div>Loading...</div>;
+  }
 
   if (!auth.isLoggedIn) {
     return <Navigate to={isAdmin ? "/admin/login" : "/users/login"} replace />;

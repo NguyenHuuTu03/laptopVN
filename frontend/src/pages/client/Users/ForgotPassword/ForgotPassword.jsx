@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./ForgotPassword.scss";
 import { forgotPassword } from "../../../../services/client/user.services";
-import { message } from "antd";
+import { notification } from "antd";
 
 function ForgotPassword() {
   const navigate = useNavigate();
@@ -12,11 +12,15 @@ function ForgotPassword() {
 
     const result = await forgotPassword(email);
     if (result.code === 200) {
-      message.success(result.message);
+      notification.success({
+        title: result.message,
+      });
       sessionStorage.setItem("forgotPasswordEmail", email);
       navigate(`/users/verify-otp`);
     } else {
-      message.error(result.message);
+      notification.error({
+        title: result.message,
+      });
     }
   };
   return (
