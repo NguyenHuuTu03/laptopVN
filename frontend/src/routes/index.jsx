@@ -1,4 +1,5 @@
 import ClientLayout from "../layouts/client/ClientLayout";
+import AdminLayout from "../layouts/admin/AdminLayout";
 import Cart from "../pages/client/Cart/Cart";
 import Checkout from "../pages/client/Checkout/Checkout";
 import Home from "../pages/client/Home/Home";
@@ -12,6 +13,7 @@ import Profile from "../pages/client/Users/Profile/Profile";
 import Register from "../pages/client/Users/Register/Register";
 import ResetPassword from "../pages/client/Users/ResetPassword/ResetPassword";
 import VerifyOTP from "../pages/client/Users/VerifyOTP/VerifyOTP";
+import PrivateRoute from "./PrivateRoute";
 
 export const routes = [
   {
@@ -32,22 +34,47 @@ export const routes = [
         children: [
           { path: "login", element: <Login /> },
           { path: "register", element: <Register /> },
-          { path: "profile", element: <Profile /> },
-          { path: "change-password", element: <Profile /> },
+
           { path: "forgot-password", element: <ForgotPassword /> },
           { path: "verify-otp", element: <VerifyOTP /> },
           { path: "reset-password", element: <ResetPassword /> },
         ],
       },
       { path: "/cart", element: <Cart /> },
-      { path: "/checkout", element: <Checkout /> },
       {
-        path: "/orders",
+        element: <PrivateRoute />,
         children: [
-          { path: "", element: <Profile /> },
-          { path: "success/:orderCode", element: <PaymentResult /> },
-          { path: "payment-result/:orderCode", element: <PaymentResult /> },
-          { path: ":orderCode", element: <OrderDetail /> },
+          { path: "/users/profile", element: <Profile /> },
+          { path: "/users/change-password", element: <Profile /> },
+          { path: "/checkout", element: <Checkout /> },
+          {
+            path: "/orders",
+            children: [
+              { path: "", element: <Profile /> },
+              { path: "success/:orderCode", element: <PaymentResult /> },
+              { path: "payment-result/:orderCode", element: <PaymentResult /> },
+              { path: ":orderCode", element: <OrderDetail /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    children: [
+      {
+        element: <PrivateRoute />,
+        children: [
+          {
+            element: <AdminLayout />,
+            children: [
+              {
+                index: true,
+                element: <div>Admin Dashboard</div>,
+              },
+            ],
+          },
         ],
       },
     ],

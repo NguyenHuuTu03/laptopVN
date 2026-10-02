@@ -12,7 +12,10 @@ const couponSchema = new mongoose.Schema(
     usedCount: Number,
     startDate: Date,
     endDate: Date,
-    status: String,
+    status: {
+      type: String,
+      status: "active",
+    },
     deleted: {
       type: Boolean,
       default: false,

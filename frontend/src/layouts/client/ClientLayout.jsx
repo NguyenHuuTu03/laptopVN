@@ -1,12 +1,11 @@
 import { Outlet } from "react-router-dom";
 
 import Header from "../../components/client/Header/Header";
-// import Navigation from "../../components/client/Navigation/Navigation";
 import Footer from "../../components/client/Footer/Footer";
 
 import "./ClientLayout.scss";
 import { getProfile } from "../../services/client/user.services";
-import { setAuth } from "../../actions/authActions";
+import { setClientAuth } from "../../actions/authActions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "../../services/client/cart.services";
@@ -15,7 +14,9 @@ import { setCart } from "../../actions/cartActions";
 function ClientLayout() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cartReducer);
-  const isLoggedIn = useSelector((state) => state.authReducer.isLoggedIn);
+  const isLoggedIn = useSelector(
+    (state) => state.authReducer.client.isLoggedIn,
+  );
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -23,7 +24,7 @@ function ClientLayout() {
         const res = await getProfile();
         if (res.code === 200 && res.data.user) {
           dispatch(
-            setAuth({
+            setClientAuth({
               isLoggedIn: true,
               user: res.data.user,
             }),
@@ -35,7 +36,7 @@ function ClientLayout() {
           }
         } else {
           dispatch(
-            setAuth({
+            setClientAuth({
               isLoggedIn: false,
               user: null,
             }),
@@ -43,7 +44,7 @@ function ClientLayout() {
         }
       } catch (error) {
         dispatch(
-          setAuth({
+          setClientAuth({
             isLoggedIn: false,
             user: null,
           }),

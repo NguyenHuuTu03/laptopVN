@@ -8,7 +8,10 @@ const categorySchema = new mongoose.Schema({
   thumbnail: String,
   parentId: String,
   position: Number,
-  status: String,
+  status: {
+    type: String,
+    default: "active",
+  },
   slug: {
     type: String,
     slug: "title",

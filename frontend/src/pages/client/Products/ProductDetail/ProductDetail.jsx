@@ -18,7 +18,9 @@ function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState("");
   const { slugProduct } = useParams();
 
-  const isLoggedIn = useSelector((state) => state.authReducer.isLoggedIn);
+  const isLoggedIn = useSelector(
+    (state) => state.authReducer.client.isLoggedIn,
+  );
 
   const getVariantAttributes = (variant) => {
     let ram = "";

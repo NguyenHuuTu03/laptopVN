@@ -98,12 +98,14 @@ module.exports.profile = async (req, res) => {
       _id: req.userId,
       deleted: false,
       status: "active",
-    }).select("-password");
+    })
+      .select("-password")
+      .lean();
 
     const role = await Roles.findOne({
       _id: user.roleId,
       deleted: false,
-    }).select("title");
+    });
 
     if (!user) {
       res.json({
@@ -112,6 +114,7 @@ module.exports.profile = async (req, res) => {
       });
       return;
     }
+    user.role = role;
 
     res.json({
       code: 200,

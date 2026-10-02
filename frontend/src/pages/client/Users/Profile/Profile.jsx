@@ -10,7 +10,7 @@ import {
 import { message } from "antd";
 import { clearCart } from "../../../../actions/cartActions";
 import { useDispatch } from "react-redux";
-import { setAuth } from "../../../../actions/authActions";
+import { setClientAuth } from "../../../../actions/authActions";
 import MyOrders from "../../Orders/MyOrders/MyOrders";
 
 function Profile() {
@@ -83,7 +83,7 @@ function Profile() {
         message.success(result.message || "Đăng xuất thành công!");
 
         dispatch(
-          setAuth({
+          setClientAuth({
             isLoggedIn: false,
             user: null,
           }),

@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import Suggest from "../Suggest/Suggest";
 import { logout } from "../../../services/client/user.services";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuth } from "../../../actions/authActions";
+import { setClientAuth } from "../../../actions/authActions";
 import { clearCart } from "../../../actions/cartActions";
 
 const { Search } = Input;
@@ -27,7 +27,7 @@ function Header() {
 
   const dispatch = useDispatch();
 
-  const { isLoggedIn, user } = useSelector((state) => state.authReducer);
+  const { isLoggedIn, user } = useSelector((state) => state.authReducer.client);
   const cartItems = useSelector((state) => state.cartReducer);
 
   const totalQuantity = cartItems.reduce(
@@ -111,7 +111,7 @@ function Header() {
         message.success(result.message || "Đăng xuất thành công!");
 
         dispatch(
-          setAuth({
+          setClientAuth({
             isLoggedIn: false,
             user: null,
           }),

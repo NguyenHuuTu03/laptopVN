@@ -10,7 +10,10 @@ const brandSchema = new mongoose.Schema(
     country: String,
     website: String,
     position: Number,
-    status: String,
+    status: {
+      type: String,
+      default: "active",
+    },
     deleted: {
       type: Boolean,
       default: false,

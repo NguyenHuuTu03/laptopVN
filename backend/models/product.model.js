@@ -21,7 +21,10 @@ const productSchema = new mongoose.Schema(
       default: [],
     },
     warranty: String,
-    status: String,
+    status: {
+      type: String,
+      default: "active",
+    },
     featured: {
       type: Boolean,
       default: false,

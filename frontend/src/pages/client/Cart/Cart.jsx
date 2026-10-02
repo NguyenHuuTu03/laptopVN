@@ -22,12 +22,40 @@ function Cart() {
 
   const [summary, setSummary] = useState(null);
 
-  const { isLoggedIn } = useSelector((state) => state.authReducer);
+  const { isLoggedIn } = useSelector((state) => state.authReducer.client);
   const cartItems = useSelector((state) => state.cartReducer);
 
   const updateCartData = (result) => {
     if (result.code === 200) {
-      setData(result.data.items);
+      const items = result.data.items.map((item) => {
+        let ram = "";
+        let storage = "";
+        let color = "";
+
+        item.attributes?.forEach((v) => {
+          const key = v.key?.toLowerCase();
+
+          if (key === "ram") {
+            ram = v.value;
+          }
+
+          if (key === "storage") {
+            storage = v.value;
+          }
+
+          if (key === "color") {
+            color = v.value;
+          }
+        });
+
+        return {
+          ...item,
+          version: `${ram ? ram + "/" : ""}${storage || ""}`,
+          color,
+        };
+      });
+
+      setData(items);
       setSummary(result.data.summary);
     }
   };
@@ -148,30 +176,30 @@ function Cart() {
     } else navigate("/checkout");
   };
 
-  const handleVersion = () => {
-    data.forEach((item) => {
-      let ram = "";
-      let storage = "";
-      let color = "";
-      item.attributes.forEach((v) => {
-        const key = v.key?.toLowerCase();
-        if (key === "ram") {
-          ram = v.value;
-        }
+  // const handleVersion = () => {
+  //   data.forEach((item) => {
+  //     let ram = "";
+  //     let storage = "";
+  //     let color = "";
+  //     item.attributes.forEach((v) => {
+  //       const key = v.key?.toLowerCase();
+  //       if (key === "ram") {
+  //         ram = v.value;
+  //       }
 
-        if (key === "storage") {
-          storage = v.value;
-        }
+  //       if (key === "storage") {
+  //         storage = v.value;
+  //       }
 
-        if (key === "color") {
-          color = v.value;
-        }
-      });
-      item.version = `${ram ? ram + "/" : ""}${storage ? `${storage}` : ""}`;
-      item.color = color;
-    });
-  };
-  handleVersion();
+  //       if (key === "color") {
+  //         color = v.value;
+  //       }
+  //     });
+  //     item.version = `${ram ? ram + "/" : ""}${storage ? `${storage}` : ""}`;
+  //     item.color = color;
+  //   });
+  // };
+  // handleVersion();
 
   return (
     <>

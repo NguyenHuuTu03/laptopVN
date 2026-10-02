@@ -1,11 +1,12 @@
 const Users = require("../../../../models/user.model");
+const Roles = require("../../../../models/role.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generateHelpers = require("../../../../helpers/generate");
 const ForgotPassword = require("../../../../models/forgot-password.model");
 const sendMailHelpers = require("../../../../helpers/sendMail");
 
-//[GET] /api/users/register
+//[POST] /api/users/register
 module.exports.register = async (req, res) => {
   try {
     const exitsEmail = await Users.findOne({
@@ -24,10 +25,15 @@ module.exports.register = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(req.body.password, 10);
 
+    const role = await Roles.findOne({
+      slug: "user",
+    });
+
     const user = new Users({
       fullName: req.body.fullName,
       email: req.body.email,
       password: hashPassword,
+      roleId: role._id,
     });
 
     await user.save();
@@ -148,6 +154,12 @@ module.exports.profile = async (req, res) => {
       return;
     }
 
+    const role = await Roles.findOne({
+      _id: user.roleId,
+      deleted: false,
+      status: "active",
+    });
+
     res.json({
       code: 200,
       message: "Thành công!",
@@ -158,6 +170,7 @@ module.exports.profile = async (req, res) => {
           phone: user.phone ? user.phone : "",
           address: user.address ? user.address : "",
           avatar: user.avatar ? user.avatar : "",
+          role: role,
         },
       },
     });

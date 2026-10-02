@@ -1,4 +1,5 @@
 const Users = require("../../../../models/user.model");
+const Roles = require("../../../../models/role.model");
 const bcrypt = require("bcrypt");
 
 //[GET] /api/admin/users
@@ -15,6 +16,12 @@ module.exports.index = async (req, res) => {
       find.$or = [{ fullName: keywordRegex }, { email: keywordRegex }];
     }
     //search
+
+    //filter
+    if (req.query.status) {
+      find.status = req.query.status;
+    }
+    //filter
 
     //sort
     let sort = {
@@ -43,7 +50,16 @@ module.exports.index = async (req, res) => {
       .select("-password")
       .sort(sort)
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .lean();
+
+    for (const user of users) {
+      const role = await Roles.findOne({
+        _id: user.roleId,
+        deleted: false,
+      }).select("title");
+      user.role = role;
+    }
     res.json({
       code: 200,
       message: "Thành công!",
@@ -81,11 +97,17 @@ module.exports.detail = async (req, res) => {
       });
     }
 
+    const role = await Roles.findOne({
+      _id: user.roleId,
+      deleted: false,
+    }).select("title permission");
+
     res.json({
       code: 200,
       message: "Thành công!",
       data: {
         user,
+        role,
       },
     });
   } catch (error) {

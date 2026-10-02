@@ -6,7 +6,7 @@ import { getProfile, login } from "../../../../services/client/user.services";
 
 import "./Login.scss";
 import { useDispatch } from "react-redux";
-import { setAuth } from "../../../../actions/authActions";
+import { setClientAuth } from "../../../../actions/authActions";
 import { getCart, mergeCart } from "../../../../services/client/cart.services";
 import { setCart } from "../../../../actions/cartActions";
 
@@ -65,7 +65,7 @@ function Login() {
         const profileResult = await getProfile();
         if (profileResult.code === 200) {
           dispatch(
-            setAuth({
+            setClientAuth({
               isLoggedIn: true,
               user: profileResult.data.user,
             }),
