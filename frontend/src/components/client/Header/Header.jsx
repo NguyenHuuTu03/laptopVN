@@ -120,6 +120,9 @@ function Header() {
         );
 
         navigate("/");
+        notification.success({
+          title: result.message,
+        });
       } else {
         notification.error({
           title: result.message,

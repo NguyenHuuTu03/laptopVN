@@ -1,37 +1,92 @@
-import { Dropdown } from "antd";
+import { Dropdown, notification } from "antd";
 import logo from "../../../assets/images/logo.png";
 import { DownOutlined } from "@ant-design/icons";
+import "./Header.scss";
+import { logout } from "../../../services/admin/auth.services";
+import { useDispatch, useSelector } from "react-redux";
+import { setAdminAuth } from "../../../actions/authActions";
+import { useNavigate } from "react-router-dom";
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer.admin);
+  const userMenu = {
+    items: [
+      {
+        key: "profile",
+        label: "Tài khoản của tôi",
+        icon: <i className="fa-solid fa-user"></i>,
+      },
+      {
+        key: "logout",
+        label: "Đăng xuất",
+        icon: <i className="fa-solid fa-right-from-bracket"></i>,
+      },
+    ],
+  };
+
+  const handleLogout = async () => {
+    const result = await logout();
+
+    if (result.code === 200) {
+      dispatch(
+        setAdminAuth({
+          isLoggedIn: false,
+          user: null,
+        }),
+      );
+      navigate("/admin/auth/login");
+      notification.success({
+        title: result.message,
+      });
+    } else {
+      notification.error({
+        title: result.message,
+      });
+    }
+  };
+
+  const handleMenuClick = ({ key }) => {
+    if (key === "profile") {
+      navigate("/admin/auth/profile");
+    }
+
+    if (key === "logout") {
+      handleLogout();
+    }
+  };
   return (
     <>
-      <div className="container">
-        <div className="header-left__logo">
-          <img src={logo} alt="Logo" />
-        </div>
-        <div className="header-nav">
-          <div className="header-nav__left">
-            <div className="header-collapse"></div>
+      {user && (
+        <div className="admin-header__container">
+          <div className="admin-header__logo">
+            <img src={logo} alt="Logo" />
           </div>
-          <div className="header-right">
+          <div className="admin-header__nav">
             <Dropdown
-              // menu={userMenu}
+              className="admin-header-dropdown"
+              menu={{ items: userMenu.items, onClick: handleMenuClick }}
               trigger={["click"]}
               placement="bottomRight"
             >
-              <div className="header-user">
-                <div className="header-user__avatar">
-                  <img src="" alt="" />
+              <div className="admin-header__user">
+                <div className="admin-header__avatar">
+                  {user.avatar ? (
+                    <img src={user.avatar} alt={user.fullName} />
+                  ) : (
+                    <i className="fa-solid fa-user"></i>
+                  )}
                 </div>
-                <div className="header-user__info">
-                  <span className="header-user__name">Nguyễn Văn A</span>
+                <div className="admin-header__info">
+                  <span>{user.fullName}</span>
                 </div>
 
-                <DownOutlined className="header-arrow" />
+                <DownOutlined className="admin-header__arrow" />
               </div>
             </Dropdown>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

@@ -9,10 +9,10 @@ const uploadMiddleware = require("../../../../middlewares/uploadToCloudinary");
 router.post("/register", controllers.register);
 router.post("/login", controllers.login);
 router.post("/logout", controllers.logout);
-router.get("/profile", authMiddleware.requireAuth, controllers.profile);
+router.get("/profile", authMiddleware.requireClientAuth, controllers.profile);
 router.patch(
   "/profile",
-  authMiddleware.requireAuth,
+  authMiddleware.requireClientAuth,
   upload.single("avatar"),
   uploadMiddleware.uploadSingle,
   controllers.updateProfile,
@@ -22,7 +22,7 @@ router.post("/verify-otp", controllers.verifyOtp);
 router.post("/reset-password", controllers.resetPassword);
 router.patch(
   "/change-password",
-  authMiddleware.requireAuth,
+  authMiddleware.requireClientAuth,
   controllers.changePassword,
 );
 

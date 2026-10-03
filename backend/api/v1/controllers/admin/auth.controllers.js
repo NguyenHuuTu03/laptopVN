@@ -57,7 +57,7 @@ module.exports.login = async (req, res) => {
       },
     );
 
-    res.cookie("token", token, {
+    res.cookie("authToken", token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -67,6 +67,7 @@ module.exports.login = async (req, res) => {
       message: "Đăng nhập thành công!",
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 400,
       message: "Đăng nhập thất bại!",
@@ -77,7 +78,7 @@ module.exports.login = async (req, res) => {
 //[POST] /api/admin/auth/logout
 module.exports.logout = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("authToken");
 
     res.json({
       code: 200,
@@ -102,11 +103,6 @@ module.exports.profile = async (req, res) => {
       .select("-password")
       .lean();
 
-    const role = await Roles.findOne({
-      _id: user.roleId,
-      deleted: false,
-    });
-
     if (!user) {
       res.json({
         code: 404,
@@ -114,6 +110,10 @@ module.exports.profile = async (req, res) => {
       });
       return;
     }
+    const role = await Roles.findOne({
+      _id: user.roleId,
+      deleted: false,
+    });
     user.role = role;
 
     res.json({
@@ -121,16 +121,10 @@ module.exports.profile = async (req, res) => {
       message: "Thành công!",
       data: {
         user,
-        // user: {
-        //   fullName: user.fullName,
-        //   email: user.email,
-        //   phone: user.phone ? user.phone : "",
-        //   address: user.address ? user.address : "",
-        //   avatar: user.avatar ? user.avatar : "",
-        // },
       },
     });
   } catch (error) {
+    console.log("ADMIN PROFILE ERROR:", error);
     res.json({
       code: 500,
       message: "Lỗi server",

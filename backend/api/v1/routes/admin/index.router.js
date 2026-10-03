@@ -9,17 +9,34 @@ const userRoutes = require("./user.router.js");
 const roleRoutes = require("./role.router.js");
 const settingRoutes = require("./setting.router.js");
 const authRoutes = require("./auth.router.js");
+const authMiddleware = require("../../../../middlewares/auth.middleware.js");
 
 module.exports = (app) => {
-  app.use("/api/admin", dashboardRoutes);
-  app.use("/api/admin/products", productRoutes);
-  app.use("/api/admin/categories", categoryRoutes);
-  app.use("/api/admin/brands", brandRoutes);
-  app.use("/api/admin/product-variants", productVariantRoutes);
-  app.use("/api/admin/orders", orderRoutes);
-  app.use("/api/admin/shipper", shipperRoutes);
-  app.use("/api/admin/users", userRoutes);
-  app.use("/api/admin/roles", roleRoutes);
-  app.use("/api/admin/settings", settingRoutes);
   app.use("/api/admin/auth", authRoutes);
+  app.use("/api/admin", authMiddleware.requireAdminAuth, dashboardRoutes);
+  app.use(
+    "/api/admin/products",
+    authMiddleware.requireAdminAuth,
+    productRoutes,
+  );
+  app.use(
+    "/api/admin/categories",
+    authMiddleware.requireAdminAuth,
+    categoryRoutes,
+  );
+  app.use("/api/admin/brands", authMiddleware.requireAdminAuth, brandRoutes);
+  app.use(
+    "/api/admin/product-variants",
+    authMiddleware.requireAdminAuth,
+    productVariantRoutes,
+  );
+  app.use("/api/admin/orders", authMiddleware.requireAdminAuth, orderRoutes);
+  app.use("/api/admin/shipper", authMiddleware.requireAdminAuth, shipperRoutes);
+  app.use("/api/admin/users", authMiddleware.requireAdminAuth, userRoutes);
+  app.use("/api/admin/roles", authMiddleware.requireAdminAuth, roleRoutes);
+  app.use(
+    "/api/admin/settings",
+    authMiddleware.requireAdminAuth,
+    settingRoutes,
+  );
 };

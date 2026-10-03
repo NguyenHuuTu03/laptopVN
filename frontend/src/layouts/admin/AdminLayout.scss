@@ -1,0 +1,102 @@
+.admin-layout {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+
+  /* Header */
+  .admin-header {
+    height: 64px;
+    padding: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #e8edf3;
+    z-index: 100;
+
+    /* Header component bên trong */
+    .admin-header__container {
+      height: 100%;
+      border-bottom: none;
+    }
+  }
+
+  /* Layout phía dưới Header */
+  > .ant-layout {
+    min-height: calc(100vh - 64px);
+    background-color: #f5f7fa;
+  }
+
+  /* Sidebar */
+  &__sider {
+    width: 240px !important;
+    max-width: 240px !important;
+    min-width: 240px !important;
+
+    background-color: #fff !important;
+    border-right: 1px solid #e8edf3;
+
+    .ant-layout-sider-children {
+      background-color: #fff;
+    }
+  }
+
+  /* Nội dung */
+  &__content {
+    min-height: calc(100vh - 64px);
+    padding: 24px;
+
+    overflow-x: hidden;
+    background-color: #f5f7fa;
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .admin-layout {
+    .admin-header {
+      height: 60px;
+    }
+
+    > .ant-layout {
+      min-height: calc(100vh - 60px);
+    }
+
+    &__sider {
+      width: 210px !important;
+      max-width: 210px !important;
+      min-width: 210px !important;
+    }
+
+    &__content {
+      min-height: calc(100vh - 60px);
+      padding: 20px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    &__sider {
+      width: 70px !important;
+      max-width: 70px !important;
+      min-width: 70px !important;
+    }
+
+    &__content {
+      padding: 16px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-layout {
+    &__sider {
+      width: 0 !important;
+      max-width: 0 !important;
+      min-width: 0 !important;
+
+      overflow: hidden;
+    }
+
+    &__content {
+      padding: 12px;
+    }
+  }
+}

@@ -29,7 +29,9 @@ function Register() {
     e.preventDefault();
 
     if (formData.password.length < 6) {
-      notification.error("Mật khẩu phải có ít nhất 6 ký tự!");
+      notification.error({
+        title: "Mật khẩu phải có ít nhất 6 ký tự!",
+      });
       return;
     }
 

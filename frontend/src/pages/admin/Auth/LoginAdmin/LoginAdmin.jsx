@@ -1,11 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginAdmin.scss";
 import logo from "../../../../assets/images/logo.png";
-import { login } from "../../../../services/admin/user.services";
+import { getProfile, login } from "../../../../services/admin/auth.services";
 import { notification } from "antd";
+import { useDispatch } from "react-redux";
+import { setAdminAuth } from "../../../../actions/authActions";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -15,10 +18,23 @@ function Login() {
       };
       const result = await login(data);
       if (result.code === 200) {
-        notification.success({
-          title: result.message,
-        });
-        navigate("/admin");
+        const profile = await getProfile();
+        if (profile.code === 200) {
+          dispatch(
+            setAdminAuth({
+              isLoggedIn: true,
+              user: profile.data.user,
+            }),
+          );
+          notification.success({
+            title: result.message,
+          });
+          navigate("/admin");
+        } else {
+          notification.error({
+            title: profile.message,
+          });
+        }
       } else {
         notification.error({
           title: result.message,

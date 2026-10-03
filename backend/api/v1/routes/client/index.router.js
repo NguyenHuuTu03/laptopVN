@@ -16,6 +16,6 @@ module.exports = (app) => {
   app.use("/api/brands", brandRoutes);
   app.use("/api/cart", cartRoutes);
   app.use("/api/users", userRoutes);
-  app.use("/api/order", authMiddleware.requireAuth, orderRoutes);
-  app.use("/api/payment", authMiddleware.requireAuth, paymentRoutes);
+  app.use("/api/order", authMiddleware.requireClientAuth, orderRoutes);
+  app.use("/api/payment", authMiddleware.requireClientAuth, paymentRoutes);
 };

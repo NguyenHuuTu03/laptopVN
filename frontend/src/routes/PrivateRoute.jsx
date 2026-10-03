@@ -1,21 +1,11 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function PrivateRoute() {
-  const location = useLocation();
+  const { isLoggedIn } = useSelector((state) => state.authReducer.client);
 
-  const isAdmin = location.pathname.startsWith("/admin");
-
-  const auth = useSelector((state) =>
-    isAdmin ? state.authReducer.admin : state.authReducer.client,
-  );
-
-  if (!auth.checked) {
-    return <div>Loading...</div>;
-  }
-
-  if (!auth.isLoggedIn) {
-    return <Navigate to={isAdmin ? "/admin/login" : "/users/login"} replace />;
+  if (!isLoggedIn) {
+    return <Navigate to="/users/login" replace />;
   }
 
   return <Outlet />;

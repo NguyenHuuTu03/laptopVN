@@ -15,6 +15,16 @@ import ResetPassword from "../pages/client/Users/ResetPassword/ResetPassword";
 import VerifyOTP from "../pages/client/Users/VerifyOTP/VerifyOTP";
 import PrivateRoute from "./PrivateRoute";
 import LoginAdmin from "../pages/admin/Auth/LoginAdmin/LoginAdmin";
+import Products from "../pages/admin/Products/Products";
+import CategoryList from "../pages/admin/Categories/CategoryList/CategoryList";
+import Dashboard from "../pages/admin/Dashboard/Dashboard";
+import BrandList from "../pages/admin/Brands/BrandList/BrandList";
+import OrderList from "../pages/admin/Orders/OrderList/OrderList";
+import UserList from "../pages/admin/Users/UserList/UserList";
+import OrderShip from "../pages/admin/Shipper/OrderShip/OrderShip";
+import RoleList from "../pages/admin/Roles/RoleList/RoleList";
+import Permission from "../pages/admin/Roles/Permission/Permission";
+import Setting from "../pages/admin/Setting/Setting";
 
 export const routes = [
   {
@@ -66,19 +76,54 @@ export const routes = [
     children: [
       {
         path: "auth",
-        children: [{ path: "login", element: <LoginAdmin /> }],
-      },
-      {
-        element: <PrivateRoute />,
         children: [
           {
-            element: <AdminLayout />,
+            path: "login",
+            element: <LoginAdmin />,
+          },
+        ],
+      },
+      {
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "",
+            element: <Dashboard />,
+          },
+          {
+            path: "products",
+            element: <Products />,
+          },
+          {
+            path: "categories",
+            element: <CategoryList />,
+          },
+          {
+            path: "brands",
+            element: <BrandList />,
+          },
+          {
+            path: "orders",
+            element: <OrderList />,
+          },
+          {
+            path: "users",
+            element: <UserList />,
+          },
+          {
+            path: "shipper",
+            element: <OrderShip />,
+          },
+          {
+            path: "roles",
             children: [
-              {
-                index: true,
-                element: <div>Dashboard</div>,
-              },
+              { path: "", element: <RoleList /> },
+              { path: "permission", element: <Permission /> },
             ],
+          },
+          {
+            path: "settings",
+            element: <Setting />,
           },
         ],
       },

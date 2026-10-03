@@ -2,56 +2,11 @@ const Products = require("../../../../models/product.model");
 const Orders = require("../../../../models/order.model");
 const Users = require("../../../../models/user.model");
 const ProductVariants = require("../../../../models/product_variants.model");
-//[GET] /api/admin/dashboard
+const Roles = require("../../../../models/role.model");
+//[GET] /api/admin
 module.exports.dashboard = async (req, res) => {
   try {
-    const totalProduct = await Products.countDocuments({
-      deleted: false,
-      status: "active",
-    });
-
-    const totalUser = await Users.countDocuments({
-      deleted: false,
-      status: "active",
-    });
-
     const orders = await Orders.find();
-
-    let totalOrder = 0;
-    let totalRevenue = 0;
-
-    let pending = 0;
-    let confirmed = 0;
-    let shipping = 0;
-    let delivered = 0;
-    let cancelled = 0;
-
-    for (const order of orders) {
-      if (order.orderStatus !== "CANCELLED") totalOrder++;
-      if (order.orderStatus === "PENDING") {
-        pending++;
-      }
-
-      if (order.orderStatus === "CONFIRMED") {
-        confirmed++;
-      }
-
-      if (order.orderStatus === "SHIPPING") {
-        shipping++;
-      }
-
-      if (order.orderStatus === "DELIVERED") {
-        delivered++;
-      }
-
-      if (order.orderStatus === "CANCELLED") {
-        cancelled++;
-      }
-      if (order.orderStatus === "DELIVERED") {
-        totalRevenue += order.totalPrice;
-      }
-    }
-
     const revenueByMonth = [];
 
     const currentYear = new Date().getFullYear();

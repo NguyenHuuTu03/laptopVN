@@ -8,8 +8,6 @@ const initialState = {
   admin: {
     isLoggedIn: false,
     user: null,
-    role: null,
-    permissions: [],
     checked: false,
   },
 };
