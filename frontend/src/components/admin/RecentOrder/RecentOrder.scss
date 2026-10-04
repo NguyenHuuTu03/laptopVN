@@ -1,0 +1,189 @@
+.recent-order {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+
+  // =========================
+  // TABLE
+  // =========================
+  .ant-table {
+    font-size: 14px;
+  }
+
+  // Header
+  .ant-table-thead > tr > th {
+    background: #f8fafc;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+    height: 48px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+
+    // Căn giữa tên cột
+    text-align: center;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // Body
+  .ant-table-tbody > tr > td {
+    height: 58px;
+    padding: 12px 16px;
+    color: #374151;
+    border-bottom: 1px solid #f1f3f5;
+
+    // Căn giữa nội dung
+    text-align: center;
+  }
+
+  // Hover
+  .ant-table-tbody > tr:hover > td {
+    background: #f8fbff !important;
+  }
+
+  // Dòng cuối
+  .ant-table-tbody > tr:last-child > td {
+    border-bottom: none;
+  }
+
+  // =========================
+  // MÃ ĐƠN
+  // =========================
+  .order-code {
+    color: #a7a8aa;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  // =========================
+  // GIÁ
+  // =========================
+  .order-price {
+    color: #d70018;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  // =========================
+  // TRẠNG THÁI
+  // =========================
+  .order-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 115px;
+    height: 30px;
+    padding: 0 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    // Chờ xác nhận
+    &.pending {
+      color: #d97706;
+      background: #fff7e6;
+      border: 1px solid #ffe7ba;
+    }
+
+    // Đã xác nhận
+    &.confirmed {
+      color: #1677ff;
+      background: #e6f4ff;
+      border: 1px solid #bae0ff;
+    }
+
+    // Đang giao
+    &.shipping {
+      color: #7c3aed;
+      background: #f3e8ff;
+      border: 1px solid #e9d5ff;
+    }
+
+    // Đã giao
+    &.delivered {
+      color: #16a34a;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+    }
+
+    // Đã huỷ
+    &.cancelled {
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+  }
+
+  // =========================
+  // NGÀY ĐẶT
+  // =========================
+  .order-date {
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  // =========================
+  // PHÂN TRANG
+  // =========================
+  .ant-pagination {
+    margin: 16px 20px;
+
+    .ant-pagination-item {
+      border-radius: 6px;
+
+      a {
+        color: #374151;
+      }
+
+      &.ant-pagination-item-active {
+        border-color: #1677ff;
+
+        a {
+          color: #1677ff;
+        }
+      }
+    }
+  }
+
+  // =========================
+  // EMPTY
+  // =========================
+  .ant-empty {
+    margin: 40px 0;
+  }
+
+  // =========================
+  // RESPONSIVE
+  // =========================
+  @media (max-width: 768px) {
+    border-radius: 8px;
+
+    .ant-table {
+      min-width: 650px;
+    }
+
+    .ant-table-wrapper {
+      overflow-x: auto;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    .order-status {
+      min-width: 100px;
+      font-size: 12px;
+    }
+  }
+}

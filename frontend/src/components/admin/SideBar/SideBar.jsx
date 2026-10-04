@@ -12,7 +12,7 @@ function SideBar() {
     },
     {
       key: "/admin/products",
-      icon: <i className="fa-solid fa-layer-group"></i>,
+      icon: <i className="fa-solid fa-box-open"></i>,
       label: "Sản phẩm",
     },
     {
@@ -27,7 +27,7 @@ function SideBar() {
     },
     {
       key: "/admin/orders",
-      icon: <i className="fa-solid fa-box-open"></i>,
+      icon: <i className="fa-solid fa-receipt"></i>,
       label: "Đơn hàng",
     },
     {

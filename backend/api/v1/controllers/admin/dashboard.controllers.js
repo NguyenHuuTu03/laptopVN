@@ -1,5 +1,6 @@
 const Products = require("../../../../models/product.model");
 const Orders = require("../../../../models/order.model");
+const OrderItems = require("../../../../models/order_item.model");
 const Users = require("../../../../models/user.model");
 const ProductVariants = require("../../../../models/product_variants.model");
 const Roles = require("../../../../models/role.model");
@@ -7,6 +8,72 @@ const Roles = require("../../../../models/role.model");
 module.exports.dashboard = async (req, res) => {
   try {
     const orders = await Orders.find();
+    const totalRevenue = orders.reduce((total, order) => {
+      if (order.orderStatus === "DELIVERED") {
+        return total + order.totalPrice;
+      }
+      return total;
+    }, 0);
+    const role = await Roles.findOne({
+      deleted: false,
+      status: "active",
+      slug: "user",
+    });
+    const totalUser = await Users.countDocuments({
+      deleted: false,
+      status: "active",
+      roleId: role.id,
+    });
+
+    const totalOrder = await Orders.countDocuments({
+      orderStatus: { $ne: "CANCELLED" },
+    });
+
+    let totalProduct = 0;
+    const deliverOrders = await Orders.find({
+      orderStatus: "DELIVERED",
+    });
+    for (const order of deliverOrders) {
+      const orderItems = await OrderItems.find({
+        orderId: order.id,
+      });
+      const quantity = orderItems.reduce(
+        (total, item) => total + item.quantity,
+        0,
+      );
+      totalProduct += quantity;
+    }
+
+    const pending = orders.reduce((total, order) => {
+      if (order.orderStatus === "PENDING") {
+        return ++total;
+      }
+      return total;
+    }, 0);
+    const confirmed = orders.reduce((total, order) => {
+      if (order.orderStatus === "CONFIRMED") {
+        return ++total;
+      }
+      return total;
+    }, 0);
+    const shipping = orders.reduce((total, order) => {
+      if (order.orderStatus === "SHIPPING") {
+        return ++total;
+      }
+      return total;
+    }, 0);
+    const delivered = orders.reduce((total, order) => {
+      if (order.orderStatus === "DELIVERED") {
+        return ++total;
+      }
+      return total;
+    }, 0);
+    const cancelled = orders.reduce((total, order) => {
+      if (order.orderStatus === "CANCELLED") {
+        return ++total;
+      }
+      return total;
+    }, 0);
     const revenueByMonth = [];
 
     const currentYear = new Date().getFullYear();
@@ -101,7 +168,7 @@ module.exports.dashboard = async (req, res) => {
       .sort({
         createdAt: -1,
       })
-      .limit(5);
+      .limit(7);
 
     res.json({
       code: 200,
@@ -123,7 +190,6 @@ module.exports.dashboard = async (req, res) => {
         revenue: {
           today: todayRevenue,
           currentMonth: monthRevenue,
-          total: totalRevenue,
         },
         revenueByMonth,
         featuredProducts,
