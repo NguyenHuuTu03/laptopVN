@@ -76,7 +76,6 @@ module.exports.index = async (req, res) => {
       const category = await Categories.findOne({
         _id: product.categoryId,
         deleted: false,
-        status: "active",
       }).select("title");
       product.categoryName = category.title;
     }

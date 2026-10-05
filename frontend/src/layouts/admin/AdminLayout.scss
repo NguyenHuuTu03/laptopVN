@@ -1,53 +1,169 @@
 .admin-layout {
   min-height: 100vh;
-  background-color: #f5f7fa;
 
-  /* Header */
+  background: #f5f7fb;
+
+  // ==================================================
+  // HEADER
+  // ==================================================
+
   .admin-header {
-    height: 64px;
-    padding: 0;
-    background-color: #fff;
-    border-bottom: 1px solid #e8edf3;
-    z-index: 100;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 
-    /* Header component bên trong */
+    width: 100%;
+    height: 64px;
+
+    padding: 0;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-bottom: 1px solid #e8edf3;
+
+    box-shadow: 0 1px 8px rgba(15, 23, 42, 0.04);
+
+    backdrop-filter: blur(10px);
+
+    // Header component bên trong
     .admin-header__container {
+      width: 100%;
       height: 100%;
+
       border-bottom: none;
     }
   }
 
-  /* Layout phía dưới Header */
+  // ==================================================
+  // LAYOUT BÊN DƯỚI HEADER
+  // ==================================================
+
   > .ant-layout {
     min-height: calc(100vh - 64px);
-    background-color: #f5f7fa;
+
+    background: #f5f7fb;
   }
 
-  /* Sidebar */
-  &__sider {
-    width: 240px !important;
-    max-width: 240px !important;
-    min-width: 240px !important;
+  // ==================================================
+  // SIDEBAR
+  // ==================================================
 
-    background-color: #fff !important;
+  &__sider {
+    position: sticky !important;
+    top: 64px;
+
+    height: calc(100vh - 64px);
+
+    width: 240px !important;
+    min-width: 240px !important;
+    max-width: 240px !important;
+
+    flex: 0 0 240px !important;
+
+    background: #fff !important;
+
     border-right: 1px solid #e8edf3;
 
+    box-shadow: 2px 0 10px rgba(15, 23, 42, 0.03);
+
+    overflow: hidden;
+
+    z-index: 900;
+
+    // Ant Design sider
     .ant-layout-sider-children {
-      background-color: #fff;
+      height: 100%;
+
+      background: #fff;
+
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      // Scrollbar
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #d7dde5;
+        border-radius: 10px;
+
+        &:hover {
+          background: #b9c1cc;
+        }
+      }
+
+      scrollbar-width: thin;
+      scrollbar-color: #d7dde5 transparent;
     }
   }
 
-  /* Nội dung */
+  // ==================================================
+  // CONTENT
+  // ==================================================
+
   &__content {
+    position: relative;
+
+    min-width: 0;
     min-height: calc(100vh - 64px);
+
     padding: 24px;
 
+    background: #f5f7fb;
+
     overflow-x: hidden;
-    background-color: #f5f7fa;
+    overflow-y: auto;
+
+    // Tránh component con phá layout
+    > * {
+      max-width: 100%;
+    }
   }
 }
 
-/* Responsive */
+// ======================================================
+// FIX ANT DESIGN LAYOUT
+// ======================================================
+
+.admin-layout {
+  .ant-layout {
+    min-width: 0;
+  }
+
+  .ant-layout-content {
+    min-width: 0;
+  }
+}
+
+// ======================================================
+// RESPONSIVE - TABLET
+// ======================================================
+
+@media (max-width: 1200px) {
+  .admin-layout {
+    &__sider {
+      width: 220px !important;
+      min-width: 220px !important;
+      max-width: 220px !important;
+
+      flex: 0 0 220px !important;
+    }
+
+    &__content {
+      padding: 20px;
+    }
+  }
+}
+
+// ======================================================
+// RESPONSIVE - 992px
+// ======================================================
+
 @media (max-width: 992px) {
   .admin-layout {
     .admin-header {
@@ -59,44 +175,92 @@
     }
 
     &__sider {
-      width: 210px !important;
-      max-width: 210px !important;
-      min-width: 210px !important;
+      position: sticky !important;
+      top: 60px;
+
+      height: calc(100vh - 60px);
+
+      width: 200px !important;
+      min-width: 200px !important;
+      max-width: 200px !important;
+
+      flex: 0 0 200px !important;
     }
 
     &__content {
       min-height: calc(100vh - 60px);
-      padding: 20px;
+
+      padding: 18px;
     }
   }
 }
+
+// ======================================================
+// RESPONSIVE - MOBILE
+// ======================================================
 
 @media (max-width: 768px) {
   .admin-layout {
+    .admin-header {
+      height: 60px;
+    }
+
+    > .ant-layout {
+      min-height: calc(100vh - 60px);
+    }
+
     &__sider {
-      width: 70px !important;
-      max-width: 70px !important;
-      min-width: 70px !important;
+      width: 72px !important;
+      min-width: 72px !important;
+      max-width: 72px !important;
+
+      flex: 0 0 72px !important;
     }
 
     &__content {
-      padding: 16px;
+      min-height: calc(100vh - 60px);
+
+      padding: 14px;
     }
   }
 }
 
-@media (max-width: 480px) {
+// ======================================================
+// MOBILE NHỎ
+// ======================================================
+
+@media (max-width: 576px) {
   .admin-layout {
     &__sider {
       width: 0 !important;
-      max-width: 0 !important;
       min-width: 0 !important;
+      max-width: 0 !important;
+
+      flex: 0 0 0 !important;
+
+      border: none;
+
+      box-shadow: none;
 
       overflow: hidden;
     }
 
     &__content {
+      width: 100%;
+
       padding: 12px;
+    }
+  }
+}
+
+// ======================================================
+// MOBILE RẤT NHỎ
+// ======================================================
+
+@media (max-width: 400px) {
+  .admin-layout {
+    &__content {
+      padding: 8px;
     }
   }
 }

@@ -8,14 +8,14 @@ module.exports.index = async (req, res) => {
       deleted: false,
     };
 
-    //search
-    if (req.body.keyword) {
-      const keywordRegex = new RegExp(req.body.keyword, "i");
-      const slug = convertToSlugHelpers.convertToSlug(req.body.keyword);
+    // search
+    if (req.query.keyword) {
+      const keywordRegex = new RegExp(req.query.keyword, "i");
+      const slug = convertToSlugHelpers.convertToSlug(req.query.keyword);
       const slugRegex = new RegExp(slug, "i");
-      find.$or = [{ title: keywordRegex }, { slug: "slugRegex" }];
+      find.$or = [{ title: keywordRegex }, { slug: slugRegex }];
     }
-    //search
+    // search
 
     //filter
     if (req.query.status) {
@@ -50,7 +50,7 @@ module.exports.index = async (req, res) => {
       .limit(limit)
       .skip(skip);
 
-    const totalCategories = categories.length;
+    const totalCategories = await Categories.countDocuments(find);
     const totalPages = Math.ceil(totalCategories / limit);
     res.json({
       code: 200,

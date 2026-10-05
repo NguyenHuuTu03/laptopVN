@@ -1,11 +1,11 @@
 import { notification, Table } from "antd";
-import "./ProductTable.scss";
+import "./CategoryTable.scss";
 import {
   changeStatus,
-  removeProduct,
-} from "../../../services/admin/product.services";
+  removeCategory,
+} from "../../../services/admin/category.services";
 
-function ProductTable({ data = [], pagination, onPageChange, onReload }) {
+function CategoryTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
     switch (status) {
       case "active":
@@ -40,7 +40,7 @@ function ProductTable({ data = [], pagination, onPageChange, onReload }) {
   };
 
   const handleRemove = async (record) => {
-    const result = await removeProduct(record._id);
+    const result = await removeCategory(record._id);
     if (result.code === 200) {
       notification.success({
         title: result.message,
@@ -66,46 +66,21 @@ function ProductTable({ data = [], pagination, onPageChange, onReload }) {
       key: "thumbnail",
       align: "center",
       render: (text, item) => (
-        <img className="product-thumbnail" src={text} alt={item.title} />
+        <img className="category-thumbnail" src={text} alt={item.title} />
       ),
     },
     {
-      title: "Tên sản phẩm",
+      title: "Tên danh mục",
       dataIndex: "title",
       key: "title",
-      render: (text) => <span className="product-title">{text}</span>,
+      render: (text) => <span className="category-title">{text}</span>,
     },
     {
-      title: "Giá bán",
-      dataIndex: "newPrice",
-      key: "newPrice",
+      title: "Vị trí",
+      dataIndex: "position",
+      key: "position",
       align: "center",
-      render: (text) => (
-        <span className="product-price">
-          {Number(text).toLocaleString("vi-VN")}₫
-        </span>
-      ),
-    },
-    {
-      title: "Danh mục",
-      dataIndex: "categoryName",
-      key: "categoryName",
-      align: "center",
-      render: (text) => <span className="product-category">{text}</span>,
-    },
-    {
-      title: "Thương hiệu",
-      dataIndex: "brandName",
-      key: "brandName",
-      align: "center",
-      render: (text) => <span className="product-brand">{text}</span>,
-    },
-    {
-      title: "Tồn kho",
-      dataIndex: "stock",
-      key: "stock",
-      align: "center",
-      render: (text) => <span className="product-stock">{text}</span>,
+      render: (text) => <span className="category-position">{text}</span>,
     },
     {
       title: "Trạng thái",
@@ -117,7 +92,7 @@ function ProductTable({ data = [], pagination, onPageChange, onReload }) {
 
         return (
           <span
-            className={`product-status ${statusData.className}`}
+            className={`category-status ${statusData.className}`}
             onClick={() => handleChangeStatus(record)}
           >
             {statusData.text}
@@ -130,17 +105,17 @@ function ProductTable({ data = [], pagination, onPageChange, onReload }) {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <div className="product-action">
-          <button className="product-action__view" title="Xem chi tiết">
+        <div className="category-action">
+          <button className="category-action__view" title="Xem chi tiết">
             <i className="fa-solid fa-eye"></i>
           </button>
 
-          <button className="product-action__edit" title="Chỉnh sửa">
+          <button className="category-action__edit" title="Chỉnh sửa">
             <i className="fa-solid fa-pen-to-square"></i>
           </button>
 
           <button
-            className="product-action__delete"
+            className="category-action__delete"
             title="Xóa"
             onClick={() => {
               handleRemove(record);
@@ -158,23 +133,20 @@ function ProductTable({ data = [], pagination, onPageChange, onReload }) {
     _id: item._id,
     thumbnail: item.thumbnail,
     title: item.title,
-    newPrice: item.newPrice,
-    categoryName: item.categoryName,
-    brandName: item.brandName,
-    stock: item.stock,
+    position: item.position,
     status: item.status,
   }));
 
   return (
     <>
-      <div className="product-table">
+      <div className="category-table">
         <Table
           columns={columns}
           dataSource={dataTable}
           pagination={{
             current: pagination.currentPage,
             pageSize: pagination.limit,
-            total: pagination.totalProducts,
+            total: pagination.totalCategories,
             onChange: onPageChange,
           }}
         />
@@ -182,4 +154,4 @@ function ProductTable({ data = [], pagination, onPageChange, onReload }) {
     </>
   );
 }
-export default ProductTable;
+export default CategoryTable;

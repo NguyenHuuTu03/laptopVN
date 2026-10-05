@@ -22,6 +22,7 @@ function Products() {
   });
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,8 +33,7 @@ function Products() {
       }
     };
     fetchData();
-  }, [searchParams]);
-  console.log(data);
+  }, [searchParams, reload]);
 
   const handleFilterChange = (key, value) => {
     const currentParams = Object.fromEntries([...searchParams]);
@@ -202,6 +202,7 @@ function Products() {
               data={data?.products}
               pagination={data?.pagination}
               onPageChange={handleChangePage}
+              onReload={() => setReload(!reload)}
             />
           </div>
         </div>
