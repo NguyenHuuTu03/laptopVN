@@ -92,8 +92,6 @@ function Dashboard() {
     legend: { color: { position: "bottom" } },
     tooltip: { items: [{ field: "count", name: "Số lượng" }] },
   };
-  console.log(data);
-  console.log(data?.featuredProducts);
 
   return (
     <>

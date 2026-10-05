@@ -26,6 +26,16 @@ module.exports.index = async (req, res) => {
     }
     //filter
 
+    const allBrands = await Brands.find({
+      deleted: false,
+    }).select("country");
+    let countries = [];
+    for (const brand of allBrands) {
+      if (!countries.includes(brand.country)) {
+        countries.push(brand.country);
+      }
+    }
+
     //sort
     let sort = {
       position: -1,
@@ -51,7 +61,7 @@ module.exports.index = async (req, res) => {
       .skip(skip)
       .select("title thumbnail position country status");
 
-    const totalBrands = brands.length;
+    const totalBrands = await Brands.countDocuments(find);
     const totalPages = Math.ceil(totalBrands / limit);
 
     res.json({
@@ -59,6 +69,7 @@ module.exports.index = async (req, res) => {
       message: "Thành công!",
       data: {
         brands,
+        countries,
         pagination: {
           currentPage: page,
           limit,

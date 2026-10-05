@@ -1,6 +1,5 @@
-.admin-categories {
+.admin-brands {
   min-height: 100%;
-
   background: #f5f6f8;
 
   // =========================
@@ -75,6 +74,7 @@
         border-color: #4096ff !important;
       }
     }
+
     .ant-btn {
       height: 40px;
     }
@@ -98,7 +98,6 @@
     border-radius: 7px;
 
     cursor: pointer;
-
     transition: all 0.2s ease;
 
     i {
@@ -138,7 +137,7 @@
   // =========================
   &__filter {
     display: grid;
-    grid-template-columns: 220px 220px;
+    grid-template-columns: repeat(3, 220px);
     gap: 12px;
 
     padding: 16px 20px;

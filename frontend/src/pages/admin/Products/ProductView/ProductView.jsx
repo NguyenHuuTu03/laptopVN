@@ -6,7 +6,7 @@ import { getProducts } from "../../../../services/admin/product.services";
 import ProductTable from "../../../../components/admin/ProductTable/ProductTable";
 import { useSearchParams } from "react-router-dom";
 
-import "./Products.scss";
+import "./ProductView.scss";
 
 function Products() {
   const [data, setData] = useState({

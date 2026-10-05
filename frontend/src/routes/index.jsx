@@ -15,9 +15,8 @@ import ResetPassword from "../pages/client/Users/ResetPassword/ResetPassword";
 import VerifyOTP from "../pages/client/Users/VerifyOTP/VerifyOTP";
 import PrivateRoute from "./PrivateRoute";
 import LoginAdmin from "../pages/admin/Auth/LoginAdmin/LoginAdmin";
-import Products from "../pages/admin/Products/ProductList/Products";
+import ProductView from "../pages/admin/Products/ProductView/ProductView";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
-import BrandList from "../pages/admin/Brands/BrandList/BrandList";
 import OrderList from "../pages/admin/Orders/OrderList/OrderList";
 import UserList from "../pages/admin/Users/UserList/UserList";
 import OrderShip from "../pages/admin/Shipper/OrderShip/OrderShip";
@@ -25,6 +24,7 @@ import RoleList from "../pages/admin/Roles/RoleList/RoleList";
 import Permission from "../pages/admin/Roles/Permission/Permission";
 import Setting from "../pages/admin/Setting/Setting";
 import CategoryView from "../pages/admin/Categories/CategoryView/CategoryView";
+import BrandView from "../pages/admin/Brands/BrandView/BrandView";
 
 export const routes = [
   {
@@ -92,7 +92,7 @@ export const routes = [
           },
           {
             path: "products",
-            element: <Products />,
+            element: <ProductView />,
           },
           {
             path: "categories",
@@ -100,7 +100,7 @@ export const routes = [
           },
           {
             path: "brands",
-            element: <BrandList />,
+            element: <BrandView />,
           },
           {
             path: "orders",

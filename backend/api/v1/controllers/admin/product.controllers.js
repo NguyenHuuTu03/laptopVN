@@ -68,7 +68,6 @@ module.exports.index = async (req, res) => {
       const brand = await Brands.findOne({
         _id: product.brandId,
         deleted: false,
-        status: "active",
       }).select("title");
 
       product.brandName = brand.title;

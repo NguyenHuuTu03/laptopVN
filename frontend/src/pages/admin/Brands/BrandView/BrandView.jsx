@@ -2,20 +2,20 @@ import { Input } from "antd";
 const { Search } = Input;
 import { Select } from "antd";
 import { useEffect, useState } from "react";
-import CategoryTable from "../../../../components/admin/CategoryTable/CategoryTable";
 import { useSearchParams } from "react-router-dom";
 
-import { getCategories } from "../../../../services/admin/category.services";
+import "./BrandView.scss";
+import { getBrands } from "../../../../services/admin/brand.services";
+import BrandTable from "../../../../components/admin/BrandTable/BrandTable";
 
-import "./CategoryView.scss";
-
-function CategoryView() {
+function BrandView() {
   const [data, setData] = useState({
-    categories: [],
+    brands: [],
+    countries: [],
     pagination: {
       currentPage: 1,
       limit: 10,
-      totalCategories: 0,
+      totalBrands: 0,
       totalPages: 0,
     },
   });
@@ -26,7 +26,7 @@ function CategoryView() {
   useEffect(() => {
     const fetchData = async () => {
       let params = Object.fromEntries([...searchParams]);
-      const result = await getCategories(params);
+      const result = await getBrands(params);
       if (result.code === 200) {
         setData(result.data);
       }
@@ -64,6 +64,10 @@ function CategoryView() {
     handleFilterChange("status", value);
   };
 
+  const handleCountryChange = (value) => {
+    handleFilterChange("country", value);
+  };
+
   const optionStatus = [
     {
       value: "active",
@@ -74,6 +78,13 @@ function CategoryView() {
       label: "Dừng hoạt động",
     },
   ];
+
+  const optionCountry = data?.countries.map((item) => {
+    return {
+      value: item,
+      label: item,
+    };
+  });
 
   const optionSort = [
     {
@@ -94,31 +105,33 @@ function CategoryView() {
     },
   ];
 
+  console.log(data);
+
   return (
     <>
-      <div className="admin-categories">
-        <div className="admin-categories__header">
-          <div className="admin-categories__title">
-            <h1>Quản lý danh mục</h1>
+      <div className="admin-brands">
+        <div className="admin-brands__header">
+          <div className="admin-brands__title">
+            <h1>Quản lý thương hiệu</h1>
           </div>
 
-          <div className="admin-categories__nav">
-            <div className="admin-categories__search">
+          <div className="admin-brands__nav">
+            <div className="admin-brands__search">
               <Search
-                placeholder="Tìm kiếm theo tên danh mục..."
+                placeholder="Tìm kiếm theo tên thương hiệu..."
                 onSearch={handleSearch}
               />
             </div>
-            <div className="admin-categories__add">
+            <div className="admin-brands__add">
               <i className="fa-solid fa-plus"></i>
               <p>Thêm danh mục</p>
             </div>
           </div>
         </div>
 
-        <div className="admin-categories__main">
-          <div className="admin-categories__filter">
-            <div className="admin-categories__filter-status">
+        <div className="admin-brands__main">
+          <div className="admin-brands__filter">
+            <div className="admin-brands__filter-status">
               <Select
                 placeholder="Chọn trạng thái"
                 options={optionStatus}
@@ -126,8 +139,16 @@ function CategoryView() {
                 value={searchParams.get("status")}
               />
             </div>
+            <div className="admin-brands__filter-status">
+              <Select
+                placeholder="Chọn quốc gia"
+                options={optionCountry}
+                onChange={handleCountryChange}
+                value={searchParams.get("country")}
+              />
+            </div>
 
-            <div className="admin-categories__filter-sort">
+            <div className="admin-brands__filter-sort">
               <Select
                 placeholder="Sắp xếp"
                 options={optionSort}
@@ -137,9 +158,9 @@ function CategoryView() {
             </div>
           </div>
 
-          <div className="admin-categories__table">
-            <CategoryTable
-              data={data?.categories}
+          <div className="admin-brands__table">
+            <BrandTable
+              data={data?.brands}
               pagination={data?.pagination}
               onPageChange={handleChangePage}
               onReload={() => setReload(!reload)}
@@ -150,4 +171,4 @@ function CategoryView() {
     </>
   );
 }
-export default CategoryView;
+export default BrandView;
