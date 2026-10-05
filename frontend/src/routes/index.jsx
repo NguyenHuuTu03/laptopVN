@@ -15,7 +15,7 @@ import ResetPassword from "../pages/client/Users/ResetPassword/ResetPassword";
 import VerifyOTP from "../pages/client/Users/VerifyOTP/VerifyOTP";
 import PrivateRoute from "./PrivateRoute";
 import LoginAdmin from "../pages/admin/Auth/LoginAdmin/LoginAdmin";
-import Products from "../pages/admin/Products/Products";
+import Products from "../pages/admin/Products/ProductList/Products";
 import CategoryList from "../pages/admin/Categories/CategoryList/CategoryList";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
 import BrandList from "../pages/admin/Brands/BrandList/BrandList";

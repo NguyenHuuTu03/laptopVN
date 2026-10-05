@@ -26,7 +26,7 @@ module.exports.index = async (req, res) => {
       find.status = req.query.status;
     }
     if (req.query.featured) {
-      find.featured = req.query.featured === true;
+      find.featured = req.query.featured === "true";
     }
     if (req.query.categoryId) {
       find.categoryId = req.query.categoryId;
@@ -62,7 +62,7 @@ module.exports.index = async (req, res) => {
         item.price < min.price ? item : min,
       );
 
-      product.price = variant.price;
+      product.newPrice = variant.price;
       product.stock = variants.reduce((total, item) => total + item.stock, 0);
 
       const brand = await Brands.findOne({
@@ -93,11 +93,22 @@ module.exports.index = async (req, res) => {
     const totalPages = Math.ceil(totalProducts / limit);
 
     const productsPagination = products.slice(skip, skip + limit);
+
+    const categories = await Categories.find({
+      deleted: false,
+      status: "active",
+    });
+    const brands = await Brands.find({
+      deleted: false,
+      status: "active",
+    });
     res.json({
       code: 200,
       message: "Lấy danh sách sản phẩm thành công!",
       data: {
         products: productsPagination,
+        categories,
+        brands,
         pagination: {
           currentPage: page,
           limit: limit,
