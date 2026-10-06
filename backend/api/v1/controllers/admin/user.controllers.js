@@ -58,7 +58,7 @@ module.exports.index = async (req, res) => {
         _id: user.roleId,
         deleted: false,
       }).select("title");
-      user.role = role;
+      user.role = role.title;
     }
     res.json({
       code: 200,

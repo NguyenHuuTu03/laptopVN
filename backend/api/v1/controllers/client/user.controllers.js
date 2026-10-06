@@ -69,7 +69,6 @@ module.exports.login = async (req, res) => {
     const user = await Users.findOne({
       email: req.body.email,
       deleted: false,
-      status: "active",
     });
 
     if (!user) {
@@ -91,6 +90,13 @@ module.exports.login = async (req, res) => {
         message: "Mật khẩu không đúng!",
       });
       return;
+    }
+
+    if (user.status !== "active") {
+      return res.json({
+        code: 400,
+        message: "Tài khoản đã bị khoá!",
+      });
     }
 
     const token = jwt.sign(

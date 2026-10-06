@@ -18,13 +18,13 @@ import LoginAdmin from "../pages/admin/Auth/LoginAdmin/LoginAdmin";
 import ProductView from "../pages/admin/Products/ProductView/ProductView";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
 import OrderView from "../pages/admin/Orders/OrderView/OrderView";
-import UserList from "../pages/admin/Users/UserList/UserList";
 import OrderShip from "../pages/admin/Shipper/OrderShip/OrderShip";
 import RoleList from "../pages/admin/Roles/RoleList/RoleList";
 import Permission from "../pages/admin/Roles/Permission/Permission";
 import Setting from "../pages/admin/Setting/Setting";
 import CategoryView from "../pages/admin/Categories/CategoryView/CategoryView";
 import BrandView from "../pages/admin/Brands/BrandView/BrandView";
+import UserView from "../pages/admin/Users/UserView/UserView";
 
 export const routes = [
   {
@@ -108,7 +108,7 @@ export const routes = [
           },
           {
             path: "users",
-            element: <UserList />,
+            element: <UserView />,
           },
           {
             path: "shipper",
