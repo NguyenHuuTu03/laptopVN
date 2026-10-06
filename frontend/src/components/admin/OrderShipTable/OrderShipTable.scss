@@ -1,0 +1,252 @@
+.order-table {
+  width: 100%;
+
+  .ant-table-wrapper {
+    width: 100%;
+  }
+
+  .ant-table {
+    color: #374151;
+    font-size: 14px;
+  }
+
+  // Header
+  .ant-table-thead > tr > th {
+    height: 52px;
+    padding: 12px 16px;
+    color: #374151;
+    background: #fafafa;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+
+    &::before {
+      display: none !important;
+    }
+  }
+
+  // Body
+  .ant-table-tbody > tr {
+    transition: background 0.2s ease;
+
+    > td {
+      height: 64px;
+      padding: 12px 16px;
+      color: #374151;
+      background: #fff;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+
+    &:hover > td {
+      background: #f7fbff;
+    }
+
+    &:last-child > td {
+      border-bottom: none;
+    }
+  }
+
+  // Tên khách hàng
+  .ship-name {
+    display: inline-block;
+    max-width: 180px;
+    overflow: hidden;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Số điện thoại
+  .ship-phone {
+    color: #4b5563;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  // Địa chỉ
+  .ship-address {
+    display: inline-block;
+    max-width: 280px;
+    overflow: hidden;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  // Tổng tiền
+  .ship-price {
+    color: #d70018;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  // Trạng thái thanh toán
+  .ship-status {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 120px;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      border-radius: 50%;
+    }
+
+    // Chưa thanh toán
+    &.pending {
+      color: #b45309;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+
+      &::before {
+        background: #f59e0b;
+      }
+    }
+
+    // Đã thanh toán
+    &.paid {
+      color: #15803d;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+
+      &::before {
+        background: #22c55e;
+      }
+    }
+  }
+
+  // Thao tác
+  .ship-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: 14px;
+      }
+    }
+
+    &__view {
+      color: #1677ff;
+
+      &:hover {
+        color: #fff;
+        background: #1677ff;
+        border-color: #1677ff;
+        box-shadow: 0 3px 8px rgba(22, 119, 255, 0.2);
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  // Pagination
+  .ant-pagination {
+    margin: 20px 0;
+
+    .ant-pagination-item {
+      border-radius: 6px;
+
+      a {
+        font-size: 14px;
+      }
+
+      &-active {
+        font-weight: 500;
+        border-color: #1677ff;
+
+        a {
+          color: #1677ff;
+        }
+      }
+
+      &:hover {
+        border-color: #1677ff;
+
+        a {
+          color: #1677ff;
+        }
+      }
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      .ant-pagination-item-link {
+        border-radius: 6px;
+
+        &:hover {
+          color: #1677ff;
+          border-color: #1677ff;
+        }
+      }
+    }
+
+    .ant-pagination-options {
+      .ant-select-selector {
+        border-radius: 6px;
+      }
+    }
+  }
+
+  // Empty
+  .ant-empty {
+    margin: 40px 0;
+
+    .ant-empty-description {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 1200px) {
+    overflow-x: auto;
+
+    .ant-table-wrapper {
+      min-width: 1000px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    overflow-x: auto;
+
+    .ant-table-wrapper {
+      min-width: 1000px;
+    }
+  }
+}

@@ -31,6 +31,12 @@ module.exports.orders = async (req, res) => {
       message: "Thành công!",
       data: {
         orders,
+        pagination: {
+          currentPage: page,
+          limit: limit,
+          totalOrders,
+          totalPages,
+        },
       },
     });
   } catch (error) {
@@ -45,30 +51,37 @@ module.exports.orders = async (req, res) => {
 module.exports.acceptOrder = async (req, res) => {
   try {
     const orderId = req.params.orderId;
+
     const order = await Orders.findOne({
       _id: orderId,
       orderStatus: "CONFIRMED",
     });
+
     if (!order) {
       return res.json({
         code: 404,
         message: "Đơn hàng không tồn tại hoặc đã được nhận",
       });
     }
-    order.orderStatus = "SHIPPING";
-    order.shipperId = req.userId;
-    await order.save();
-    res.json({
+
+    await Orders.updateOne(
+      { _id: orderId },
+      {
+        orderStatus: "SHIPPING",
+        shipperId: req.userId,
+      },
+    );
+
+    return res.json({
       code: 200,
       message: "Nhận đơn hàng thành công!",
-      data: {
-        order,
-      },
     });
   } catch (error) {
-    res.json({
+    console.log("ACCEPT ORDER ERROR:", error);
+
+    return res.json({
       code: 500,
-      message: "Thất bại!",
+      message: "Nhận đơn hàng thất bại!",
     });
   }
 };

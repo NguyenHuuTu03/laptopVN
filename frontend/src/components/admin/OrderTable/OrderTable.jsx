@@ -4,9 +4,9 @@ import "./OrderTable.scss";
 import { changeStatus } from "../../../services/admin/order.services";
 
 function OrderTable({ data = [], pagination, onPageChange, onReload }) {
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString("vi-VN");
-  };
+  // const formatDate = (date) => {
+  //   return new Date(date).toLocaleDateString("vi-VN");
+  // };
 
   const formatStatus = (status) => {
     switch (status) {
@@ -152,13 +152,13 @@ function OrderTable({ data = [], pagination, onPageChange, onReload }) {
         );
       },
     },
-    {
-      title: "Ngày đặt",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      align: "center",
-      render: (date) => <span className="order-date">{date}</span>,
-    },
+    // {
+    //   title: "Ngày đặt",
+    //   dataIndex: "createdAt",
+    //   key: "createdAt",
+    //   align: "center",
+    //   render: (date) => <span className="order-date">{date}</span>,
+    // },
     {
       title: "Thao tác",
       key: "action",
@@ -182,7 +182,7 @@ function OrderTable({ data = [], pagination, onPageChange, onReload }) {
     totalPrice: item.totalPrice,
     paymentMethod: item.paymentMethod,
     orderStatus: item.orderStatus,
-    createdAt: formatDate(item.createdAt),
+    // createdAt: formatDate(item.createdAt),
   }));
 
   return (

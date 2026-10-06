@@ -1,0 +1,166 @@
+.admin-ship {
+  min-height: 100%;
+  padding: 0;
+  background: #f5f6f8;
+
+  // =========================
+  // Header
+  // =========================
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 24px;
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+  }
+
+  &__title {
+    flex-shrink: 0;
+
+    h1 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+  }
+
+  // =========================
+  // Header action
+  // =========================
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 12px;
+  }
+
+  &__add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    color: #1677ff;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 13px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    &:hover {
+      color: #fff;
+      background: #1677ff;
+      border-color: #1677ff;
+      box-shadow: 0 4px 10px rgba(22, 119, 255, 0.18);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  // =========================
+  // Main
+  // =========================
+  &__main {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+  }
+
+  &__table {
+    width: 100%;
+  }
+
+  // =========================
+  // Responsive
+  // =========================
+  @media (max-width: 992px) {
+    padding: 20px;
+
+    &__header {
+      align-items: flex-start;
+      flex-direction: column;
+      padding: 18px 20px;
+    }
+
+    &__nav {
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    &__add {
+      flex-shrink: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px;
+
+    &__header {
+      gap: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 21px;
+      }
+    }
+
+    &__nav {
+      width: 100%;
+    }
+
+    &__add {
+      width: 100%;
+    }
+
+    &__main {
+      border-radius: 8px;
+    }
+
+    &__table {
+      overflow-x: auto;
+    }
+  }
+
+  @media (max-width: 576px) {
+    padding: 12px;
+
+    &__header {
+      padding: 16px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    &__add {
+      height: 38px;
+      font-size: 13px;
+    }
+  }
+}

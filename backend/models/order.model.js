@@ -13,6 +13,7 @@ const orderSchema = new mongoose.Schema(
     paymentStatus: String,
     orderStatus: String,
     note: String,
+    shipperId: String,
   },
   {
     timestamps: true,

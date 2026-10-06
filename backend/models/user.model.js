@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     phone: String,
     avatar: String,
     roleId: String,
-    shipperId: String,
+
     address: String,
     status: {
       type: String,
