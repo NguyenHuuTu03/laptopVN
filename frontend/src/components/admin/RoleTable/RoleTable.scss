@@ -1,0 +1,306 @@
+.role-table {
+  width: 100%;
+
+  .ant-table-wrapper {
+    width: 100%;
+  }
+
+  .ant-table {
+    color: #374151;
+    font-size: 14px;
+  }
+
+  // =========================
+  // Table header
+  // =========================
+  .ant-table-thead > tr > th {
+    height: 52px;
+    padding: 12px 16px;
+    color: #374151;
+    background: #fafafa;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+
+    &::before {
+      display: none !important;
+    }
+  }
+
+  // =========================
+  // Table body
+  // =========================
+  .ant-table-tbody > tr {
+    transition: background 0.2s ease;
+
+    > td {
+      height: 64px;
+      padding: 12px 16px;
+      color: #374151;
+      background: #fff;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+
+    &:hover > td {
+      background: #f7fbff;
+    }
+
+    &:last-child > td {
+      border-bottom: none;
+    }
+  }
+
+  // =========================
+  // Tên vai trò
+  // =========================
+  .role-name {
+    display: inline-flex;
+    align-items: center;
+    max-width: 180px;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // =========================
+  // Mô tả
+  // =========================
+  .role-description {
+    display: inline-block;
+    max-width: 420px;
+    overflow: hidden;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // =========================
+  // Số người dùng
+  // =========================
+  .role-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 30px;
+    padding: 0 10px;
+    color: #1677ff;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  // =========================
+  // Trạng thái
+  // =========================
+  .role-status {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 108px;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      border-radius: 50%;
+    }
+
+    // Hoạt động
+    &.active {
+      color: #15803d;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+
+      &::before {
+        background: #22c55e;
+      }
+
+      &:hover {
+        background: #dcfce7;
+        border-color: #86efac;
+      }
+    }
+
+    // Dừng hoạt động
+    &.inactive {
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+
+      &::before {
+        background: #ef4444;
+      }
+
+      &:hover {
+        background: #fee2e2;
+        border-color: #fca5a5;
+      }
+    }
+  }
+
+  // =========================
+  // Actions
+  // =========================
+  .role-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: 13px;
+      }
+    }
+
+    &__view {
+      color: #1677ff;
+
+      &:hover {
+        color: #fff;
+        background: #1677ff;
+        border-color: #1677ff;
+        box-shadow: 0 3px 8px rgba(22, 119, 255, 0.2);
+      }
+    }
+
+    &__edit {
+      color: #d97706;
+
+      &:hover {
+        color: #fff;
+        background: #f59e0b;
+        border-color: #f59e0b;
+        box-shadow: 0 3px 8px rgba(245, 158, 11, 0.18);
+      }
+    }
+
+    &__delete {
+      color: #dc2626;
+
+      &:hover {
+        color: #fff;
+        background: #ef4444;
+        border-color: #ef4444;
+        box-shadow: 0 3px 8px rgba(239, 68, 68, 0.18);
+      }
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+  }
+
+  // =========================
+  // Pagination
+  // =========================
+  .ant-pagination {
+    margin: 20px 0;
+
+    .ant-pagination-item {
+      border-radius: 6px;
+
+      a {
+        font-size: 14px;
+      }
+
+      &-active {
+        font-weight: 500;
+        border-color: #1677ff;
+
+        a {
+          color: #1677ff;
+        }
+      }
+
+      &:hover {
+        border-color: #1677ff;
+
+        a {
+          color: #1677ff;
+        }
+      }
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      .ant-pagination-item-link {
+        border-radius: 6px;
+
+        &:hover {
+          color: #1677ff;
+          border-color: #1677ff;
+        }
+      }
+    }
+
+    .ant-pagination-options {
+      .ant-select-selector {
+        border-radius: 6px;
+      }
+    }
+  }
+
+  // =========================
+  // Empty
+  // =========================
+  .ant-empty {
+    margin: 40px 0;
+
+    .ant-empty-description {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+  }
+
+  // =========================
+  // Responsive
+  // =========================
+  @media (max-width: 1200px) {
+    overflow-x: auto;
+
+    .ant-table-wrapper {
+      min-width: 950px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    overflow-x: auto;
+
+    .ant-table-wrapper {
+      min-width: 950px;
+    }
+  }
+}

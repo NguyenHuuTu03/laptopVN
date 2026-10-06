@@ -19,7 +19,7 @@ import ProductView from "../pages/admin/Products/ProductView/ProductView";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
 import OrderView from "../pages/admin/Orders/OrderView/OrderView";
 import OrderShip from "../pages/admin/Shipper/OrderShip/OrderShip";
-import RoleList from "../pages/admin/Roles/RoleList/RoleList";
+import RoleList from "../pages/admin/Roles/RoleView/RoleView";
 import Permission from "../pages/admin/Roles/Permission/Permission";
 import Setting from "../pages/admin/Setting/Setting";
 import CategoryView from "../pages/admin/Categories/CategoryView/CategoryView";

@@ -4,17 +4,17 @@ import { Select } from "antd";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import "./UserView.scss";
-import { getUsers } from "../../../../services/admin/user.services";
-import UserTable from "../../../../components/admin/UserTable/UserTable";
+import "./RoleView.scss";
+import { getRoles } from "../../../../services/admin/role.services";
+import RoleTable from "../../../../components/admin/RoleTable/RoleTable";
 
-function UserView() {
+function RoleView() {
   const [data, setData] = useState({
-    users: [],
+    roles: [],
     pagination: {
       currentPage: 1,
       limit: 10,
-      totalUsers: 0,
+      totalRoles: 0,
       totalPages: 0,
     },
   });
@@ -25,7 +25,7 @@ function UserView() {
   useEffect(() => {
     const fetchData = async () => {
       let params = Object.fromEntries([...searchParams]);
-      const result = await getUsers(params);
+      const result = await getRoles(params);
       if (result.code === 200) {
         setData(result.data);
       }
@@ -55,10 +55,6 @@ function UserView() {
     handleFilterChange("keyword", value);
   };
 
-  const handleSort = (value) => {
-    handleFilterChange("sort", value);
-  };
-
   const handleStatusChange = (value) => {
     handleFilterChange("status", value);
   };
@@ -74,44 +70,33 @@ function UserView() {
     },
   ];
 
-  const optionSort = [
-    { value: "createdAt-desc", label: "Mới nhất" },
-    { value: "createdAt-asc", label: "Cũ nhất" },
-    {
-      value: "fullName-asc",
-      label: "Tên A-Z",
-    },
-    {
-      value: "fullName-desc",
-      label: "Tên Z-A",
-    },
-  ];
+  console.log(data);
 
   return (
     <>
-      <div className="admin-users">
-        <div className="admin-users__header">
-          <div className="admin-users__title">
-            <h1>Quản lý người dùng</h1>
+      <div className="admin-roles">
+        <div className="admin-roles__header">
+          <div className="admin-roles__title">
+            <h1>Quản lý vai trò</h1>
           </div>
 
-          <div className="admin-users__nav">
-            <div className="admin-users__search">
+          <div className="admin-roles__nav">
+            <div className="admin-roles__search">
               <Search
-                placeholder="Tìm kiếm theo tên hoặc email..."
+                placeholder="Tìm kiếm theo tên..."
                 onSearch={handleSearch}
               />
             </div>
-            <div className="admin-users__add">
+            <div className="admin-roles__add">
               <i className="fa-solid fa-plus"></i>
-              <p>Thêm người dùng</p>
+              <p>Thêm vai trò</p>
             </div>
           </div>
         </div>
 
-        <div className="admin-users__main">
-          <div className="admin-users__filter">
-            <div className="admin-users__filter-status">
+        <div className="admin-roles__main">
+          <div className="admin-roles__filter">
+            <div className="admin-roles__filter-status">
               <Select
                 placeholder="Trạng thái"
                 options={optionStatus}
@@ -119,20 +104,11 @@ function UserView() {
                 value={searchParams.get("status")}
               />
             </div>
-
-            <div className="admin-users__filter-sort">
-              <Select
-                placeholder="Sắp xếp"
-                options={optionSort}
-                onChange={handleSort}
-                value={searchParams.get("sort")}
-              />
-            </div>
           </div>
 
-          <div className="admin-users__table">
-            <UserTable
-              data={data?.users}
+          <div className="admin-roles__table">
+            <RoleTable
+              data={data?.roles}
               pagination={data?.pagination}
               onPageChange={handleChangePage}
               onReload={() => setReload(!reload)}
@@ -143,4 +119,4 @@ function UserView() {
     </>
   );
 }
-export default UserView;
+export default RoleView;

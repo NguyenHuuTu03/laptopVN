@@ -31,12 +31,27 @@ module.exports.index = async (req, res) => {
     const roles = await Roles.find(find)
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .lean();
+
+    for (const role of roles) {
+      role.userCount = await Users.countDocuments({
+        roleId: role._id,
+        deleted: false,
+        status: "active",
+      });
+    }
     res.json({
       code: 200,
       message: "Thành công!",
       data: {
         roles,
+        pagination: {
+          currentPage: page,
+          limit,
+          totalRoles,
+          totalPages,
+        },
       },
     });
   } catch (error) {
@@ -187,6 +202,7 @@ module.exports.delete = async (req, res) => {
       });
     }
     role.deleted = true;
+    await role.save();
     res.json({
       code: 200,
       message: "Xoá vai trò thành công!",
