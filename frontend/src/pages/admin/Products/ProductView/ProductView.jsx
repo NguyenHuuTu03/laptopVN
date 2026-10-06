@@ -157,7 +157,7 @@ function Products() {
           <div className="admin-products__filter">
             <div className="admin-products__filter-status">
               <Select
-                placeholder="Chọn trạng thái"
+                placeholder="Trạng thái"
                 options={optionStatus}
                 onChange={handleStatusChange}
                 value={searchParams.get("status")}
@@ -165,7 +165,7 @@ function Products() {
             </div>
             <div className="admin-products__filter-featured">
               <Select
-                placeholder="Chọn sản phẩm nổi bật"
+                placeholder="Sản phẩm nổi bật"
                 options={optionFeatured}
                 onChange={handleFeaturedChange}
                 value={searchParams.get("featured")}
@@ -173,7 +173,7 @@ function Products() {
             </div>
             <div className="admin-products__filter-categories">
               <Select
-                placeholder="Chọn danh mục"
+                placeholder="Danh mục"
                 options={optionCategory}
                 onChange={handleCategoryChange}
                 value={searchParams.get("categoryId")}
@@ -181,7 +181,7 @@ function Products() {
             </div>
             <div className="admin-products__filter-brands">
               <Select
-                placeholder="Chọn thương hiệu"
+                placeholder="Thương hiệu"
                 options={optionBrands}
                 onChange={handleBrandChange}
                 value={searchParams.get("brandId")}

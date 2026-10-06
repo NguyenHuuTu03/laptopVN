@@ -4,18 +4,18 @@ import { Select } from "antd";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import "./BrandView.scss";
-import { getBrands } from "../../../../services/admin/brand.services";
-import BrandTable from "../../../../components/admin/BrandTable/BrandTable";
+import "./OrderView.scss";
+import { getOrders } from "../../../../services/admin/order.services";
+import OrderTable from "../../../../components/admin/OrderTable/OrderTable";
 
-function BrandView() {
+function OrderView() {
   const [data, setData] = useState({
-    brands: [],
+    orders: [],
     countries: [],
     pagination: {
       currentPage: 1,
       limit: 10,
-      totalBrands: 0,
+      totalOrders: 0,
       totalPages: 0,
     },
   });
@@ -26,7 +26,7 @@ function BrandView() {
   useEffect(() => {
     const fetchData = async () => {
       let params = Object.fromEntries([...searchParams]);
-      const result = await getBrands(params);
+      const result = await getOrders(params);
       if (result.code === 200) {
         setData(result.data);
       }
@@ -61,77 +61,75 @@ function BrandView() {
   };
 
   const handleStatusChange = (value) => {
-    handleFilterChange("status", value);
+    handleFilterChange("orderStatus", value);
   };
 
-  const handleCountryChange = (value) => {
-    handleFilterChange("country", value);
+  const handleMethodChange = (value) => {
+    handleFilterChange("paymentMethod", value);
   };
 
   const optionStatus = [
     {
-      value: "active",
-      label: "Hoạt động",
+      value: "PENDING",
+      label: "Chờ xác nhận",
     },
     {
-      value: "inactive",
-      label: "Dừng hoạt động",
+      value: "CONFIRMED",
+      label: "Đã xác nhận",
+    },
+    {
+      value: "SHIPPING",
+      label: "Đang giao",
+    },
+    {
+      value: "DELIVERED",
+      label: "Đã giao",
+    },
+    {
+      value: "CANCELLED",
+      label: "Đã huỷ",
     },
   ];
 
-  const optionCountry = data?.countries.map((item) => {
-    return {
-      value: item,
-      label: item,
-    };
-  });
+  const optionMethod = [
+    {
+      value: "COD",
+      label: "COD",
+    },
+    {
+      value: "VNPay",
+      label: "VNPay",
+    },
+  ];
 
   const optionSort = [
-    {
-      value: "position-asc",
-      label: "Vị trí tăng dần",
-    },
-    {
-      value: "position-desc",
-      label: "Vị trí giảm dần",
-    },
-    {
-      value: "title-asc",
-      label: "Tên A-Z",
-    },
-    {
-      value: "title-desc",
-      label: "Tên Z-A",
-    },
+    { value: "createdAt-desc", label: "Mới nhất" },
+    { value: "createdAt-asc", label: "Cũ nhất" },
+    { value: "totalPrice-desc", label: "Giá trị cao → thấp" },
+    { value: "totalPrice-asc", label: "Giá trị thấp → cao" },
   ];
-
-  console.log(data);
 
   return (
     <>
-      <div className="admin-brands">
-        <div className="admin-brands__header">
-          <div className="admin-brands__title">
-            <h1>Quản lý thương hiệu</h1>
+      <div className="admin-orders">
+        <div className="admin-orders__header">
+          <div className="admin-orders__title">
+            <h1>Quản lý đơn hàng</h1>
           </div>
 
-          <div className="admin-brands__nav">
-            <div className="admin-brands__search">
+          <div className="admin-orders__nav">
+            <div className="admin-orders__search">
               <Search
-                placeholder="Tìm kiếm theo tên thương hiệu..."
+                placeholder="Tìm kiếm theo số điện thoại..."
                 onSearch={handleSearch}
               />
-            </div>
-            <div className="admin-brands__add">
-              <i className="fa-solid fa-plus"></i>
-              <p>Thêm danh mục</p>
             </div>
           </div>
         </div>
 
-        <div className="admin-brands__main">
-          <div className="admin-brands__filter">
-            <div className="admin-brands__filter-status">
+        <div className="admin-orders__main">
+          <div className="admin-orders__filter">
+            <div className="admin-orders__filter-status">
               <Select
                 placeholder="Trạng thái"
                 options={optionStatus}
@@ -139,16 +137,17 @@ function BrandView() {
                 value={searchParams.get("status")}
               />
             </div>
-            <div className="admin-brands__filter-status">
+
+            <div className="admin-orders__filter-method">
               <Select
-                placeholder="Quốc gia"
-                options={optionCountry}
-                onChange={handleCountryChange}
-                value={searchParams.get("country")}
+                placeholder="Thanh toán"
+                options={optionMethod}
+                onChange={handleMethodChange}
+                value={searchParams.get("paymentMethod")}
               />
             </div>
 
-            <div className="admin-brands__filter-sort">
+            <div className="admin-orders__filter-sort">
               <Select
                 placeholder="Sắp xếp"
                 options={optionSort}
@@ -159,8 +158,8 @@ function BrandView() {
           </div>
 
           <div className="admin-brands__table">
-            <BrandTable
-              data={data?.brands}
+            <OrderTable
+              data={data?.orders}
               pagination={data?.pagination}
               onPageChange={handleChangePage}
               onReload={() => setReload(!reload)}
@@ -171,4 +170,4 @@ function BrandView() {
     </>
   );
 }
-export default BrandView;
+export default OrderView;

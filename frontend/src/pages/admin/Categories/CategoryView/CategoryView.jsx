@@ -120,7 +120,7 @@ function CategoryView() {
           <div className="admin-categories__filter">
             <div className="admin-categories__filter-status">
               <Select
-                placeholder="Chọn trạng thái"
+                placeholder="Trạng thái"
                 options={optionStatus}
                 onChange={handleStatusChange}
                 value={searchParams.get("status")}

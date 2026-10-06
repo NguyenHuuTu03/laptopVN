@@ -17,7 +17,7 @@ import PrivateRoute from "./PrivateRoute";
 import LoginAdmin from "../pages/admin/Auth/LoginAdmin/LoginAdmin";
 import ProductView from "../pages/admin/Products/ProductView/ProductView";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
-import OrderList from "../pages/admin/Orders/OrderList/OrderList";
+import OrderView from "../pages/admin/Orders/OrderView/OrderView";
 import UserList from "../pages/admin/Users/UserList/UserList";
 import OrderShip from "../pages/admin/Shipper/OrderShip/OrderShip";
 import RoleList from "../pages/admin/Roles/RoleList/RoleList";
@@ -104,7 +104,7 @@ export const routes = [
           },
           {
             path: "orders",
-            element: <OrderList />,
+            element: <OrderView />,
           },
           {
             path: "users",
