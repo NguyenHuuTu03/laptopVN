@@ -40,21 +40,16 @@ function SideBar() {
       icon: <i className="fa-solid fa-truck-fast"></i>,
       label: "Giao hàng",
     },
+
     {
-      icon: <i className="fa-solid fa-users-gear"></i>,
-      label: "Vai trò",
-      children: [
-        {
-          key: "/admin/roles",
-          icon: <i className="fa-solid fa-user-shield"></i>,
-          label: "Nhóm quyền",
-        },
-        {
-          key: "/admin/roles/permission",
-          icon: <i className="fa-solid fa-key"></i>,
-          label: "Phân quyền",
-        },
-      ],
+      key: "/admin/roles",
+      icon: <i className="fa-solid fa-user-shield"></i>,
+      label: "Nhóm quyền",
+    },
+    {
+      key: "/admin/permissions",
+      icon: <i className="fa-solid fa-key"></i>,
+      label: "Phân quyền",
     },
     {
       key: "/admin/settings",

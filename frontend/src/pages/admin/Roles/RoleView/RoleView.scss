@@ -11,18 +11,37 @@
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+
     padding: 18px 24px;
     margin-bottom: 20px;
+
     background: #fff;
     border: 1px solid #f0f0f0;
     border-radius: 10px;
   }
 
   &__title {
+    position: relative;
     flex-shrink: 0;
+    padding-left: 14px;
+
+    &::before {
+      content: "";
+
+      position: absolute;
+      top: 2px;
+      left: 0;
+
+      width: 4px;
+      height: 28px;
+
+      background: #1677ff;
+      border-radius: 4px;
+    }
 
     h1 {
       margin: 0;
+
       color: #1f2937;
       font-size: 22px;
       font-weight: 700;
@@ -31,16 +50,20 @@
   }
 
   // =========================
-  // Search + Add
+  // HEADER NAV
   // =========================
   &__nav {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
     width: 100%;
     gap: 12px;
   }
 
+  // =========================
+  // SEARCH
+  // =========================
   &__search {
     width: 340px;
 
@@ -50,8 +73,10 @@
 
     .ant-input {
       height: 40px;
+
       color: #374151;
       font-size: 14px;
+
       border-color: #d9dfe7;
       border-radius: 7px 0 0 7px;
 
@@ -72,6 +97,7 @@
     .ant-input-search-button {
       width: 42px;
       height: 40px;
+
       background: #1677ff;
       border-color: #1677ff;
       border-radius: 0 7px 7px 0;
@@ -88,18 +114,22 @@
   }
 
   // =========================
-  // Add role button
+  // ADD BUTTON
   // =========================
   &__add {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+
     height: 40px;
     padding: 0 16px;
+
     color: #fff;
     background: #1677ff;
+    border: 1px solid #1677ff;
     border-radius: 7px;
+
     cursor: pointer;
     transition: all 0.2s ease;
 
@@ -109,6 +139,7 @@
 
     p {
       margin: 0;
+
       font-size: 14px;
       font-weight: 500;
       white-space: nowrap;
@@ -116,6 +147,7 @@
 
     &:hover {
       background: #4096ff;
+      border-color: #4096ff;
       box-shadow: 0 4px 10px rgba(22, 119, 255, 0.2);
     }
 

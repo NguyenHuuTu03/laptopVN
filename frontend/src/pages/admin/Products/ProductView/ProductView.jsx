@@ -130,7 +130,6 @@ function Products() {
       label: item.title,
     };
   });
-
   return (
     <>
       <div className="admin-products">
@@ -146,10 +145,10 @@ function Products() {
                 onSearch={handleSearch}
               />
             </div>
-            <div className="admin-products__add">
+            <button className="admin-products__add">
               <i className="fa-solid fa-plus"></i>
               <p>Thêm sản phẩm</p>
-            </div>
+            </button>
           </div>
         </div>
 

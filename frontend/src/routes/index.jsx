@@ -114,13 +114,9 @@ export const routes = [
             path: "shipper",
             element: <OrderShip />,
           },
-          {
-            path: "roles",
-            children: [
-              { path: "", element: <RoleList /> },
-              { path: "permission", element: <Permission /> },
-            ],
-          },
+          { path: "roles", element: <RoleList /> },
+          { path: "permissions", element: <Permission /> },
+
           {
             path: "settings",
             element: <Setting />,

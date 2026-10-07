@@ -68,13 +68,7 @@ function RoleTable({ data = [], pagination, onPageChange, onReload }) {
       align: "left",
       render: (text) => <span className="role-name">{text}</span>,
     },
-    {
-      title: "Mô tả",
-      dataIndex: "description",
-      align: "left",
-      key: "description",
-      render: (text) => <span className="role-description">{text}</span>,
-    },
+
     {
       title: "Số người dùng",
       dataIndex: "userCount",
@@ -132,7 +126,6 @@ function RoleTable({ data = [], pagination, onPageChange, onReload }) {
     key: item._id,
     _id: item._id,
     title: item.title,
-    description: item.description,
     userCount: item.userCount,
     status: item.status,
   }));

@@ -218,21 +218,21 @@ module.exports.delete = async (req, res) => {
 //[PATCH] /api/admin/roles/permission
 module.exports.permission = async (req, res) => {
   try {
-    for (const item of req.body) {
-      await Role.updateOne(
-        {
-          _id: item.id,
-        },
-        {
-          permissions: item.permissions,
-        },
-      );
-    }
+    const { roleId, permissions } = req.body;
+    await Roles.updateOne(
+      {
+        _id: roleId,
+      },
+      {
+        permissions: permissions,
+      },
+    );
     res.json({
       code: 200,
       message: "Phân quyền thành công!",
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 500,
       message: "Phân quyền thất bại!",

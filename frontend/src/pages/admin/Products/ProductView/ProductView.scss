@@ -1,120 +1,137 @@
-// Products.scss
-$ink: #1f2937;
-$line: #eef0f4;
-$line-strong: #d9dde3;
-$page-bg: #f5f6f8;
-$primary: #1677ff;
-$primary-hover: #4096ff;
-$primary-active: #0958d9;
-$radius: 12px;
-$control-h: 40px;
-
 .admin-products {
   min-height: 100%;
-  background: $page-bg;
+  padding: 0;
+  background: #f5f6f8;
 
   // =========================
   // HEADER
   // =========================
-
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px 24px;
-    margin-bottom: 20px;
+    gap: 20px;
+
     padding: 18px 24px;
+    margin-bottom: 20px;
+
     background: #fff;
-    border: 1px solid $line;
-    border-radius: $radius;
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
   }
 
   &__title {
-    flex: 1;
-    min-width: 0;
+    position: relative;
+    flex-shrink: 0;
+    padding-left: 14px;
+
+    &::before {
+      content: "";
+
+      position: absolute;
+      top: 2px;
+      left: 0;
+
+      width: 4px;
+      height: 28px;
+
+      background: #1677ff;
+      border-radius: 4px;
+    }
 
     h1 {
       margin: 0;
-      color: $ink;
+
+      color: #1f2937;
       font-size: 22px;
-      font-weight: 600;
-      line-height: 1.4;
       font-weight: 700;
+      line-height: 1.4;
     }
   }
 
+  // =========================
+  // HEADER NAV
+  // =========================
   &__nav {
     display: flex;
     align-items: center;
-    flex-shrink: 0;
+    justify-content: flex-end;
+
+    width: 100%;
     gap: 12px;
   }
 
   // =========================
   // SEARCH
   // =========================
-
   &__search {
-    width: 300px;
+    width: 340px;
 
     .ant-input-search {
-      width: 100%;
+      height: 40px;
     }
 
     .ant-input {
-      height: $control-h;
-      border-color: $line-strong;
-      border-radius: 8px 0 0 8px;
+      height: 40px;
 
-      &:hover,
-      &:focus {
-        border-color: $primary;
+      color: #374151;
+      font-size: 14px;
+
+      border-color: #d9dfe7;
+      border-radius: 7px 0 0 7px;
+
+      &:hover {
+        border-color: #1677ff;
       }
 
       &:focus {
-        box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+        border-color: #1677ff;
+        box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.08);
+      }
+
+      &::placeholder {
+        color: #9ca3af;
       }
     }
 
     .ant-input-search-button {
-      height: $control-h;
-      background: $primary;
-      border-color: $primary;
-      border-radius: 0 8px 8px 0;
+      width: 42px;
       height: 40px;
 
+      background: #1677ff;
+      border-color: #1677ff;
+      border-radius: 0 7px 7px 0;
+
       &:hover {
-        background: $primary-hover !important;
-        border-color: $primary-hover !important;
+        background: #4096ff !important;
+        border-color: #4096ff !important;
       }
     }
+
     .ant-btn {
       height: 40px;
     }
   }
 
   // =========================
-  // ADD
+  // ADD BUTTON
   // =========================
-
   &__add {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
     gap: 8px;
-    height: $control-h;
+
+    height: 40px;
     padding: 0 16px;
+
     color: #fff;
-    background: $primary;
-    border-radius: 8px;
+    background: #1677ff;
+    border: 1px solid #1677ff;
+    border-radius: 7px;
+
     cursor: pointer;
-    user-select: none;
-    transition:
-      background 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.15s ease;
+    transition: all 0.2s ease;
 
     i {
       font-size: 13px;
@@ -122,163 +139,223 @@ $control-h: 40px;
 
     p {
       margin: 0;
+
       font-size: 14px;
       font-weight: 500;
       white-space: nowrap;
     }
 
     &:hover {
-      background: $primary-hover;
-      box-shadow: 0 4px 12px rgba(22, 119, 255, 0.22);
+      background: #4096ff;
+      border-color: #4096ff;
+      box-shadow: 0 4px 10px rgba(22, 119, 255, 0.2);
     }
 
     &:active {
-      background: $primary-active;
-      transform: scale(0.98);
+      transform: translateY(1px);
     }
   }
 
   // =========================
-  // MAIN (filter + table nằm chung một thẻ)
+  // MAIN
   // =========================
-
   &__main {
     overflow: hidden;
+
     background: #fff;
-    border: 1px solid $line;
-    border-radius: $radius;
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
   }
 
   // =========================
   // FILTER
-  // Tự chia cột theo chiều rộng thực tế, không phụ thuộc sidebar
   // =========================
-
   &__filter {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 12px;
-    padding: 16px 20px;
-    border-bottom: 1px solid $line;
 
-    > div {
-      min-width: 0;
-    }
+    padding: 16px 20px;
+
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__filter-status,
+  &__filter-featured,
+  &__filter-categories,
+  &__filter-brands,
+  &__filter-sort {
+    min-width: 0;
 
     .ant-select {
       width: 100%;
-    }
 
-    .ant-select-selector {
-      height: $control-h !important;
-      padding: 0 12px !important;
-      border-color: $line-strong !important;
-      border-radius: 8px !important;
-    }
+      .ant-select-selector {
+        display: flex;
+        align-items: center;
 
-    .ant-select-selection-item,
-    .ant-select-selection-placeholder {
-      line-height: $control-h - 2px !important;
-    }
+        height: 40px !important;
+        padding: 0 12px !important;
 
-    .ant-select:hover .ant-select-selector {
-      border-color: $primary !important;
-    }
+        background: #fff !important;
+        border-color: #d9dfe7 !important;
+        border-radius: 7px !important;
 
-    .ant-select-focused .ant-select-selector {
-      border-color: $primary !important;
-      box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1) !important;
+        box-shadow: none !important;
+        transition: all 0.2s ease;
+      }
+
+      &:hover {
+        .ant-select-selector {
+          border-color: #1677ff !important;
+        }
+      }
+
+      &.ant-select-focused {
+        .ant-select-selector {
+          border-color: #1677ff !important;
+          box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.08) !important;
+        }
+      }
+
+      .ant-select-selection-placeholder {
+        color: #9ca3af;
+        font-size: 14px;
+      }
+
+      .ant-select-selection-item {
+        overflow: hidden;
+
+        color: #374151;
+        font-size: 14px;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .ant-select-arrow {
+        color: #9ca3af;
+      }
     }
   }
 
   // =========================
   // TABLE
-  // Bảng nằm trong __main nên bỏ viền/bóng riêng để không bị viền đôi
   // =========================
-
   &__table {
     width: 100%;
-    min-width: 0;
-
-    .product-table {
-      border: none;
-      border-radius: 0;
-      box-shadow: none;
-    }
   }
 
   // =========================
   // RESPONSIVE
   // =========================
 
-  // Laptop nhỏ
   @media (max-width: 1200px) {
-    &__search {
-      width: 260px;
-    }
-  }
-
-  // Tablet ngang, gồm màn hình ~967px: header vẫn một hàng, gọn hơn
-  @media (max-width: 992px) {
-    padding: 16px;
-
     &__header {
-      margin-bottom: 16px;
-      padding: 16px 20px;
-    }
-
-    &__title h1 {
-      font-size: 20px;
+      gap: 16px;
     }
 
     &__search {
-      width: 240px;
+      width: 300px;
     }
 
     &__filter {
-      gap: 10px;
-      padding: 14px 16px;
+      grid-template-columns: repeat(3, minmax(160px, 1fr));
     }
   }
 
-  // Tablet đứng: header xếp dọc, ô tìm kiếm giãn hết chiều ngang
-  @media (max-width: 768px) {
-    padding: 12px;
+  @media (max-width: 992px) {
+    padding: 20px;
 
     &__header {
+      align-items: flex-start;
       flex-direction: column;
-      align-items: stretch;
-      padding: 16px;
+
+      padding: 18px 20px;
     }
 
     &__nav {
+      justify-content: flex-start;
       width: 100%;
     }
 
     &__search {
-      flex: 1;
-      width: auto;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    &__add {
+      flex-shrink: 0;
     }
 
     &__filter {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
     }
   }
 
-  // Điện thoại: nút thêm chiếm cả hàng, filter một cột
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
+    padding: 16px;
+
+    &__header {
+      gap: 16px;
+
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 21px;
+      }
+    }
+
     &__nav {
       flex-direction: column;
       align-items: stretch;
+      gap: 10px;
     }
 
     &__search {
+      width: 100%;
+      max-width: none;
+    }
+
+    &__add {
       width: 100%;
     }
 
     &__filter {
       grid-template-columns: 1fr;
+      gap: 10px;
+
+      padding: 16px;
+    }
+
+    &__main {
+      border-radius: 8px;
+    }
+
+    &__table {
+      overflow-x: auto;
+    }
+  }
+
+  @media (max-width: 576px) {
+    padding: 12px;
+
+    &__header {
+      padding: 16px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    &__filter {
+      padding: 14px;
     }
   }
 }

@@ -105,8 +105,6 @@ function BrandView() {
     },
   ];
 
-  console.log(data);
-
   return (
     <>
       <div className="admin-brands">
@@ -122,10 +120,10 @@ function BrandView() {
                 onSearch={handleSearch}
               />
             </div>
-            <div className="admin-brands__add">
+            <button className="admin-brands__add">
               <i className="fa-solid fa-plus"></i>
-              <p>Thêm danh mục</p>
-            </div>
+              <p>Thêm thương hiệu</p>
+            </button>
           </div>
         </div>
 
@@ -139,7 +137,7 @@ function BrandView() {
                 value={searchParams.get("status")}
               />
             </div>
-            <div className="admin-brands__filter-status">
+            <div className="admin-brands__filter-country">
               <Select
                 placeholder="Quốc gia"
                 options={optionCountry}

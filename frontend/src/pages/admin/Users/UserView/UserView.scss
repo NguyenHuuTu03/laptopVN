@@ -1,39 +1,49 @@
 .admin-users {
   min-height: 100%;
   padding: 0;
-
   background: #f5f6f8;
 
   // =========================
   // HEADER
   // =========================
+
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 20px;
 
     padding: 18px 24px;
     margin-bottom: 20px;
 
     background: #fff;
-
     border: 1px solid #f0f0f0;
     border-radius: 10px;
   }
 
-  // =========================
-  // TITLE
-  // =========================
   &__title {
+    position: relative;
     flex-shrink: 0;
+    padding-left: 14px;
+
+    &::before {
+      content: "";
+
+      position: absolute;
+      top: 2px;
+      left: 0;
+
+      width: 4px;
+      height: 28px;
+
+      background: #1677ff;
+      border-radius: 4px;
+    }
 
     h1 {
       margin: 0;
 
       color: #1f2937;
-
       font-size: 22px;
       font-weight: 700;
       line-height: 1.4;
@@ -41,21 +51,22 @@
   }
 
   // =========================
-  // NAV
+  // HEADER NAV
   // =========================
+
   &__nav {
     display: flex;
     align-items: center;
     justify-content: flex-end;
 
     width: 100%;
-
     gap: 12px;
   }
 
   // =========================
   // SEARCH
   // =========================
+
   &__search {
     width: 340px;
 
@@ -78,7 +89,6 @@
 
       &:focus {
         border-color: #1677ff;
-
         box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.08);
       }
 
@@ -93,7 +103,6 @@
 
       background: #1677ff;
       border-color: #1677ff;
-
       border-radius: 0 7px 7px 0;
 
       &:hover {
@@ -110,24 +119,22 @@
   // =========================
   // ADD BUTTON
   // =========================
+
   &__add {
     display: flex;
     align-items: center;
     justify-content: center;
-
     gap: 8px;
 
     height: 40px;
     padding: 0 16px;
 
     color: #fff;
-
     background: #1677ff;
-
+    border: 1px solid #1677ff;
     border-radius: 7px;
 
     cursor: pointer;
-
     transition: all 0.2s ease;
 
     i {
@@ -139,11 +146,12 @@
 
       font-size: 14px;
       font-weight: 500;
+      white-space: nowrap;
     }
 
     &:hover {
       background: #4096ff;
-
+      border-color: #4096ff;
       box-shadow: 0 4px 10px rgba(22, 119, 255, 0.2);
     }
 
@@ -155,11 +163,11 @@
   // =========================
   // MAIN
   // =========================
+
   &__main {
     overflow: hidden;
 
     background: #fff;
-
     border: 1px solid #f0f0f0;
     border-radius: 10px;
   }
@@ -167,18 +175,21 @@
   // =========================
   // FILTER
   // =========================
+
   &__filter {
     display: grid;
-
-    grid-template-columns: repeat(2, 220px);
-
+    grid-template-columns: 220px 220px;
     gap: 12px;
 
     padding: 16px 20px;
 
     background: #fff;
-
     border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__filter-status,
+  &__filter-sort {
+    width: 100%;
 
     .ant-select {
       width: 100%;
@@ -188,16 +199,13 @@
         align-items: center;
 
         height: 40px !important;
-
         padding: 0 12px !important;
 
         background: #fff !important;
-
         border-color: #d9dfe7 !important;
         border-radius: 7px !important;
 
         box-shadow: none !important;
-
         transition: all 0.2s ease;
       }
 
@@ -210,21 +218,23 @@
       &.ant-select-focused {
         .ant-select-selector {
           border-color: #1677ff !important;
-
           box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.08) !important;
         }
       }
 
       .ant-select-selection-placeholder {
         color: #9ca3af;
-
         font-size: 14px;
       }
 
       .ant-select-selection-item {
-        color: #374151;
+        overflow: hidden;
 
+        color: #374151;
         font-size: 14px;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .ant-select-arrow {
@@ -236,6 +246,7 @@
   // =========================
   // TABLE
   // =========================
+
   &__table {
     width: 100%;
   }
@@ -259,7 +270,6 @@
 
     &__header {
       align-items: flex-start;
-
       flex-direction: column;
 
       padding: 18px 20px;
@@ -267,7 +277,6 @@
 
     &__nav {
       justify-content: flex-start;
-
       width: 100%;
     }
 
@@ -281,7 +290,7 @@
     }
 
     &__filter {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(160px, 220px));
     }
   }
 
@@ -292,7 +301,6 @@
       gap: 16px;
 
       padding: 18px;
-
       margin-bottom: 16px;
     }
 
@@ -305,7 +313,6 @@
     &__nav {
       flex-direction: column;
       align-items: stretch;
-
       gap: 10px;
     }
 
@@ -320,10 +327,9 @@
 
     &__filter {
       grid-template-columns: 1fr;
+      gap: 10px;
 
       padding: 16px;
-
-      gap: 10px;
     }
 
     &__main {

@@ -134,7 +134,7 @@ function OrderView() {
                 placeholder="Trạng thái"
                 options={optionStatus}
                 onChange={handleStatusChange}
-                value={searchParams.get("status")}
+                value={searchParams.get("orderStatus")}
               />
             </div>
 

@@ -18,3 +18,9 @@ export const removeRole = async (id) => {
 
   return result;
 };
+
+export const updatePermission = async (data) => {
+  const result = await patch(`/admin/roles/permission`, data);
+
+  return result;
+};
