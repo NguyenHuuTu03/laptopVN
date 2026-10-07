@@ -10,7 +10,7 @@ import {
 } from "../../../services/client/order.services";
 import { useNavigate } from "react-router-dom";
 import { paymentVNPay } from "../../../services/client/payment.services";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../../actions/cartActions";
 
 function Checkout() {
@@ -22,6 +22,16 @@ function Checkout() {
   const [summary, setSummary] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.authReducer.client.user);
+
+  const [formData, setFormData] = useState({
+    shippingName: user?.fullName || "",
+    shippingPhone: user?.phone || "",
+    shippingAddress: user?.address || "",
+    note: "",
+    paymentMethod: "COD",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,17 +108,12 @@ function Checkout() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-
-    const data = {
-      shippingName: form.elements.shippingName.value,
-      shippingPhone: form.elements.shippingPhone.value,
-      shippingAddress: form.elements.shippingAddress.value,
-      note: form.elements.note.value,
-      paymentMethod: form.elements.paymentMethod.value,
+    const orderData = {
+      ...formData,
       couponCode: activeVoucher,
     };
-    const result = await postOrder(data);
+
+    const result = await postOrder(orderData);
 
     if (result.code === 200) {
       if (result.data.paymentMethod === "COD") {
@@ -132,6 +137,15 @@ function Checkout() {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <>
       <div className="checkout-page">
@@ -153,23 +167,31 @@ function Checkout() {
                       type="text"
                       name="shippingName"
                       placeholder="Họ và tên"
+                      value={formData.shippingName}
+                      onChange={handleChange}
                       required
                     />
                     <input
                       type="tel"
                       name="shippingPhone"
                       placeholder="Số điện thoại"
+                      value={formData.shippingPhone}
+                      onChange={handleChange}
                       required
                     />
                     <textarea
                       name="shippingAddress"
                       placeholder="Địa chỉ nhận hàng"
+                      value={formData.shippingAddress}
+                      onChange={handleChange}
                       required
                       rows="3"
                     />
                     <textarea
                       name="note"
                       placeholder="Ghi chú cho đơn hàng"
+                      value={formData.note}
+                      onChange={handleChange}
                       rows="3"
                     />
                   </div>
@@ -185,6 +207,8 @@ function Checkout() {
                         type="radio"
                         name="paymentMethod"
                         value="COD"
+                        checked={formData.paymentMethod === "COD"}
+                        onChange={handleChange}
                         required
                       />
                       <span>
@@ -193,7 +217,13 @@ function Checkout() {
                       </span>
                     </label>
                     <label>
-                      <input type="radio" name="paymentMethod" value="VNPay" />
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="VNPay"
+                        checked={formData.paymentMethod === "VNPay"}
+                        onChange={handleChange}
+                      />
                       <span>
                         <img src={vnpay} alt="VNPay" />
                         Thanh toán online qua VNPay

@@ -437,19 +437,19 @@ module.exports.updateProfile = async (req, res) => {
       return;
     }
 
-    if (fullName) {
+    if (fullName !== undefined) {
       user.fullName = fullName;
     }
 
-    if (phone) {
+    if (phone !== undefined) {
       user.phone = phone;
     }
 
-    if (address) {
+    if (address !== undefined) {
       user.address = address;
     }
 
-    if (avatar) {
+    if (avatar !== undefined) {
       user.avatar = avatar;
     }
 
