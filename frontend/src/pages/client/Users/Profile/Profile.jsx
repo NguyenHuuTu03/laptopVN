@@ -122,11 +122,11 @@ function Profile() {
       if (profile.code === 200) {
         setUser(profile.data.user);
         notification.success({
-          title: profile.message,
+          title: result.message,
         });
       } else {
         notification.error({
-          title: profile.message,
+          title: result.message,
         });
       }
     }
