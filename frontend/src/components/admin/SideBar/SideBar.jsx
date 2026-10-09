@@ -36,6 +36,11 @@ function SideBar() {
       label: "Người dùng",
     },
     {
+      key: "/admin/coupons",
+      icon: <i className="fa-solid fa-tag"></i>,
+      label: "Mã giảm",
+    },
+    {
       key: "/admin/shipper",
       icon: <i className="fa-solid fa-truck-fast"></i>,
       label: "Giao hàng",

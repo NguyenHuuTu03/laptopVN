@@ -82,6 +82,10 @@ function Permission() {
       name: "Người dùng",
     },
     {
+      key: "coupon",
+      name: "Mã giảm",
+    },
+    {
       key: "role",
       name: "Nhóm quyền",
     },

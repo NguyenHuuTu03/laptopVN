@@ -25,6 +25,7 @@ import Setting from "../pages/admin/Setting/Setting";
 import CategoryView from "../pages/admin/Categories/CategoryView/CategoryView";
 import BrandView from "../pages/admin/Brands/BrandView/BrandView";
 import UserView from "../pages/admin/Users/UserView/UserView";
+import CouponView from "../pages/admin/Coupons/CouponView/CouponView";
 
 export const routes = [
   {
@@ -109,6 +110,10 @@ export const routes = [
           {
             path: "users",
             element: <UserView />,
+          },
+          {
+            path: "coupons",
+            element: <CouponView />,
           },
           {
             path: "shipper",

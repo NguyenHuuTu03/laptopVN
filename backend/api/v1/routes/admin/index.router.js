@@ -7,6 +7,7 @@ const orderRoutes = require("./order.router.js");
 const shipperRoutes = require("./shipper.router.js");
 const userRoutes = require("./user.router.js");
 const roleRoutes = require("./role.router.js");
+const couponRoutes = require("./coupon.router.js");
 const settingRoutes = require("./setting.router.js");
 const authRoutes = require("./auth.router.js");
 const authMiddleware = require("../../../../middlewares/auth.middleware.js");
@@ -33,6 +34,7 @@ module.exports = (app) => {
   app.use("/api/admin/orders", authMiddleware.requireAdminAuth, orderRoutes);
   app.use("/api/admin/shipper", authMiddleware.requireAdminAuth, shipperRoutes);
   app.use("/api/admin/users", authMiddleware.requireAdminAuth, userRoutes);
+  app.use("/api/admin/coupons", authMiddleware.requireAdminAuth, couponRoutes);
   app.use("/api/admin/roles", authMiddleware.requireAdminAuth, roleRoutes);
   app.use(
     "/api/admin/settings",
