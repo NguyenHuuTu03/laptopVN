@@ -1,7 +1,12 @@
 .category-table {
   width: 100%;
+  background: #ffffff;
+
+  /* Thêm phong cách Card UI hiện đại */
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
   overflow: hidden;
-  background: #fff;
 
   .ant-table-wrapper {
     width: 100%;
@@ -10,6 +15,23 @@
   .ant-table {
     font-size: 14px;
     color: #374151;
+    background: transparent;
+  }
+
+  // =========================
+  // CUSTOM SCROLLBAR (Cho bảng cuộn ngang)
+  // =========================
+  .ant-table-content {
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #f9fafb;
+    }
   }
 
   // =========================
@@ -41,11 +63,13 @@
   // =========================
   .ant-table-tbody {
     > tr {
+      transition: background-color 0.2s ease;
+
       > td {
         height: 76px;
         padding: 10px 16px;
 
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f3f4f6; /* Làm màu viền nhạt lại chút xíu cho thanh thoát */
         vertical-align: middle;
       }
 
@@ -73,17 +97,19 @@
     height: 56px;
     margin: 0 auto;
 
-    object-fit: contain;
+    object-fit: cover;
 
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
+    padding: 2px;
 
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 
     &:hover {
-      border-color: #bfdbfe;
-      transform: scale(1.05);
+      border-color: #93c5fd;
+      transform: scale(1.08);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
     }
   }
 
@@ -92,16 +118,13 @@
   // =========================
   .category-title {
     display: -webkit-box;
-
     max-width: 420px;
-
     overflow: hidden;
 
     color: #1f2937;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600; /* Tăng độ đậm lên một xíu để tiêu đề chính nổi bật hơn */
     line-height: 1.5;
-
     text-align: left;
 
     -webkit-box-orient: vertical;
@@ -109,32 +132,12 @@
   }
 
   // =========================
-  // POSITION
-  // =========================
-  .category-position {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 42px;
-    height: 28px;
-    padding: 0 9px;
-
-    color: #374151;
-    background: #f3f4f6;
-
-    border-radius: 6px;
-
-    font-size: 13px;
-    font-weight: 500;
-  }
 
   // =========================
   // STATUS
   // =========================
   .category-status {
     position: relative;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -145,10 +148,8 @@
     padding: 0 12px;
 
     border-radius: 20px;
-
     font-size: 13px;
     font-weight: 500;
-
     white-space: nowrap;
     cursor: pointer;
 
@@ -156,10 +157,8 @@
 
     &::before {
       content: "";
-
       width: 6px;
       height: 6px;
-
       border-radius: 50%;
     }
 
@@ -175,6 +174,8 @@
       &:hover {
         background: #dcfce7;
         border-color: #86efac;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
       }
     }
 
@@ -190,6 +191,8 @@
       &:hover {
         background: #fee2e2;
         border-color: #fca5a5;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
       }
     }
   }
@@ -201,7 +204,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: 8px;
 
     &__view,
     &__edit,
@@ -219,41 +222,44 @@
       border-radius: 7px;
 
       cursor: pointer;
-
       transition: all 0.2s ease;
 
       i {
         font-size: 13px;
       }
+
+      &:active {
+        transform: translateY(1px);
+      }
     }
 
     &__view {
-      color: #1677ff;
-
+      color: #3b82f6;
       &:hover {
         color: #fff;
-        background: #1677ff;
-        border-color: #1677ff;
+        background: #3b82f6;
+        border-color: #3b82f6;
+        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
       }
     }
 
     &__edit {
-      color: #d97706;
-
+      color: #f59e0b;
       &:hover {
         color: #fff;
         background: #f59e0b;
         border-color: #f59e0b;
+        box-shadow: 0 3px 8px rgba(245, 158, 11, 0.2);
       }
     }
 
     &__delete {
-      color: #dc2626;
-
+      color: #ef4444;
       &:hover {
         color: #fff;
-        background: #dc2626;
-        border-color: #dc2626;
+        background: #ef4444;
+        border-color: #ef4444;
+        box-shadow: 0 3px 8px rgba(239, 68, 68, 0.2);
       }
     }
   }
@@ -264,8 +270,8 @@
   .ant-table-pagination {
     margin: 0 !important;
     padding: 16px 20px;
-
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid #f3f4f6;
+    background: #ffffff;
   }
 
   .ant-pagination {
@@ -273,9 +279,9 @@
       min-width: 32px;
       height: 32px;
       line-height: 30px;
-
       border-radius: 6px;
       border-color: #e5e7eb;
+      transition: all 0.2s;
 
       a {
         color: #4b5563;
@@ -283,28 +289,29 @@
       }
 
       &:hover {
-        border-color: #1677ff;
-
+        border-color: #3b82f6;
         a {
-          color: #1677ff;
+          color: #3b82f6;
         }
       }
     }
 
+    /* Nút Đang Active (Kiểu Outline thanh lịch) */
     .ant-pagination-item-active {
-      background: #1677ff;
-      border-color: #1677ff;
+      background: #ffffff; /* Nền trắng */
+      border-color: #3b82f6; /* Viền xanh */
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); /* Bóng mờ nhẹ cho nổi bật */
 
       a {
-        color: #fff;
+        color: #3b82f6; /* Chữ màu xanh */
+        font-weight: 600; /* Làm đậm số trang một chút */
       }
 
       &:hover {
-        background: #4096ff;
-        border-color: #4096ff;
-
+        background: #f8fbff; /* Hover vào hơi xanh nhạt */
+        border-color: #2563eb;
         a {
-          color: #fff;
+          color: #2563eb;
         }
       }
     }
@@ -317,6 +324,12 @@
       .ant-pagination-item-link {
         border-radius: 6px;
         border-color: #e5e7eb;
+        transition: all 0.2s;
+
+        &:hover {
+          color: #3b82f6;
+          border-color: #3b82f6;
+        }
       }
     }
 
@@ -327,6 +340,10 @@
         .ant-select-selector {
           border-radius: 6px !important;
           border-color: #e5e7eb !important;
+
+          &:hover {
+            border-color: #3b82f6 !important;
+          }
         }
       }
     }
@@ -337,27 +354,17 @@
   // =========================
 
   @media (max-width: 992px) {
-    overflow-x: auto;
-    overflow-y: hidden;
-
+    /* Đã di chuyển việc xử lý cuộn lên class .ant-table-content bên trên */
     .ant-table {
       min-width: 850px;
     }
 
-    .ant-table-thead {
-      > tr {
-        > th {
-          padding: 12px;
-        }
-      }
+    .ant-table-thead > tr > th {
+      padding: 12px;
     }
 
-    .ant-table-tbody {
-      > tr {
-        > td {
-          padding: 10px 12px;
-        }
-      }
+    .ant-table-tbody > tr > td {
+      padding: 10px 12px;
     }
 
     .category-title {
@@ -378,12 +385,6 @@
     .category-title {
       max-width: 280px;
       font-size: 13px;
-    }
-
-    .category-position {
-      min-width: 38px;
-      height: 27px;
-      font-size: 12px;
     }
 
     .category-status {
@@ -417,24 +418,15 @@
       min-width: 760px;
     }
 
-    .ant-table-thead {
-      > tr {
-        > th {
-          height: 48px;
-          padding: 10px;
-
-          font-size: 12px;
-        }
-      }
+    .ant-table-thead > tr > th {
+      height: 48px;
+      padding: 10px;
+      font-size: 12px;
     }
 
-    .ant-table-tbody {
-      > tr {
-        > td {
-          height: 68px;
-          padding: 8px 10px;
-        }
-      }
+    .ant-table-tbody > tr > td {
+      height: 68px;
+      padding: 8px 10px;
     }
 
     .category-thumbnail {

@@ -1,6 +1,16 @@
 .order-table {
   width: 100%;
+  background: #ffffff;
 
+  /* Đồng bộ Card UI */
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+
+  // =========================
+  // TABLE
+  // =========================
   .ant-table-wrapper {
     width: 100%;
   }
@@ -8,93 +18,139 @@
   .ant-table {
     color: #374151;
     font-size: 14px;
+    background: transparent;
   }
 
-  // Header
-  .ant-table-thead > tr > th {
-    height: 52px;
-    padding: 12px 16px;
-    color: #374151;
-    background: #fafafa;
-    font-size: 13px;
-    font-weight: 600;
-    border-bottom: 1px solid #f0f0f0;
-
-    &::before {
-      display: none !important;
+  // =========================
+  // CUSTOM SCROLLBAR
+  // =========================
+  .ant-table-content {
+    &::-webkit-scrollbar {
+      height: 8px;
     }
-  }
-
-  // Body
-  .ant-table-tbody > tr {
-    transition: background 0.2s ease;
-
-    > td {
-      height: 64px;
-      padding: 12px 16px;
-      color: #374151;
-      background: #fff;
-      border-bottom: 1px solid #f3f4f6;
-      vertical-align: middle;
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
     }
-
-    &:hover > td {
-      background: #f7fbff;
-    }
-
-    &:last-child > td {
-      border-bottom: none;
+    &::-webkit-scrollbar-track {
+      background: #f9fafb;
     }
   }
 
-  // Tên khách hàng
+  // =========================
+  // TABLE HEADER
+  // =========================
+  .ant-table-thead {
+    > tr {
+      > th {
+        height: 52px;
+        padding: 12px 16px;
+
+        color: #4b5563;
+        background: #f8fafc !important;
+        border-bottom: 1px solid #e5e7eb;
+
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+
+        &::before {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  // =========================
+  // TABLE BODY
+  // =========================
+  .ant-table-tbody {
+    > tr {
+      transition: background-color 0.2s ease;
+
+      > td {
+        height: 64px;
+        padding: 12px 16px;
+
+        color: #374151;
+        background: #fff;
+        border-bottom: 1px solid #f3f4f6;
+        vertical-align: middle;
+      }
+
+      &:hover {
+        > td {
+          background: #f8fbff !important;
+        }
+      }
+
+      &:last-child {
+        > td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  // =========================
+  // CUSTOMER NAME
+  // =========================
   .ship-name {
     display: inline-block;
     max-width: 180px;
     overflow: hidden;
     color: #1f2937;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600; /* Làm đậm tên khách hàng */
     line-height: 1.5;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  // Số điện thoại
+  // =========================
+  // PHONE
+  // =========================
   .ship-phone {
     color: #4b5563;
     font-size: 14px;
     white-space: nowrap;
   }
 
-  // Địa chỉ
+  // =========================
+  // ADDRESS
+  // =========================
   .ship-address {
     display: inline-block;
     max-width: 280px;
     overflow: hidden;
     color: #4b5563;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: middle;
   }
 
-  // Tổng tiền
+  // =========================
+  // TOTAL PRICE
+  // =========================
   .ship-price {
-    color: #d70018;
+    color: #ef4444; /* Màu đỏ nổi bật cho tiền */
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
   }
 
-  // Trạng thái thanh toán
+  // =========================
+  // PAYMENT STATUS
+  // =========================
   .ship-status {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
+
     min-width: 120px;
     height: 30px;
     padding: 0 12px;
@@ -103,12 +159,18 @@
     font-weight: 500;
     white-space: nowrap;
 
+    transition: all 0.2s ease;
+
     &::before {
       content: "";
       width: 6px;
       height: 6px;
       flex-shrink: 0;
       border-radius: 50%;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
     }
 
     // Chưa thanh toán
@@ -119,6 +181,11 @@
 
       &::before {
         background: #f59e0b;
+      }
+      &:hover {
+        background: #fef3c7;
+        border-color: #fcd34d;
+        box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
       }
     }
 
@@ -131,10 +198,17 @@
       &::before {
         background: #22c55e;
       }
+      &:hover {
+        background: #dcfce7;
+        border-color: #86efac;
+        box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
+      }
     }
   }
 
-  // Thao tác
+  // =========================
+  // ACTION (Nút nhận đơn)
+  // =========================
   .ship-action {
     display: flex;
     align-items: center;
@@ -145,108 +219,161 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
       width: 34px;
       height: 34px;
       padding: 0;
+
       background: #fff;
       border: 1px solid #e5e7eb;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
       transition: all 0.2s ease;
 
       i {
         font-size: 14px;
       }
-    }
-
-    &__view {
-      color: #1677ff;
-
-      &:hover {
-        color: #fff;
-        background: #1677ff;
-        border-color: #1677ff;
-        box-shadow: 0 3px 8px rgba(22, 119, 255, 0.2);
-      }
 
       &:active {
         transform: translateY(1px);
       }
     }
+
+    /* Nút nhận đơn (Màu xanh dương) */
+    &__view {
+      color: #3b82f6;
+
+      &:hover {
+        color: #fff;
+        background: #3b82f6;
+        border-color: #3b82f6;
+        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
+      }
+    }
   }
 
-  // Pagination
-  .ant-pagination {
-    margin: 20px 0;
+  // =========================
+  // PAGINATION (Chuẩn Outline)
+  // =========================
+  .ant-table-pagination {
+    margin: 0 !important;
+    padding: 16px 20px;
+    border-top: 1px solid #f3f4f6;
+    background: #ffffff;
+  }
 
+  .ant-pagination {
     .ant-pagination-item {
+      min-width: 32px;
+      height: 32px;
+      line-height: 30px;
       border-radius: 6px;
+      border-color: #e5e7eb;
+      transition: all 0.2s;
 
       a {
-        font-size: 14px;
-      }
-
-      &-active {
-        font-weight: 500;
-        border-color: #1677ff;
-
-        a {
-          color: #1677ff;
-        }
+        color: #4b5563;
+        font-size: 13px;
       }
 
       &:hover {
-        border-color: #1677ff;
-
+        border-color: #3b82f6;
         a {
-          color: #1677ff;
+          color: #3b82f6;
+        }
+      }
+    }
+
+    /* Nút Đang Active */
+    .ant-pagination-item-active {
+      background: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+
+      a {
+        color: #3b82f6;
+        font-weight: 600;
+      }
+
+      &:hover {
+        background: #f8fbff;
+        border-color: #2563eb;
+        a {
+          color: #2563eb;
         }
       }
     }
 
     .ant-pagination-prev,
     .ant-pagination-next {
+      min-width: 32px;
+      height: 32px;
+
       .ant-pagination-item-link {
         border-radius: 6px;
+        border-color: #e5e7eb;
+        transition: all 0.2s;
 
         &:hover {
-          color: #1677ff;
-          border-color: #1677ff;
+          color: #3b82f6;
+          border-color: #3b82f6;
         }
       }
     }
 
     .ant-pagination-options {
-      .ant-select-selector {
-        border-radius: 6px;
+      .ant-select {
+        height: 32px;
+
+        .ant-select-selector {
+          border-radius: 6px !important;
+          border-color: #e5e7eb !important;
+
+          &:hover {
+            border-color: #3b82f6 !important;
+          }
+        }
       }
     }
   }
 
-  // Empty
+  // =========================
+  // EMPTY
+  // =========================
   .ant-empty {
-    margin: 40px 0;
-
+    margin: 60px 0;
     .ant-empty-description {
-      color: #9ca3af;
+      color: #94a3b8;
       font-size: 14px;
     }
   }
 
-  // Responsive
+  // =========================
+  // RESPONSIVE
+  // =========================
   @media (max-width: 1200px) {
-    overflow-x: auto;
-
-    .ant-table-wrapper {
+    .ant-table {
       min-width: 1000px;
     }
   }
 
   @media (max-width: 768px) {
-    overflow-x: auto;
+    .ant-table {
+      min-width: 900px;
+    }
 
-    .ant-table-wrapper {
-      min-width: 1000px;
+    .ship-action {
+      &__view {
+        width: 30px;
+        height: 30px;
+        i {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .ant-table-pagination {
+      padding: 14px 16px;
     }
   }
 }

@@ -84,13 +84,6 @@ function BrandTable({ data = [], pagination, onPageChange, onReload }) {
       render: (text) => <span className="brand-country">{text}</span>,
     },
     {
-      title: "Vị trí",
-      dataIndex: "position",
-      key: "position",
-      align: "center",
-      render: (text) => <span className="brand-position">{text}</span>,
-    },
-    {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
@@ -142,7 +135,6 @@ function BrandTable({ data = [], pagination, onPageChange, onReload }) {
     thumbnail: item.thumbnail,
     title: item.title,
     country: item.country,
-    position: item.position,
     status: item.status,
   }));
 

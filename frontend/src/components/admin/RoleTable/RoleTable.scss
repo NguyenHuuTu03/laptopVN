@@ -1,6 +1,16 @@
 .role-table {
   width: 100%;
+  background: #ffffff;
 
+  /* Đồng bộ Card UI */
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+
+  // =========================
+  // TABLE
+  // =========================
   .ant-table-wrapper {
     width: 100%;
   }
@@ -8,19 +18,39 @@
   .ant-table {
     color: #374151;
     font-size: 14px;
+    background: transparent;
   }
 
   // =========================
-  // Table header
+  // CUSTOM SCROLLBAR
+  // =========================
+  .ant-table-content {
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #f9fafb;
+    }
+  }
+
+  // =========================
+  // TABLE HEADER
   // =========================
   .ant-table-thead > tr > th {
     height: 52px;
     padding: 12px 16px;
-    color: #374151;
-    background: #fafafa;
+
+    color: #4b5563;
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e5e7eb;
+
     font-size: 13px;
     font-weight: 600;
-    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
 
     &::before {
       display: none !important;
@@ -28,14 +58,15 @@
   }
 
   // =========================
-  // Table body
+  // TABLE BODY
   // =========================
   .ant-table-tbody > tr {
-    transition: background 0.2s ease;
+    transition: background-color 0.2s ease;
 
     > td {
       height: 64px;
       padding: 12px 16px;
+
       color: #374151;
       background: #fff;
       border-bottom: 1px solid #f3f4f6;
@@ -43,7 +74,7 @@
     }
 
     &:hover > td {
-      background: #f7fbff;
+      background: #f8fbff !important;
     }
 
     &:last-child > td {
@@ -52,54 +83,60 @@
   }
 
   // =========================
-  // Tên vai trò
+  // ROLE NAME
   // =========================
   .role-name {
     display: inline-flex;
     align-items: center;
     max-width: 180px;
+
     color: #1f2937;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 600; /* Làm đậm tên vai trò */
     line-height: 1.5;
+
     text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
   }
 
   // =========================
-  // Mô tả
+  // DESCRIPTION (Nếu có dùng)
   // =========================
   .role-description {
     display: inline-block;
     max-width: 420px;
     overflow: hidden;
     color: #6b7280;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   // =========================
-  // Số người dùng
+  // USER COUNT
   // =========================
   .role-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     min-width: 42px;
-    height: 30px;
+    height: 28px;
     padding: 0 10px;
-    color: #1677ff;
+
+    color: #1d4ed8; /* Đổi màu xanh đậm chút cho giống tag Role ở bảng User */
     background: #eff6ff;
     border: 1px solid #bfdbfe;
     border-radius: 6px;
+
     font-size: 13px;
     font-weight: 600;
   }
 
   // =========================
-  // Trạng thái
+  // STATUS
   // =========================
   .role-status {
     position: relative;
@@ -107,14 +144,17 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+
     min-width: 108px;
     height: 30px;
     padding: 0 12px;
+
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
     white-space: nowrap;
     cursor: pointer;
+
     transition: all 0.2s ease;
 
     &::before {
@@ -123,6 +163,10 @@
       height: 6px;
       flex-shrink: 0;
       border-radius: 50%;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
     }
 
     // Hoạt động
@@ -138,6 +182,7 @@
       &:hover {
         background: #dcfce7;
         border-color: #86efac;
+        box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
       }
     }
 
@@ -154,12 +199,13 @@
       &:hover {
         background: #fee2e2;
         border-color: #fca5a5;
+        box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
       }
     }
   }
 
   // =========================
-  // Actions
+  // ACTIONS
   // =========================
   .role-action {
     display: flex;
@@ -171,136 +217,180 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
       width: 34px;
       height: 34px;
       padding: 0;
+
       background: #fff;
       border: 1px solid #e5e7eb;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
       transition: all 0.2s ease;
 
       i {
         font-size: 13px;
       }
+
+      &:active {
+        transform: translateY(1px);
+      }
     }
 
     &__view {
-      color: #1677ff;
-
+      color: #3b82f6;
       &:hover {
         color: #fff;
-        background: #1677ff;
-        border-color: #1677ff;
-        box-shadow: 0 3px 8px rgba(22, 119, 255, 0.2);
+        background: #3b82f6;
+        border-color: #3b82f6;
+        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
       }
     }
 
     &__edit {
-      color: #d97706;
-
+      color: #f59e0b;
       &:hover {
         color: #fff;
         background: #f59e0b;
         border-color: #f59e0b;
-        box-shadow: 0 3px 8px rgba(245, 158, 11, 0.18);
+        box-shadow: 0 3px 8px rgba(245, 158, 11, 0.2);
       }
     }
 
     &__delete {
-      color: #dc2626;
-
+      color: #ef4444;
       &:hover {
         color: #fff;
         background: #ef4444;
         border-color: #ef4444;
-        box-shadow: 0 3px 8px rgba(239, 68, 68, 0.18);
+        box-shadow: 0 3px 8px rgba(239, 68, 68, 0.2);
       }
-    }
-
-    button:active {
-      transform: translateY(1px);
     }
   }
 
   // =========================
-  // Pagination
+  // PAGINATION (Chuẩn Outline)
   // =========================
-  .ant-pagination {
-    margin: 20px 0;
+  .ant-table-pagination {
+    margin: 0 !important;
+    padding: 16px 20px;
+    border-top: 1px solid #f3f4f6;
+    background: #ffffff;
+  }
 
+  .ant-pagination {
     .ant-pagination-item {
+      min-width: 32px;
+      height: 32px;
+      line-height: 30px;
       border-radius: 6px;
+      border-color: #e5e7eb;
+      transition: all 0.2s;
 
       a {
-        font-size: 14px;
-      }
-
-      &-active {
-        font-weight: 500;
-        border-color: #1677ff;
-
-        a {
-          color: #1677ff;
-        }
+        color: #4b5563;
+        font-size: 13px;
       }
 
       &:hover {
-        border-color: #1677ff;
-
+        border-color: #3b82f6;
         a {
-          color: #1677ff;
+          color: #3b82f6;
+        }
+      }
+    }
+
+    .ant-pagination-item-active {
+      background: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+
+      a {
+        color: #3b82f6;
+        font-weight: 600;
+      }
+
+      &:hover {
+        background: #f8fbff;
+        border-color: #2563eb;
+        a {
+          color: #2563eb;
         }
       }
     }
 
     .ant-pagination-prev,
     .ant-pagination-next {
+      min-width: 32px;
+      height: 32px;
+
       .ant-pagination-item-link {
         border-radius: 6px;
+        border-color: #e5e7eb;
+        transition: all 0.2s;
 
         &:hover {
-          color: #1677ff;
-          border-color: #1677ff;
+          color: #3b82f6;
+          border-color: #3b82f6;
         }
       }
     }
 
     .ant-pagination-options {
-      .ant-select-selector {
-        border-radius: 6px;
+      .ant-select {
+        height: 32px;
+
+        .ant-select-selector {
+          border-radius: 6px !important;
+          border-color: #e5e7eb !important;
+
+          &:hover {
+            border-color: #3b82f6 !important;
+          }
+        }
       }
     }
   }
 
   // =========================
-  // Empty
+  // EMPTY
   // =========================
   .ant-empty {
-    margin: 40px 0;
-
+    margin: 60px 0;
     .ant-empty-description {
-      color: #9ca3af;
+      color: #94a3b8;
       font-size: 14px;
     }
   }
 
   // =========================
-  // Responsive
+  // RESPONSIVE
   // =========================
   @media (max-width: 1200px) {
-    overflow-x: auto;
-
-    .ant-table-wrapper {
-      min-width: 950px;
+    .ant-table {
+      min-width: 800px; /* Bảng Role thường ít cột nên 800px là đủ mượt */
     }
   }
 
   @media (max-width: 768px) {
-    overflow-x: auto;
+    .ant-table {
+      min-width: 750px;
+    }
 
-    .ant-table-wrapper {
-      min-width: 950px;
+    .role-action {
+      &__view,
+      &__edit,
+      &__delete {
+        width: 30px;
+        height: 30px;
+        i {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .ant-table-pagination {
+      padding: 14px 16px;
     }
   }
 }

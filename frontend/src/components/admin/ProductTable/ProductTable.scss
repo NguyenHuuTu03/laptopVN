@@ -1,247 +1,222 @@
-// ProductTable.scss
-// Bảng nằm trong thẻ .admin-products__main (đã có viền, bo góc, bóng),
-// nên file này KHÔNG tự vẽ khung ngoài.
-
-$ink: #1f2937;
-$text: #374151;
-$muted: #6b7280;
-$line: #eef0f4;
-$line-strong: #e5e7eb;
-$head-bg: #f8fafc;
-$row-hover: #f8fbff;
-$primary: #1677ff;
-$price: #d70018;
-
-// Nút thao tác: (màu chữ, màu nền khi hover)
-$actions: (
-  view: (
-    $primary,
-    $primary,
-  ),
-  edit: (
-    #d97706,
-    #f59e0b,
-  ),
-  delete: (
-    #dc2626,
-    #dc2626,
-  ),
-);
-
-// Trạng thái: chữ, nền, viền, chấm, nền hover, viền hover
-$statuses: (
-  active: (
-    #15803d,
-    #f0fdf4,
-    #bbf7d0,
-    #22c55e,
-    #dcfce7,
-    #86efac,
-  ),
-  inactive: (
-    #dc2626,
-    #fef2f2,
-    #fecaca,
-    #ef4444,
-    #fee2e2,
-    #fca5a5,
-  ),
-);
-
-// Thu gọn theo kích thước màn hình
-@mixin compact($th-h, $td-h, $pad-y, $pad-x, $font, $thumb, $title-w) {
-  .ant-table-thead > tr > th {
-    height: $th-h;
-    padding: $pad-y $pad-x;
-    font-size: $font - 1px;
-  }
-
-  .ant-table-tbody > tr > td {
-    height: $td-h;
-    padding: $pad-y $pad-x;
-  }
-
-  .product-thumbnail {
-    width: $thumb;
-    height: $thumb;
-  }
-
-  .product-title {
-    max-width: $title-w;
-    font-size: $font;
-  }
-}
-
-// Độ rộng các cột nhỏ (STT, Ảnh, Tồn kho, Trạng thái, Thao tác)
-@mixin col-widths($stt, $img, $stock, $status, $action) {
-  .ant-table-thead > tr > th {
-    &:nth-child(1) {
-      width: $stt;
-    }
-    &:nth-child(2) {
-      width: $img;
-    }
-    &:nth-child(7) {
-      width: $stock;
-    }
-    &:nth-child(8) {
-      width: $status;
-    }
-    &:nth-child(9) {
-      width: $action;
-    }
-  }
-}
-
 .product-table {
   width: 100%;
-  background: #fff;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow: hidden;
 
-  .ant-table-wrapper,
-  .ant-table {
+  // =========================
+  // TABLE
+  // =========================
+
+  .ant-table-wrapper {
     width: 100%;
   }
 
   .ant-table {
-    color: $text;
+    color: #374151;
+    background: transparent;
     font-size: 14px;
   }
 
-  // Cuộn ngang nằm trong bảng, phần phân trang đứng yên
-  .ant-table-content {
-    overflow-x: auto !important;
-
-    > table {
-      min-width: 880px;
-    }
-
-    &::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #d1d5db;
-      border-radius: 10px;
-    }
-  }
-
-  @include col-widths(52px, 72px, 84px, 128px, 120px);
-
   // =========================
-  // HEADER
+  // TABLE HEADER
   // =========================
 
   .ant-table-thead > tr > th {
-    height: 52px;
-    padding: 12px 14px;
-    color: $muted;
-    background: $head-bg !important;
-    border-bottom: 1px solid $line-strong;
+    height: 54px;
+    padding: 12px 16px;
+
+    color: #374151;
+    background: #f8fafc; /* Đổi sang màu xám xanh nhẹ, sạch hơn */
+
     font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
 
+    border-bottom: 1px solid #e2e8f0;
+
     &::before {
-      display: none !important;
+      display: none !important; /* Ẩn vạch chia mặc định của Antd */
+    }
+
+    /* Bo góc cho thẻ th đầu và cuối để table trông mềm mại */
+    &:first-child {
+      border-top-left-radius: 8px;
+    }
+    &:last-child {
+      border-top-right-radius: 8px;
     }
   }
 
   // =========================
-  // BODY
+  // TABLE BODY
   // =========================
 
   .ant-table-tbody > tr {
-    transition: background 0.2s ease;
+    transition: all 0.2s ease-in-out;
 
     > td {
-      height: 72px;
-      padding: 10px 14px;
-      color: $text;
-      border-bottom: 1px solid $line;
-      vertical-align: middle;
-    }
+      height: 84px;
+      padding: 12px 16px;
 
-    &:last-child > td {
-      border-bottom: none;
+      color: #374151;
+      background: #fff;
+
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+      transition: background-color 0.2s ease;
     }
 
     &:hover > td {
-      background: $row-hover !important;
+      background: #f8fafc; /* Hiệu ứng hover nhạt, lịch sự */
+    }
+
+    &:last-child > td {
+      border-bottom: none; /* Bỏ đường kẻ ngang của dòng cuối cùng */
     }
   }
 
   // =========================
-  // CELLS
+  // PRODUCT THUMBNAIL
   // =========================
+
+  .ant-table-thead > tr > th:nth-child(2),
+  .ant-table-tbody > tr > td:nth-child(2) {
+    width: 110px;
+    min-width: 110px;
+  }
 
   .product-thumbnail {
     display: block;
     width: 56px;
     height: 56px;
     margin: 0 auto;
-    object-fit: contain;
+
+    object-fit: cover; /* Đổi từ contain sang cover để ảnh phủ đều thẻ div */
+
     background: #fff;
-    border: 1px solid $line-strong;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    transition:
-      transform 0.2s ease,
-      border-color 0.2s ease;
+    padding: 2px;
+
+    transition: all 0.3s ease;
 
     &:hover {
-      border-color: #d1d5db;
-      transform: scale(1.05);
+      border-color: #93c5fd;
+      transform: scale(1.08); /* Phóng to nhẹ khi hover vào ảnh */
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
     }
   }
 
+  // =========================
+  // PRODUCT TITLE
+  // =========================
+
   .product-title {
     display: -webkit-box;
-    max-width: 260px;
-    overflow: hidden;
-    color: $ink;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.45;
-    text-align: left;
-    text-overflow: ellipsis;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
+    width: 100%;
+    min-width: 150px;
+    max-width: 280px;
 
-  .product-price {
-    color: $price;
+    overflow: hidden;
+
+    color: #1e293b;
     font-size: 14px;
     font-weight: 600;
+    line-height: 1.5;
+
+    /* Cho phép tối đa 2 dòng, cắt đoạn thêm '...' */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+  }
+
+  // =========================
+  // PRICE
+  // =========================
+
+  .product-price {
+    display: inline-block;
+
+    color: #ef4444;
+    font-size: 14px;
+    font-weight: 700;
+
     white-space: nowrap;
   }
 
-  .product-category,
-  .product-brand {
+  // =========================
+  // CATEGORY
+  // =========================
+
+  .product-category {
     display: inline-block;
-    max-width: 120px;
-    padding: 2px 10px;
+    max-width: 140px;
     overflow: hidden;
-    color: $text;
-    background: $head-bg;
-    border-radius: 6px;
+
+    color: #64748b;
     font-size: 13px;
-    white-space: nowrap;
+    line-height: 1.5;
+
     text-overflow: ellipsis;
+    white-space: nowrap;
     vertical-align: middle;
   }
+
+  // =========================
+  // BRAND
+  // =========================
+
+  .product-brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 130px;
+    min-height: 28px;
+    padding: 4px 10px;
+
+    overflow: hidden;
+
+    color: #475569;
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // =========================
+  // STOCK
+  // =========================
 
   .product-stock {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 44px;
-    height: 28px;
-    padding: 0 9px;
-    color: $text;
-    background: #f3f4f6;
-    border: 1px solid $line-strong;
+
+    min-width: 42px;
+    height: 30px;
+    padding: 0 10px;
+
+    color: #0ea5e9;
+    background: #f0f9ff;
+
+    border: 1px solid #bae6fd;
     border-radius: 6px;
+
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
+
+    white-space: nowrap;
   }
 
   // =========================
@@ -252,96 +227,129 @@ $statuses: (
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
+
     min-width: 108px;
     height: 30px;
     padding: 0 12px;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-size: 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
     font-weight: 500;
     white-space: nowrap;
+
     cursor: pointer;
-    user-select: none;
-    transition:
-      background 0.2s ease,
-      border-color 0.2s ease,
-      transform 0.15s ease;
+    transition: all 0.2s ease;
 
     &::before {
       content: "";
       width: 6px;
       height: 6px;
-      margin-right: 6px;
+      flex-shrink: 0;
       border-radius: 50%;
     }
 
-    &:active {
-      transform: scale(0.97);
+    &.active {
+      color: #15803d;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+
+      &::before {
+        background: #22c55e;
+      }
+
+      &:hover {
+        background: #dcfce7;
+        border-color: #86efac;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
+      }
     }
 
-    @each $name, $c in $statuses {
-      &.#{$name} {
-        color: nth($c, 1);
-        background: nth($c, 2);
-        border-color: nth($c, 3);
+    &.inactive {
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
 
-        &::before {
-          background: nth($c, 4);
-        }
+      &::before {
+        background: #ef4444;
+      }
 
-        &:hover {
-          background: nth($c, 5);
-          border-color: nth($c, 6);
-        }
+      &:hover {
+        background: #fee2e2;
+        border-color: #fca5a5;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
       }
     }
   }
 
   // =========================
-  // ACTIONS
+  // ACTION BUTTONS
   // =========================
 
   .product-action {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
 
     button {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+
+      width: 34px;
+      height: 34px;
       padding: 0;
+
       background: #fff;
-      border: 1px solid $line-strong;
-      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+
       cursor: pointer;
-      transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+      transition: all 0.2s ease;
 
       i {
-        font-size: 13px;
+        font-size: 14px; /* Tăng xíu xiu cho icon cân đối với nút */
       }
 
-      &:focus-visible {
-        outline: 2px solid $primary;
-        outline-offset: 2px;
+      &:active {
+        transform: translateY(1px);
       }
     }
 
-    @each $name, $c in $actions {
-      &__#{$name} {
-        color: nth($c, 1);
+    &__view {
+      color: #3b82f6;
 
-        &:hover {
-          color: #fff;
-          background: nth($c, 2);
-          border-color: nth($c, 2);
-        }
+      &:hover {
+        color: #fff;
+        background: #3b82f6;
+        border-color: #3b82f6;
+        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
+      }
+    }
+
+    &__edit {
+      color: #f59e0b;
+
+      &:hover {
+        color: #fff;
+        background: #f59e0b;
+        border-color: #f59e0b;
+        box-shadow: 0 3px 8px rgba(245, 158, 11, 0.2);
+      }
+    }
+
+    &__delete {
+      color: #ef4444;
+
+      &:hover {
+        color: #fff;
+        background: #ef4444;
+        border-color: #ef4444;
+        box-shadow: 0 3px 8px rgba(239, 68, 68, 0.2);
       }
     }
   }
@@ -350,83 +358,65 @@ $statuses: (
   // PAGINATION
   // =========================
 
-  .ant-table-pagination {
-    margin: 0 !important;
-    padding: 14px 20px;
-    border-top: 1px solid $line;
-  }
-
   .ant-pagination {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    row-gap: 8px;
-
-    .ant-pagination-item,
-    .ant-pagination-prev,
-    .ant-pagination-next {
-      min-width: 32px;
-      height: 32px;
-    }
+    margin: 20px 0 0 0; /* Cách đều lề trên */
+    justify-content: flex-end; /* Đẩy ra cuối */
 
     .ant-pagination-item {
-      line-height: 30px;
-      background: #fff;
-      border-color: $line-strong;
       border-radius: 6px;
+      transition: all 0.2s;
 
       a {
-        color: $muted;
-        font-size: 13px;
+        font-size: 14px;
       }
 
-      &:hover {
-        border-color: $primary;
+      &-active {
+        font-weight: 500;
+        border-color: #3b82f6;
 
         a {
-          color: $primary;
+          color: #3b82f6;
         }
-      }
-    }
-
-    .ant-pagination-item-active {
-      background: $primary;
-      border-color: $primary;
-
-      a,
-      &:hover a {
-        color: #fff;
       }
 
       &:hover {
-        background: #4096ff;
-        border-color: #4096ff;
+        border-color: #3b82f6;
+
+        a {
+          color: #3b82f6;
+        }
       }
     }
 
     .ant-pagination-prev,
     .ant-pagination-next {
       .ant-pagination-item-link {
-        background: #fff;
-        border-color: $line-strong;
         border-radius: 6px;
-      }
 
-      &:hover .ant-pagination-item-link {
-        color: $primary;
-        border-color: $primary;
+        &:hover {
+          color: #3b82f6;
+          border-color: #3b82f6;
+        }
       }
     }
 
-    .ant-pagination-options .ant-select {
-      height: 32px;
-
+    .ant-pagination-options {
       .ant-select-selector {
-        height: 32px !important;
-        border-color: $line-strong !important;
-        border-radius: 6px !important;
+        border-radius: 6px;
       }
+    }
+  }
+
+  // =========================
+  // EMPTY
+  // =========================
+
+  .ant-empty {
+    margin: 60px 0;
+
+    .ant-empty-description {
+      color: #94a3b8;
+      font-size: 14px;
     }
   }
 
@@ -434,102 +424,53 @@ $statuses: (
   // RESPONSIVE
   // =========================
 
-  // Laptop nhỏ
-  @media (max-width: 1200px) {
-    @include compact(50px, 68px, 10px, 12px, 13px, 52px, 220px);
+  .ant-table-content {
+    overflow-x: auto;
+    /* Làm đẹp thanh cuộn */
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
   }
 
-  // Tablet ngang, gồm màn hình ~967px: bảng vừa khít, không cuộn
-  @media (max-width: 992px) {
-    @include compact(48px, 64px, 8px, 10px, 13px, 48px, 190px);
-    @include col-widths(44px, 64px, 72px, 112px, 108px);
+  @media (max-width: 1200px) {
+    .ant-table-wrapper {
+      min-width: unset; /* Bỏ set width cố định để antd tự cuộn nội dung bên trong */
+    }
+    .ant-table {
+      min-width: 1000px; /* Force table tự có cuộn */
+    }
+  }
 
-    .product-price {
+  @media (max-width: 768px) {
+    padding: 16px;
+    border-radius: 8px;
+
+    .ant-table-thead > tr > th {
+      height: 50px;
+      padding: 10px 12px;
       font-size: 13px;
     }
 
-    .product-category,
-    .product-brand {
-      max-width: 100px;
-      padding: 2px 8px;
-      font-size: 12px;
-    }
-
-    .product-stock {
-      min-width: 40px;
-      height: 26px;
-      padding: 0 7px;
-      font-size: 12px;
-    }
-
-    .product-status {
-      min-width: 96px;
-      height: 28px;
-      padding: 0 10px;
-      font-size: 11px;
-    }
-
-    .product-action {
-      gap: 5px;
-
-      button {
-        width: 30px;
-        height: 30px;
-
-        i {
-          font-size: 12px;
-        }
-      }
-    }
-
-    .ant-table-pagination {
-      padding: 12px 16px;
-    }
-  }
-
-  // Tablet đứng: bắt đầu cuộn ngang trong bảng
-  @media (max-width: 768px) {
-    @include compact(46px, 62px, 8px, 8px, 12px, 44px, 170px);
-
-    .ant-table-content > table {
-      min-width: 820px;
-    }
-
-    .ant-table-pagination {
-      padding: 12px;
-    }
-
-    .ant-pagination {
-      justify-content: center;
-    }
-  }
-
-  // Điện thoại
-  @media (max-width: 576px) {
-    @include compact(42px, 58px, 6px, 6px, 12px, 40px, 150px);
-
-    .ant-table-content > table {
-      min-width: 780px;
+    .ant-table-tbody > tr > td {
+      height: 70px;
+      padding: 8px 12px;
     }
 
     .product-thumbnail {
-      border-radius: 6px;
+      width: 50px;
+      height: 50px;
     }
 
-    .product-status {
-      min-width: 88px;
-      height: 26px;
-      font-size: 10px;
-    }
-
-    .product-action button {
-      width: 28px;
-      height: 28px;
-    }
-
-    // Ẩn ô chọn số dòng/trang cho gọn
-    .ant-pagination-options {
-      display: none;
+    .product-title,
+    .product-price {
+      font-size: 13px;
     }
   }
 }

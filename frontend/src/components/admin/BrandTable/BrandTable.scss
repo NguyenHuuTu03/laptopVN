@@ -1,5 +1,12 @@
 .brand-table {
   width: 100%;
+  background: #ffffff;
+
+  /* Đồng bộ Card UI */
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
 
   // =========================
   // TABLE
@@ -11,6 +18,23 @@
   .ant-table {
     color: #374151;
     font-size: 14px;
+    background: transparent;
+  }
+
+  // =========================
+  // CUSTOM SCROLLBAR
+  // =========================
+  .ant-table-content {
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #f9fafb;
+    }
   }
 
   // =========================
@@ -22,13 +46,13 @@
         height: 52px;
         padding: 12px 16px;
 
-        color: #374151;
-        background: #fafafa;
+        color: #4b5563;
+        background: #f8fafc !important;
+        border-bottom: 1px solid #e5e7eb;
 
         font-size: 13px;
         font-weight: 600;
-
-        border-bottom: 1px solid #f0f0f0;
+        white-space: nowrap;
 
         &::before {
           display: none !important;
@@ -42,7 +66,7 @@
   // =========================
   .ant-table-tbody {
     > tr {
-      transition: background 0.2s ease;
+      transition: background-color 0.2s ease;
 
       > td {
         height: 64px;
@@ -50,15 +74,13 @@
 
         color: #374151;
         background: #fff;
-
         border-bottom: 1px solid #f3f4f6;
-
         vertical-align: middle;
       }
 
       &:hover {
         > td {
-          background: #f7fbff;
+          background: #f8fbff !important;
         }
       }
 
@@ -75,18 +97,24 @@
   // =========================
   .brand-thumbnail {
     display: block;
-
     width: 48px;
     height: 48px;
-
     margin: 0 auto;
 
-    object-fit: contain;
+    object-fit: cover; /* Đổi thành cover để logo lấp đầy đẹp hơn */
 
     background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 2px; /* Thêm padding nhẹ */
 
-    border: 1px solid #f0f0f0;
-    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #93c5fd;
+      transform: scale(1.08);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
   }
 
   // =========================
@@ -94,10 +122,9 @@
   // =========================
   .brand-title {
     display: inline-block;
-
     color: #1f2937;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600; /* Làm đậm tên thương hiệu */
     line-height: 1.5;
   }
 
@@ -105,21 +132,22 @@
   // COUNTRY
   // =========================
   .brand-country {
-    color: #4b5563;
-    font-size: 14px;
-    background: #f8fafc;
-    padding: 2px 10px;
-  }
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-  // =========================
-  // POSITION
-  // =========================
-  .brand-position {
-    color: #4b5563;
-    font-size: 14px;
+    min-width: 60px;
+    height: 28px;
+    padding: 0 12px;
+
+    color: #b45309; /* Tone cam ấm */
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 6px;
+
+    font-size: 13px;
     font-weight: 500;
-    background: #f8fafc;
-    padding: 2px 10px;
+    white-space: nowrap;
   }
 
   // =========================
@@ -127,7 +155,6 @@
   // =========================
   .brand-status {
     position: relative;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -138,10 +165,8 @@
     padding: 0 12px;
 
     border-radius: 20px;
-
     font-size: 13px;
     font-weight: 500;
-
     white-space: nowrap;
     cursor: pointer;
 
@@ -149,10 +174,8 @@
 
     &::before {
       content: "";
-
       width: 6px;
       height: 6px;
-
       border-radius: 50%;
     }
 
@@ -168,6 +191,8 @@
       &:hover {
         background: #dcfce7;
         border-color: #86efac;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
       }
     }
 
@@ -183,6 +208,8 @@
       &:hover {
         background: #fee2e2;
         border-color: #fca5a5;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
       }
     }
   }
@@ -203,49 +230,50 @@
 
       width: 34px;
       height: 34px;
-
       padding: 0;
 
-      background: transparent;
+      background: #fff;
       border: 1px solid #e5e7eb;
-      border-radius: 6px;
-
+      border-radius: 7px;
       cursor: pointer;
-
       transition: all 0.2s ease;
 
       i {
         font-size: 13px;
       }
+
+      &:active {
+        transform: translateY(1px);
+      }
     }
 
     &__view {
-      color: #1677ff;
-
+      color: #3b82f6;
       &:hover {
         color: #fff;
-        background: #1677ff;
-        border-color: #1677ff;
+        background: #3b82f6;
+        border-color: #3b82f6;
+        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
       }
     }
 
     &__edit {
-      color: #d97706;
-
+      color: #f59e0b;
       &:hover {
         color: #fff;
         background: #f59e0b;
         border-color: #f59e0b;
+        box-shadow: 0 3px 8px rgba(245, 158, 11, 0.2);
       }
     }
 
     &__delete {
-      color: #dc2626;
-
+      color: #ef4444;
       &:hover {
         color: #fff;
         background: #ef4444;
         border-color: #ef4444;
+        box-shadow: 0 3px 8px rgba(239, 68, 68, 0.2);
       }
     }
   }
@@ -253,30 +281,84 @@
   // =========================
   // PAGINATION
   // =========================
-  .ant-pagination {
-    margin: 20px 0 0;
+  .ant-table-pagination {
+    margin: 0 !important;
+    padding: 16px 20px;
+    border-top: 1px solid #f3f4f6;
+    background: #ffffff;
+  }
 
+  .ant-pagination {
     .ant-pagination-item {
+      min-width: 32px;
+      height: 32px;
+      line-height: 30px;
       border-radius: 6px;
+      border-color: #e5e7eb;
+      transition: all 0.2s;
 
       a {
-        font-size: 14px;
+        color: #4b5563;
+        font-size: 13px;
       }
 
-      &-active {
-        font-weight: 500;
-        border-color: #1677ff;
-
+      &:hover {
+        border-color: #3b82f6;
         a {
-          color: #1677ff;
+          color: #3b82f6;
+        }
+      }
+    }
+
+    /* Nút Đang Active (Kiểu Outline thanh lịch) */
+    .ant-pagination-item-active {
+      background: #ffffff; /* Nền trắng */
+      border-color: #3b82f6; /* Viền xanh */
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); /* Bóng mờ nhẹ cho nổi bật */
+
+      a {
+        color: #3b82f6; /* Chữ màu xanh */
+        font-weight: 600; /* Làm đậm số trang một chút */
+      }
+
+      &:hover {
+        background: #f8fbff; /* Hover vào hơi xanh nhạt */
+        border-color: #2563eb;
+        a {
+          color: #2563eb;
         }
       }
     }
 
     .ant-pagination-prev,
     .ant-pagination-next {
+      min-width: 32px;
+      height: 32px;
+
       .ant-pagination-item-link {
         border-radius: 6px;
+        border-color: #e5e7eb;
+        transition: all 0.2s;
+
+        &:hover {
+          color: #3b82f6;
+          border-color: #3b82f6;
+        }
+      }
+    }
+
+    .ant-pagination-options {
+      .ant-select {
+        height: 32px;
+
+        .ant-select-selector {
+          border-radius: 6px !important;
+          border-color: #e5e7eb !important;
+
+          &:hover {
+            border-color: #3b82f6 !important;
+          }
+        }
       }
     }
   }
@@ -284,11 +366,48 @@
   // =========================
   // RESPONSIVE
   // =========================
-  @media (max-width: 768px) {
-    overflow-x: auto;
-
-    .ant-table-wrapper {
+  @media (max-width: 992px) {
+    .ant-table {
       min-width: 850px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ant-table {
+      min-width: 800px;
+    }
+
+    .brand-thumbnail {
+      width: 40px;
+      height: 40px;
+    }
+
+    .brand-title {
+      font-size: 13px;
+    }
+
+    .brand-country {
+      font-size: 12px;
+      height: 24px;
+    }
+
+    .brand-action {
+      gap: 5px;
+
+      &__view,
+      &__edit,
+      &__delete {
+        width: 30px;
+        height: 30px;
+
+        i {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .ant-table-pagination {
+      padding: 14px 16px;
     }
   }
 }

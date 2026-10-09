@@ -75,13 +75,7 @@ function CategoryTable({ data = [], pagination, onPageChange, onReload }) {
       key: "title",
       render: (text) => <span className="category-title">{text}</span>,
     },
-    {
-      title: "Vị trí",
-      dataIndex: "position",
-      key: "position",
-      align: "center",
-      render: (text) => <span className="category-position">{text}</span>,
-    },
+
     {
       title: "Trạng thái",
       dataIndex: "status",
@@ -133,7 +127,6 @@ function CategoryTable({ data = [], pagination, onPageChange, onReload }) {
     _id: item._id,
     thumbnail: item.thumbnail,
     title: item.title,
-    position: item.position,
     status: item.status,
   }));
 
