@@ -8,6 +8,7 @@ import {
   getFeaturedProducts,
   getCollectionProducts,
 } from "../../../services/client/product.services";
+import CouponList from "../../../components/client/Coupons/CouponList";
 
 function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -68,6 +69,10 @@ function Home() {
         <div className="home__top">
           <CategoryMenu />
           <Banner />
+        </div>
+
+        <div className="home-coupons">
+          <CouponList />
         </div>
 
         {/* Sản phẩm nổi bật */}

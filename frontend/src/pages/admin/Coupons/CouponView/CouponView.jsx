@@ -80,8 +80,12 @@ function CouponView() {
       label: "Hạn sử dụng",
     },
     {
+      value: "usedCount-asc",
+      label: "Số lượt dùng tăng dần ",
+    },
+    {
       value: "usedCount-desc",
-      label: "Sử dụng nhiều nhất",
+      label: "Số lượt dùng giảm dần ",
     },
   ];
 

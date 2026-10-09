@@ -1,0 +1,396 @@
+.coupon-card {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 0;
+  box-sizing: border-box;
+
+  // =========================
+  // SLIDER MÃ GIẢM GIÁ
+  // =========================
+  .coupon__swiper {
+    width: 100%;
+    padding: 4px 4px 12px;
+    box-sizing: border-box;
+
+    .swiper-slide {
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      min-width: 0;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-sizing: border-box;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        border-color: #b8c5d6;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+      }
+    }
+
+    // Nút chuyển slider
+    .swiper-button-prev,
+    .swiper-button-next {
+      width: 30px;
+      height: 30px;
+      color: #333;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+      &::after {
+        font-size: 12px;
+        font-weight: 700;
+      }
+    }
+
+    .swiper-button-prev {
+      left: 2px;
+    }
+
+    .swiper-button-next {
+      right: 2px;
+    }
+
+    .swiper-button-disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+  }
+
+  // =========================
+  // THÔNG TIN MÃ GIẢM GIÁ
+  // =========================
+  .coupon-box__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #d9d9d9;
+
+    span:first-child {
+      min-width: 0;
+      color: #1677ff;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    span:last-child {
+      flex-shrink: 0;
+      color: #999;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+  }
+
+  .coupon-box__content {
+    flex: 1;
+    min-width: 0;
+    // min-height: 76px;
+    padding: 12px 0;
+
+    span {
+      display: -webkit-box;
+      overflow: hidden;
+      color: #444;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+  }
+
+  // =========================
+  // NÚT ĐIỀU KIỆN / SAO CHÉP
+  // =========================
+  .coupon-box__action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+
+    button {
+      flex: 1;
+      min-width: 0;
+      min-height: 34px;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      border-radius: 5px;
+      cursor: pointer;
+      transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    // Điều kiện
+    button:first-child {
+      color: #444;
+      background: #fff;
+      border: 1px solid #d9d9d9;
+
+      &:hover {
+        color: #1677ff;
+        border-color: #1677ff;
+      }
+    }
+
+    // Sao chép
+    button:last-child {
+      color: #fff;
+      background: #1677ff;
+      border: 1px solid #1677ff;
+
+      &:hover {
+        background: #0958d9;
+        border-color: #0958d9;
+      }
+    }
+  }
+}
+
+// ===============================
+// COUPON CONDITION MODAL
+// ===============================
+.coupon-condition-modal {
+  .ant-modal-content {
+    padding: 16px 20px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .ant-modal-close {
+    top: 8px;
+    right: 8px;
+    color: #999;
+
+    &:hover {
+      color: #1677ff;
+      background: #f5f5f5;
+    }
+  }
+
+  .ant-modal-header {
+    margin-bottom: 0;
+    padding: 0;
+    background: transparent;
+    border-bottom: none;
+  }
+
+  .ant-modal-body {
+    padding: 0;
+  }
+
+  .coupon-condition {
+    color: #333;
+
+    // Mã giảm giá
+    &__code {
+      margin: 0 0 4px;
+      color: #005bea;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.5;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    // Mô tả ưu đãi
+    &__description {
+      margin: 0 0 10px;
+      color: #999;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    // Điều kiện đơn hàng
+    &__requirement {
+      padding: 12px 0 10px;
+      color: #333;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      background: transparent;
+      border: none;
+      border-top: 1px dashed #e8e8e8;
+      border-radius: 0;
+      overflow-wrap: anywhere;
+    }
+
+    // Nhóm nút thao tác
+    &__actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+
+      button {
+        flex: 1;
+        min-width: 0;
+        height: 35px;
+        padding: 0 12px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 400;
+        border-radius: 20px;
+        cursor: pointer;
+        transition:
+          color 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease;
+      }
+    }
+
+    // Nút Đóng
+    &__close {
+      color: #333;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+
+      &:hover {
+        color: #1677ff;
+        background: #f8fbff;
+        border-color: #1677ff;
+      }
+    }
+
+    // Nút Sao chép
+    &__copy {
+      color: #ff3347;
+      background: #fff;
+      border: 1px solid #ff3347;
+
+      &:hover {
+        color: #fff;
+        background: #ff3347;
+        border-color: #ff3347;
+      }
+    }
+  }
+}
+
+// ===============================
+// RESPONSIVE
+// ===============================
+@media (max-width: 576px) {
+  .coupon-condition-modal {
+    width: calc(100% - 32px) !important;
+    max-width: 420px;
+    margin: 0 auto;
+
+    .ant-modal-content {
+      padding: 20px;
+    }
+
+    .coupon-condition {
+      &__code {
+        font-size: 17px;
+      }
+
+      &__description {
+        font-size: 13px;
+      }
+
+      &__requirement {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      &__actions {
+        gap: 8px;
+        margin-top: 20px;
+
+        button {
+          min-width: 0;
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+
+// =========================
+// TABLET
+// =========================
+@media (max-width: 767px) {
+  .coupon-card {
+    .product-related__swiper {
+      .swiper-slide {
+        padding: 13px;
+      }
+    }
+
+    .coupon-box__content {
+      min-height: 70px;
+    }
+  }
+
+  .coupon-condition-modal {
+    .ant-modal-content {
+      padding: 20px;
+    }
+  }
+}
+
+// =========================
+// ĐIỆN THOẠI NHỎ
+// =========================
+@media (max-width: 400px) {
+  .coupon-card {
+    .coupon-box__header {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .coupon-box__action {
+      gap: 6px;
+
+      button {
+        padding: 6px 5px;
+        font-size: 11px;
+      }
+    }
+  }
+
+  .coupon-condition-modal {
+    width: calc(100% - 24px) !important;
+
+    .ant-modal-content {
+      padding: 18px;
+    }
+
+    .coupon-condition {
+      &__code {
+        font-size: 18px;
+      }
+
+      &__actions {
+        gap: 8px;
+
+        button {
+          flex: 1;
+          min-width: 0;
+          padding: 8px 10px;
+        }
+      }
+    }
+  }
+}
