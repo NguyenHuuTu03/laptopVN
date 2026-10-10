@@ -6,6 +6,7 @@ const settingSchema = mongoose.Schema(
     hotline: String,
     email: String,
     address: String,
+    description: String,
     footer: String,
     logo: String,
     sideBar: Array,

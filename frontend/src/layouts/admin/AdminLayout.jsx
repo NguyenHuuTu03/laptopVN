@@ -8,6 +8,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import "./AdminLayout.scss";
 // import { useState } from "react";
 import SideBar from "../../components/admin/SideBar/SideBar";
+import { getSettings } from "../../services/admin/setting.services";
+import { setSettings } from "../../actions/settingActions";
 
 const { Sider, Content } = Layout;
 function AdminLayout() {
@@ -16,9 +18,21 @@ function AdminLayout() {
     (state) => state.authReducer.admin,
   );
 
-  // const [collapsed, setCollapsed] = useState(false);
-
   useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const result = await getSettings();
+
+        if (result.code === 200) {
+          dispatch(setSettings(result.data.setting));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSettings();
+
     const checkAuthStatus = async () => {
       try {
         const profile = await getProfile();

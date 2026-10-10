@@ -29,6 +29,7 @@ function Header() {
 
   const { isLoggedIn, user } = useSelector((state) => state.authReducer.client);
   const cartItems = useSelector((state) => state.cartReducer);
+  const setting = useSelector((state) => state.settingReducer);
 
   const totalQuantity = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -157,7 +158,7 @@ function Header() {
           {/* LOGO */}
           <div className="header__logo">
             <Link to="/">
-              <img src="/logo.png" alt="LaptopVN" />
+              <img src={setting.logo} alt={setting.title} />
             </Link>
           </div>
 

@@ -1,14 +1,35 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginAdmin.scss";
-import logo from "../../../../assets/images/logo.png";
 import { getProfile, login } from "../../../../services/admin/auth.services";
 import { notification } from "antd";
 import { useDispatch } from "react-redux";
 import { setAdminAuth } from "../../../../actions/authActions";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getSettings } from "../../../../services/admin/setting.services";
+import { setSettings } from "../../../../actions/settingActions";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const setting = useSelector((state) => state.settingReducer);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const result = await getSettings();
+
+        if (result.code === 200) {
+          dispatch(setSettings(result.data.setting));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSettings();
+  }, [dispatch]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -54,17 +75,17 @@ function Login() {
               <i className="fa-solid fa-shield-halved"></i>
             </span>
             <div className="admin-login__content">
-              <h1>LaptopVN</h1>
+              <h1>{setting.title}</h1>
               <p>Hệ thống quản trị</p>
             </div>
           </div>
           <div className="admin-login__right">
             <div className="admin-login__logo">
-              <img src={logo} alt="LaptopVN" />
+              <img src={setting.logo} alt={setting.title} />
             </div>
             <div className="admin-login__header">
               <h1>Chào mừng trở lại</h1>
-              <p>Đăng nhập vào hệ thống quản trị LaptopVN</p>
+              <p>Đăng nhập vào hệ thống quản trị {setting.title}</p>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="admin-login__field">
@@ -74,8 +95,6 @@ function Login() {
                   name="email"
                   type="email"
                   placeholder="Nhập email"
-                  // value={formData.email}
-                  // onChange={handleChange}
                   required
                 />
               </div>
@@ -87,8 +106,6 @@ function Login() {
                   name="password"
                   type="password"
                   placeholder="Nhập mật khẩu"
-                  // value={formData.password}
-                  // onChange={handleChange}
                   required
                 />
               </div>

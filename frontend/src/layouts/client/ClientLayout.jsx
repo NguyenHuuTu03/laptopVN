@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "../../services/client/cart.services";
 import { setCart } from "../../actions/cartActions";
+import { getSettings } from "../../services/client/setting.services";
+import { setSettings } from "../../actions/settingActions";
 
 function ClientLayout() {
   const dispatch = useDispatch();
@@ -54,6 +56,20 @@ function ClientLayout() {
     };
 
     checkAuthStatus();
+
+    const fetchSettings = async () => {
+      try {
+        const result = await getSettings();
+
+        if (result.code === 200) {
+          dispatch(setSettings(result.data.setting));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSettings();
   }, [dispatch]);
 
   useEffect(() => {
@@ -61,6 +77,7 @@ function ClientLayout() {
       localStorage.setItem("cart", JSON.stringify(cartItems));
     }
   }, [cartItems, isLoggedIn]);
+
   return (
     <div className="client-layout">
       <Header />

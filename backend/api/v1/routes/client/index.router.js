@@ -7,6 +7,7 @@ const userRoutes = require("./user.router");
 const couponRoutes = require("./coupon.router");
 const orderRoutes = require("./order.router");
 const paymentRoutes = require("./payment.router");
+const settingRoutes = require("./setting.router");
 
 const authMiddleware = require("../../../../middlewares/auth.middleware");
 
@@ -18,6 +19,7 @@ module.exports = (app) => {
   app.use("/api/cart", cartRoutes);
   app.use("/api/users", userRoutes);
   app.use("/api/coupons", couponRoutes);
+  app.use("/api/settings", settingRoutes);
   app.use("/api/order", authMiddleware.requireClientAuth, orderRoutes);
   app.use("/api/payment", authMiddleware.requireClientAuth, paymentRoutes);
 };

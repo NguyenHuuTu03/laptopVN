@@ -7,21 +7,22 @@ import {
   EnvironmentOutlined,
 } from "@ant-design/icons";
 
+import { useSelector } from "react-redux";
+
 import "./Footer.scss";
 
 function Footer() {
+  const setting = useSelector((state) => state.settingReducer);
+
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer__content">
           {/* ABOUT */}
           <div className="footer__column">
-            <h3 className="footer__title">Về LaptopVN</h3>
+            <h3 className="footer__title">Về {setting.title}</h3>
 
-            <p className="footer__description">
-              LaptopVN là website bán laptop, máy tính và các thiết bị công
-              nghệ, cung cấp sản phẩm chính hãng với giá tốt.
-            </p>
+            <p className="footer__description">{setting.description}</p>
 
             <div className="footer__social">
               <a href="#" aria-label="Facebook">
@@ -99,17 +100,17 @@ function Footer() {
             <ul className="footer__contact">
               <li>
                 <PhoneOutlined />
-                <span>Hotline: 1900 1234</span>
+                <span>Hotline: {setting.hotline}</span>
               </li>
 
               <li>
                 <MailOutlined />
-                <span>Email: support@laptopvn.com</span>
+                <span>Email: {setting.email}</span>
               </li>
 
               <li>
                 <EnvironmentOutlined />
-                <span>Hà Nội, Việt Nam</span>
+                <span>{setting.address}</span>
               </li>
             </ul>
           </div>
@@ -119,7 +120,7 @@ function Footer() {
       {/* COPYRIGHT */}
       <div className="footer__bottom">
         <div className="container">
-          <p>© 2026 LaptopVN. All rights reserved.</p>
+          <p>{setting.footer}</p>
         </div>
       </div>
     </footer>

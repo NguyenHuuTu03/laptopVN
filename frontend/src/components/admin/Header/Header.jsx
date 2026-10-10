@@ -1,5 +1,4 @@
 import { Dropdown, notification } from "antd";
-import logo from "../../../assets/images/logo.png";
 import { DownOutlined } from "@ant-design/icons";
 import "./Header.scss";
 import { logout } from "../../../services/admin/auth.services";
@@ -10,6 +9,9 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer.admin);
+
+  const setting = useSelector((state) => state.settingReducer);
+
   const userMenu = {
     items: [
       {
@@ -60,7 +62,7 @@ function Header() {
       {user && (
         <div className="admin-header__container">
           <div className="admin-header__logo">
-            <img src={logo} alt="Logo" />
+            <img src={setting.logo} alt={setting.title} />
           </div>
           <div className="admin-header__nav">
             <Dropdown

@@ -1,0 +1,447 @@
+.admin-settings {
+  min-height: 100%;
+  background: #f5f6f8;
+  color: #1f2937;
+
+  // =========================
+  // HEADER
+  // =========================
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 18px 24px;
+    margin-bottom: 20px;
+
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+  }
+
+  &__title {
+    position: relative;
+    flex-shrink: 0;
+    padding-left: 14px;
+
+    &::before {
+      content: "";
+
+      position: absolute;
+      top: 2px;
+      left: 0;
+
+      width: 4px;
+      height: 28px;
+
+      background: #1677ff;
+      border-radius: 4px;
+    }
+
+    h1 {
+      margin: 0;
+
+      color: #1f2937;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    width: 100%;
+    gap: 12px;
+  }
+
+  &__save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 0 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 3px 8px rgba(22, 119, 255, 0.16);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+
+    i {
+      font-size: 15px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(22, 119, 255, 0.22);
+    }
+  }
+
+  // =========================
+  // MAIN CONTENT
+  // =========================
+  &__main {
+    padding: 28px;
+    border: 1px solid #e8edf4;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.025);
+
+    // Tiêu đề khu vực
+    .ant-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 40px;
+      row-gap: 0;
+      align-items: start;
+      width: 100%;
+    }
+
+    .ant-form-item {
+      min-width: 0;
+      margin-bottom: 24px;
+    }
+
+    // Cột trái: thông tin website
+    .ant-form-item:nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .ant-form-item:nth-child(2) {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .ant-form-item:nth-child(3) {
+      grid-column: 1;
+      grid-row: 3;
+    }
+
+    .ant-form-item:nth-child(4) {
+      grid-column: 1;
+      grid-row: 4;
+    }
+
+    .ant-form-item:nth-child(5) {
+      grid-column: 1;
+      grid-row: 5;
+    }
+
+    .ant-form-item:nth-child(6) {
+      grid-column: 1;
+      grid-row: 6;
+    }
+
+    // Cột phải: logo và banner
+    .ant-form-item:nth-child(7) {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+
+    .ant-form-item:nth-child(8) {
+      grid-column: 2;
+      grid-row: 3 / span 3;
+    }
+
+    // Label
+    .ant-form-item-label {
+      padding-bottom: 8px;
+
+      > label {
+        height: auto;
+        color: #344054;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
+
+        &::after {
+          display: none;
+        }
+      }
+    }
+
+    // Input và TextArea
+    .ant-input,
+    .ant-input-affix-wrapper {
+      border-color: #dce3ed;
+      border-radius: 8px;
+      color: #1f2937;
+      font-size: 14px;
+      box-shadow: none;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        border-color: #69a7ff;
+      }
+
+      &:focus,
+      &.ant-input-affix-wrapper-focused {
+        border-color: #1677ff;
+        box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.1);
+      }
+
+      &::placeholder {
+        color: #a0a9b8;
+      }
+    }
+
+    input.ant-input {
+      min-height: 43px;
+      padding: 10px 12px;
+    }
+
+    textarea.ant-input {
+      min-height: 100px;
+      padding: 12px;
+      line-height: 1.7;
+      resize: vertical;
+    }
+
+    // TextArea footer
+    .ant-form-item:nth-child(6) textarea.ant-input {
+      min-height: 115px;
+    }
+  }
+
+  // =========================
+  // MAIN TITLE
+  // =========================
+  &__main-title {
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf0f5;
+
+    h3 {
+      position: relative;
+      margin: 0;
+      padding-left: 13px;
+      color: #172033;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.5;
+
+      &::before {
+        position: absolute;
+        top: 3px;
+        bottom: 3px;
+        left: 0;
+        width: 4px;
+        border-radius: 4px;
+        background: #1677ff;
+        content: "";
+      }
+    }
+  }
+
+  // =========================
+  // UPLOAD LOGO & BANNER
+  // =========================
+  .ant-upload-wrapper {
+    width: 100%;
+
+    .ant-upload-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .ant-upload-list-item-container,
+    .ant-upload.ant-upload-select {
+      width: 116px !important;
+      height: 116px !important;
+      margin: 0 !important;
+    }
+
+    .ant-upload.ant-upload-select {
+      overflow: hidden;
+      border: 1px dashed #b8c8dc;
+      border-radius: 10px;
+      background: #f8fbff;
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+      &:hover {
+        border-color: #1677ff;
+        background: #f0f7ff;
+      }
+    }
+
+    .ant-upload-list-item {
+      overflow: hidden;
+      border: 1px solid #e0e7f0;
+      border-radius: 10px;
+      background: #fff;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        border-color: #91caff;
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.07);
+      }
+    }
+
+    .ant-upload-list-item-thumbnail img {
+      object-fit: contain;
+    }
+
+    .ant-upload-select > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 500;
+
+      .anticon {
+        color: #1677ff;
+        font-size: 24px;
+      }
+    }
+
+    .ant-upload-list-item-actions {
+      button,
+      .anticon {
+        color: #fff;
+      }
+    }
+  }
+
+  // Spin khi lưu
+  .ant-spin-nested-loading {
+    width: 100%;
+  }
+
+  // =========================
+  // TABLET
+  // =========================
+  @media (max-width: 992px) {
+    padding: 20px;
+
+    &__main {
+      padding: 24px;
+
+      .ant-form {
+        column-gap: 24px;
+      }
+    }
+
+    .ant-upload-wrapper {
+      .ant-upload-list-item-container,
+      .ant-upload.ant-upload-select {
+        width: 104px !important;
+        height: 104px !important;
+      }
+    }
+  }
+
+  // =========================
+  // MOBILE
+  // =========================
+  @media (max-width: 768px) {
+    padding: 16px;
+
+    &__header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 18px;
+      padding: 20px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 21px;
+      }
+    }
+
+    &__nav {
+      width: 100%;
+    }
+
+    &__save {
+      width: 100%;
+      min-height: 44px;
+    }
+
+    &__main {
+      padding: 22px 18px;
+
+      .ant-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .ant-form-item {
+        width: 100%;
+        margin-bottom: 22px;
+      }
+
+      input.ant-input {
+        min-height: 44px;
+      }
+    }
+
+    &__main-title {
+      margin-bottom: 24px;
+
+      h3 {
+        font-size: 17px;
+      }
+    }
+
+    .ant-upload-wrapper {
+      .ant-upload-list-item-container,
+      .ant-upload.ant-upload-select {
+        width: 100px !important;
+        height: 100px !important;
+      }
+    }
+  }
+
+  // =========================
+  // SMALL MOBILE
+  // =========================
+  @media (max-width: 400px) {
+    padding: 12px;
+
+    &__header {
+      padding: 16px;
+    }
+
+    &__main {
+      padding: 18px 14px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 19px;
+      }
+    }
+
+    .ant-upload-wrapper {
+      .ant-upload-list-item-container,
+      .ant-upload.ant-upload-select {
+        width: 84px !important;
+        height: 84px !important;
+      }
+    }
+  }
+}
