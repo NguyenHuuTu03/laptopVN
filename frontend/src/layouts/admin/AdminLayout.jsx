@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 import Header from "../../components/admin/Header/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -52,7 +52,7 @@ function AdminLayout() {
   }, [dispatch]);
 
   if (!checked) {
-    return <div>Loading...</div>;
+    return <Spin fullscreen={true}></Spin>;
   }
 
   if (!isLoggedIn) {
