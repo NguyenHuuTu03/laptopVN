@@ -1,4 +1,4 @@
-import { get, patch, del } from "../../utils/request";
+import { get, patch, del, post } from "../../utils/request";
 
 export const getRoles = async (params = {}) => {
   const result = await get("/admin/roles", { params });
@@ -21,6 +21,12 @@ export const removeRole = async (id) => {
 
 export const updatePermission = async (data) => {
   const result = await patch(`/admin/roles/permission`, data);
+
+  return result;
+};
+
+export const postRole = async (data) => {
+  const result = await post("/admin/roles", data);
 
   return result;
 };

@@ -98,7 +98,7 @@ module.exports.create = async (req, res) => {
       req.body.title.charAt(0).toUpperCase() +
       req.body.title.slice(1).toLowerCase();
     req.body.title = roleName;
-    const exitsRole = await Role.findOne({
+    const exitsRole = await Roles.findOne({
       deleted: false,
       title: req.body.title,
     });

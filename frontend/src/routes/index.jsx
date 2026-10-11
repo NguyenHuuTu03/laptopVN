@@ -26,6 +26,7 @@ import CategoryView from "../pages/admin/Categories/CategoryView/CategoryView";
 import BrandView from "../pages/admin/Brands/BrandView/BrandView";
 import UserView from "../pages/admin/Users/UserView/UserView";
 import CouponView from "../pages/admin/Coupons/CouponView/CouponView";
+import RoleCreate from "../pages/admin/Roles/RoleCreate/RoleCreate";
 
 export const routes = [
   {
@@ -119,7 +120,19 @@ export const routes = [
             path: "shipper",
             element: <OrderShip />,
           },
-          { path: "roles", element: <RoleList /> },
+          {
+            path: "roles",
+            children: [
+              {
+                path: "",
+                element: <RoleList />,
+              },
+              {
+                path: "create",
+                element: <RoleCreate />,
+              },
+            ],
+          },
           { path: "permissions", element: <Permission /> },
 
           {

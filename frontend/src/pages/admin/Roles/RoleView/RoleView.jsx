@@ -2,7 +2,7 @@ import { Input } from "antd";
 const { Search } = Input;
 import { Select } from "antd";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import "./RoleView.scss";
 import { getRoles } from "../../../../services/admin/role.services";
@@ -70,8 +70,6 @@ function RoleView() {
     },
   ];
 
-  console.log(data);
-
   return (
     <>
       <div className="admin-roles">
@@ -87,10 +85,10 @@ function RoleView() {
                 onSearch={handleSearch}
               />
             </div>
-            <div className="admin-roles__add">
+            <Link to={"/admin/roles/create"} className="admin-roles__add">
               <i className="fa-solid fa-plus"></i>
               <p>Thêm vai trò</p>
-            </div>
+            </Link>
           </div>
         </div>
 
