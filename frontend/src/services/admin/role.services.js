@@ -30,3 +30,15 @@ export const postRole = async (data) => {
 
   return result;
 };
+
+export const patchRole = async (id, data) => {
+  const result = await patch(`/admin/roles/${id}`, data);
+
+  return result;
+};
+
+export const getRole = async (id) => {
+  const result = await get(`/admin/roles/${id}`);
+
+  return result;
+};

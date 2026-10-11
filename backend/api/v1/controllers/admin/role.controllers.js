@@ -1,5 +1,6 @@
 const Roles = require("../../../../models/role.model");
 const Users = require("../../../../models/user.model");
+const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
 
 //[GET] /api/admin/roles
 module.exports.index = async (req, res) => {
@@ -62,7 +63,7 @@ module.exports.index = async (req, res) => {
   }
 };
 
-//[GET] /api/admin/roles/:rolesId
+//[GET] /api/admin/roles/:roleId
 module.exports.detail = async (req, res) => {
   try {
     const roleId = req.params.roleId;
@@ -127,14 +128,11 @@ module.exports.create = async (req, res) => {
 module.exports.edit = async (req, res) => {
   try {
     const roleId = req.params.roleId;
-    const roleName =
-      req.body.title.charAt(0).toUpperCase() +
-      req.body.title.slice(1).toLowerCase();
-    req.body.title = roleName;
+    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
 
-    const exitRole = await Role.findOne({
+    const exitRole = await Roles.findOne({
       deleted: false,
-      title: req.body.title,
+      slug: slug,
       _id: { $ne: roleId },
     });
     if (exitRole) {
@@ -144,14 +142,19 @@ module.exports.edit = async (req, res) => {
       });
     }
     await Roles.updateOne({ _id: roleId }, req.body);
+    const role = await Roles.findOne({
+      _id: roleId,
+      deleted: false,
+    });
     res.json({
       code: 200,
       message: "Cập nhật vai trò thành công!",
       data: {
-        roles,
+        role,
       },
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 500,
       message: "Cập nhật vai trò thất bại!",

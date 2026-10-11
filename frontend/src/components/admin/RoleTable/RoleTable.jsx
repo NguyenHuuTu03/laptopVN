@@ -5,6 +5,7 @@ import {
   changeStatus,
   removeRole,
 } from "../../../services/admin/role.services";
+import { Link } from "react-router-dom";
 
 function RoleTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
@@ -100,13 +101,17 @@ function RoleTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="role-action">
-          <button className="role-action__view" title="Xem chi tiết">
+          <Link className="role-action__view" title="Xem chi tiết">
             <i className="fa-solid fa-eye"></i>
-          </button>
+          </Link>
 
-          <button className="role-action__edit" title="Chỉnh sửa">
+          <Link
+            to={`/admin/roles/edit/${record._id}`}
+            className="role-action__edit"
+            title="Chỉnh sửa"
+          >
             <i className="fa-solid fa-pen-to-square"></i>
-          </button>
+          </Link>
 
           <button
             className="role-action__delete"

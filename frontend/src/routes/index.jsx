@@ -27,6 +27,7 @@ import BrandView from "../pages/admin/Brands/BrandView/BrandView";
 import UserView from "../pages/admin/Users/UserView/UserView";
 import CouponView from "../pages/admin/Coupons/CouponView/CouponView";
 import RoleCreate from "../pages/admin/Roles/RoleCreate/RoleCreate";
+import RoleEdit from "../pages/admin/Roles/RoleEdit/RoleEdit";
 
 export const routes = [
   {
@@ -130,6 +131,10 @@ export const routes = [
               {
                 path: "create",
                 element: <RoleCreate />,
+              },
+              {
+                path: "edit/:roleId",
+                element: <RoleEdit />,
               },
             ],
           },
