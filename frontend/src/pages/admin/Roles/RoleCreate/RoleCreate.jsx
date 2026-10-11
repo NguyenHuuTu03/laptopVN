@@ -3,7 +3,7 @@ import TextArea from "antd/es/input/TextArea";
 import "./RoleCreate.scss";
 import { useState } from "react";
 import { postRole } from "../../../../services/admin/role.services";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function RoleCreate() {
   const [loading, setLoading] = useState(false);
@@ -37,6 +37,10 @@ function RoleCreate() {
             <h1>Thêm vai trò</h1>
           </div>
           <div className="role-create__nav">
+            <Link to="/admin/roles" className="role-create__back">
+              <i className="fa-solid fa-arrow-left"></i>
+              Quay lại
+            </Link>
             <Button
               loading={loading}
               className="role-create__save"

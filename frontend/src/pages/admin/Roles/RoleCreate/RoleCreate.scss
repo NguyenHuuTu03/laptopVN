@@ -51,6 +51,37 @@
     justify-content: flex-end;
     gap: 12px;
   }
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 18px;
+    color: #475467;
+    background: #fff;
+    border: 1px solid #dce3ed;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 13px;
+    }
+
+    &:hover {
+      color: #1677ff;
+      background: #f0f7ff;
+      border-color: #1677ff;
+    }
+
+    &:active {
+      background: #e6f4ff;
+    }
+  }
 
   &__save {
     display: inline-flex;

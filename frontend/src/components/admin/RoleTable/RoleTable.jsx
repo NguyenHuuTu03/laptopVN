@@ -101,7 +101,11 @@ function RoleTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="role-action">
-          <Link className="role-action__view" title="Xem chi tiết">
+          <Link
+            to={`/admin/roles/detail/${record._id}`}
+            className="role-action__view"
+            title="Xem chi tiết"
+          >
             <i className="fa-solid fa-eye"></i>
           </Link>
 

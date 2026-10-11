@@ -28,6 +28,7 @@ import UserView from "../pages/admin/Users/UserView/UserView";
 import CouponView from "../pages/admin/Coupons/CouponView/CouponView";
 import RoleCreate from "../pages/admin/Roles/RoleCreate/RoleCreate";
 import RoleEdit from "../pages/admin/Roles/RoleEdit/RoleEdit";
+import RoleDetail from "../pages/admin/Roles/RoleDetail/RoleDetail";
 
 export const routes = [
   {
@@ -135,6 +136,10 @@ export const routes = [
               {
                 path: "edit/:roleId",
                 element: <RoleEdit />,
+              },
+              {
+                path: "detail/:roleId",
+                element: <RoleDetail />,
               },
             ],
           },
