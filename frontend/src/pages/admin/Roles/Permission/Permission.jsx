@@ -12,7 +12,6 @@ function Permission() {
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState(null);
   const [permissions, setPermissions] = useState([]);
-  // const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,7 +93,6 @@ function Permission() {
       name: "Cài đặt chung",
     },
   ];
-  console.log(permissions);
 
   return (
     <div className="admin-permissions">
