@@ -38,45 +38,6 @@ function RoleDetail() {
     return new Date(date).toLocaleDateString("vi-VN");
   };
 
-  const data = [
-    {
-      key: "product",
-      name: "Sản phẩm",
-    },
-    {
-      key: "category",
-      name: "Danh mục",
-    },
-    {
-      key: "brand",
-      name: "Thương hiệu",
-    },
-    {
-      key: "order",
-      name: "Đơn hàng",
-    },
-    {
-      key: "shipper",
-      name: "Giao hàng",
-    },
-    {
-      key: "user",
-      name: "Người dùng",
-    },
-    {
-      key: "coupon",
-      name: "Mã giảm",
-    },
-    {
-      key: "role",
-      name: "Nhóm quyền",
-    },
-    {
-      key: "setting",
-      name: "Cài đặt chung",
-    },
-  ];
-
   return (
     <div className="role-detail">
       <div className="role-detail__header">
@@ -170,7 +131,6 @@ function RoleDetail() {
 
             {role?.permissions.length > 0 ? (
               <PermissionTable
-                data={data}
                 permissions={role?.permissions}
               ></PermissionTable>
             ) : (

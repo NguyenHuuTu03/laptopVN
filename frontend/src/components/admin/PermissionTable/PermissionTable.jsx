@@ -1,7 +1,7 @@
 import { Table, Checkbox } from "antd";
 import "./PermissionTable.scss";
 
-function PermissionTable({ data = [], permissions = [], onChange }) {
+function PermissionTable({ permissions = [], onChange }) {
   const handlePermissionChange = (permission, checked) => {
     let newPermissions;
 
@@ -13,6 +13,59 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
 
     onChange(newPermissions);
   };
+
+  const data = [
+    {
+      key: "dashboard",
+      name: "Tổng quan",
+      actions: ["view"],
+    },
+    {
+      key: "product",
+      name: "Sản phẩm",
+      actions: ["view", "create", "edit", "delete", "update"],
+    },
+    {
+      key: "category",
+      name: "Danh mục",
+      actions: ["view", "create", "edit", "delete", "update"],
+    },
+    {
+      key: "brand",
+      name: "Thương hiệu",
+      actions: ["view", "create", "edit", "delete", "update"],
+    },
+    {
+      key: "order",
+      name: "Đơn hàng",
+      actions: ["view", "update"],
+    },
+    {
+      key: "shipper",
+      name: "Giao hàng",
+      actions: ["view", "accept", "update"],
+    },
+    {
+      key: "user",
+      name: "Người dùng",
+      actions: ["view", "create", "edit", "delete", "update"],
+    },
+    {
+      key: "coupon",
+      name: "Mã giảm",
+      actions: ["view", "create", "edit", "delete", "update"],
+    },
+    {
+      key: "role",
+      name: "Nhóm quyền",
+      actions: ["view", "create", "edit", "delete", "update", "permission"],
+    },
+    {
+      key: "setting",
+      name: "Cài đặt chung",
+      actions: ["view", "edit"],
+    },
+  ];
 
   const columns = [
     {
@@ -27,6 +80,7 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
       key: "view",
       align: "center",
       render: (_, record) => {
+        if (!record.actions.includes("view")) return null;
         const permission = `${record.key}-view`;
 
         return (
@@ -44,6 +98,7 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
       key: "create",
       align: "center",
       render: (_, record) => {
+        if (!record.actions.includes("create")) return null;
         const permission = `${record.key}-create`;
 
         return (
@@ -61,6 +116,7 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
       key: "edit",
       align: "center",
       render: (_, record) => {
+        if (!record.actions.includes("edit")) return null;
         const permission = `${record.key}-edit`;
 
         return (
@@ -78,6 +134,7 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
       key: "delete",
       align: "center",
       render: (_, record) => {
+        if (!record.actions.includes("delete")) return null;
         const permission = `${record.key}-delete`;
 
         return (
@@ -95,6 +152,7 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
       key: "permission",
       align: "center",
       render: (_, record) => {
+        if (!record.actions.includes("permission")) return null;
         const permission = `${record.key}-permission`;
 
         return (
@@ -112,6 +170,7 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
       key: "accept",
       align: "center",
       render: (_, record) => {
+        if (!record.actions.includes("accept")) return null;
         const permission = `${record.key}-accept`;
 
         return (
@@ -126,9 +185,10 @@ function PermissionTable({ data = [], permissions = [], onChange }) {
     },
     {
       title: "Cập nhật trạng thái",
-      key: "update-status",
+      key: "update",
       align: "center",
       render: (_, record) => {
+        if (!record.actions.includes("update")) return null;
         const permission = `${record.key}-update`;
 
         return (

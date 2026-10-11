@@ -55,45 +55,6 @@ function Permission() {
     }
   };
 
-  const data = [
-    {
-      key: "product",
-      name: "Sản phẩm",
-    },
-    {
-      key: "category",
-      name: "Danh mục",
-    },
-    {
-      key: "brand",
-      name: "Thương hiệu",
-    },
-    {
-      key: "order",
-      name: "Đơn hàng",
-    },
-    {
-      key: "shipper",
-      name: "Giao hàng",
-    },
-    {
-      key: "user",
-      name: "Người dùng",
-    },
-    {
-      key: "coupon",
-      name: "Mã giảm",
-    },
-    {
-      key: "role",
-      name: "Nhóm quyền",
-    },
-    {
-      key: "setting",
-      name: "Cài đặt chung",
-    },
-  ];
-
   return (
     <div className="admin-permissions">
       <div className="admin-permissions__header">
@@ -127,7 +88,6 @@ function Permission() {
         </div>
         <div className="admin-permissions__table">
           <PermissionTable
-            data={data}
             permissions={permissions}
             onChange={setPermissions}
           />
