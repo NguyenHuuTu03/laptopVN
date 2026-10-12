@@ -29,6 +29,7 @@ import CouponView from "../pages/admin/Coupons/CouponView/CouponView";
 import RoleCreate from "../pages/admin/Roles/RoleCreate/RoleCreate";
 import RoleEdit from "../pages/admin/Roles/RoleEdit/RoleEdit";
 import RoleDetail from "../pages/admin/Roles/RoleDetail/RoleDetail";
+import ReceivedOrder from "../pages/admin/Shipper/ReceivedOrder/ReceivedOrder";
 
 export const routes = [
   {
@@ -120,7 +121,16 @@ export const routes = [
           },
           {
             path: "shipper",
-            element: <OrderShip />,
+            children: [
+              {
+                path: "",
+                element: <OrderShip />,
+              },
+              {
+                path: "orders/received",
+                element: <ReceivedOrder />,
+              },
+            ],
           },
           {
             path: "roles",

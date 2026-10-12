@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import "./OrderShip.scss";
 import OrderShipTable from "../../../../components/admin/OrderShipTable/OrderShipTable";
@@ -48,8 +48,6 @@ function OrderShip() {
     handleFilterChange("page", page);
   };
 
-  console.log(data);
-
   return (
     <>
       <div className="admin-ship">
@@ -59,10 +57,13 @@ function OrderShip() {
           </div>
 
           <div className="admin-ship__nav">
-            <div className="admin-ship__add">
+            <Link
+              to={`/admin/shipper/orders/received`}
+              className="admin-ship__add"
+            >
               <i className="fa-solid fa-clipboard-check"></i>
               <p>Đơn hàng đã nhận</p>
-            </div>
+            </Link>
           </div>
         </div>
 

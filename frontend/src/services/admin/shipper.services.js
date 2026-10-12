@@ -19,3 +19,9 @@ export const changeStatus = async (id, orderStatus) => {
 
   return result;
 };
+
+export const getReceivedOrder = async (params = {}) => {
+  const result = await get("/admin/shipper/orders/received", { params });
+
+  return result;
+};

@@ -92,6 +92,21 @@ module.exports.receivedOrders = async (req, res) => {
     const shipperId = req.userId;
     let find = { shipperId: shipperId };
 
+    //search
+    if (req.query.keyword) {
+      find.shippingPhone = req.query.keyword;
+    }
+    //search
+
+    //filter
+    if (req.query.orderStatus) {
+      find.orderStatus = req.query.orderStatus;
+    }
+    if (req.query.paymentMethod) {
+      find.paymentMethod = req.query.paymentMethod;
+    }
+    //filter
+
     //pagination
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 10, 1);

@@ -157,7 +157,7 @@ function OrderView() {
             </div>
           </div>
 
-          <div className="admin-brands__table">
+          <div className="admin-orders__table">
             <OrderTable
               data={data?.orders}
               pagination={data?.pagination}
