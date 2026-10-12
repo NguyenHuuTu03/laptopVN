@@ -2,6 +2,7 @@ const Orders = require("../../../../models/order.model");
 const OrderItems = require("../../../../models/order_item.model");
 const Products = require("../../../../models/product.model");
 const ProductVariants = require("../../../../models/product_variants.model");
+const Coupons = require("../../../../models/coupon.model");
 
 //[GET] /api/admin/shipper/orders
 module.exports.orders = async (req, res) => {
@@ -167,7 +168,9 @@ module.exports.changeStatus = async (req, res) => {
     });
   }
 
-  if (orderStatus !== "DELIVERED") {
+  const status = ["DELIVERED", "FAILED"];
+
+  if (!status.includes(orderStatus)) {
     return res.json({
       code: 400,
       message: "Trạng thái không hợp lệ!",
@@ -175,7 +178,7 @@ module.exports.changeStatus = async (req, res) => {
   }
 
   order.orderStatus = orderStatus;
-  if (order.paymentMethod === "COD") {
+  if (orderStatus === "DELIVERED" && order.paymentMethod === "COD") {
     order.paymentStatus = "PAID";
   }
   await order.save();
@@ -183,7 +186,10 @@ module.exports.changeStatus = async (req, res) => {
   try {
     res.json({
       code: 200,
-      message: "Cập nhật trạng thái đơn hàng thành công!",
+      message:
+        orderStatus === "DELIVERED"
+          ? "Giao hàng thành công!"
+          : "Giao hàng thất bại!",
       data: {
         order,
       },
@@ -236,8 +242,13 @@ module.exports.detail = async (req, res) => {
     res.json({
       code: 200,
       message: "Thành công!",
+      data: {
+        order,
+        orderItems,
+      },
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 500,
       message: "Thất bại!",

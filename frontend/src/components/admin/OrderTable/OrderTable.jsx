@@ -2,6 +2,7 @@ import { notification, Table } from "antd";
 import "./OrderTable.scss";
 
 import { changeStatus } from "../../../services/admin/order.services";
+import { Link } from "react-router-dom";
 
 function OrderTable({ data = [], pagination, onPageChange, onReload }) {
   // const formatDate = (date) => {
@@ -38,6 +39,11 @@ function OrderTable({ data = [], pagination, onPageChange, onReload }) {
         return {
           text: "Đã huỷ",
           className: "cancelled",
+        };
+      case "FAILED":
+        return {
+          text: "Thất bại",
+          className: "failed",
         };
 
       default:
@@ -165,9 +171,13 @@ function OrderTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="order-action">
-          <button className="order-action__view" title="Xem chi tiết">
+          <Link
+            to={`/admin/orders/${record._id}`}
+            className="order-action__view"
+            title="Xem chi tiết"
+          >
             <i className="fa-solid fa-eye"></i>
-          </button>
+          </Link>
         </div>
       ),
     },

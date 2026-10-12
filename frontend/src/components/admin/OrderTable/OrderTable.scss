@@ -267,6 +267,23 @@
       }
     }
 
+    // Giao hàng thất bại
+    &.failed {
+      color: #c2410c;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+
+      &::before {
+        background: #f97316;
+      }
+
+      &:hover {
+        background: #ffedd5;
+        border-color: #fdba74;
+        box-shadow: 0 2px 4px rgba(249, 115, 22, 0.1);
+      }
+    }
+
     // Đã hủy (Thêm cursor mặc định vì đơn hủy không bấm được nữa)
     &.cancelled {
       color: #dc2626;
@@ -302,7 +319,7 @@
     justify-content: center;
     gap: 8px;
 
-    button {
+    a {
       display: flex;
       align-items: center;
       justify-content: center;

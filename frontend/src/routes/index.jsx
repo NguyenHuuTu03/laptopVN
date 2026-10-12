@@ -30,6 +30,7 @@ import RoleCreate from "../pages/admin/Roles/RoleCreate/RoleCreate";
 import RoleEdit from "../pages/admin/Roles/RoleEdit/RoleEdit";
 import RoleDetail from "../pages/admin/Roles/RoleDetail/RoleDetail";
 import ReceivedOrder from "../pages/admin/Shipper/ReceivedOrder/ReceivedOrder";
+import OrderShipDetail from "../pages/admin/Shipper/OrderShipDetail/OrderShipDetail";
 
 export const routes = [
   {
@@ -125,6 +126,10 @@ export const routes = [
               {
                 path: "",
                 element: <OrderShip />,
+              },
+              {
+                path: "orders/:orderId",
+                element: <OrderShipDetail />,
               },
               {
                 path: "orders/received",

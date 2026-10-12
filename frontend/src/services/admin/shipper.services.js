@@ -25,3 +25,9 @@ export const getReceivedOrder = async (params = {}) => {
 
   return result;
 };
+
+export const getOrder = async (id) => {
+  const result = await get(`/admin/shipper/${id}`);
+
+  return result;
+};
