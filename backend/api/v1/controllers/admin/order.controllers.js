@@ -144,7 +144,11 @@ module.exports.changeStatus = async (req, res) => {
     await order.save();
     res.json({
       code: 200,
-      message: "Đã xác nhận đơn hàng!",
+      message:
+        orderStatus == "CONFIRMED"
+          ? "Đã xác nhận đơn hàng!"
+          : "Đã huỷ đơn hàng!",
+      data: { order },
     });
   } catch (error) {
     res.json({

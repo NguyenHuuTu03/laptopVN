@@ -203,7 +203,7 @@ function OrderShipDetail() {
         </div>
 
         <Spin spinning={loading}>
-          <div className="admin-order__detail-__main">
+          <div className="admin-order__detail__main">
             <Row gutter={[16, 16]}>
               <Col xs={24} xl={12}>
                 <div className="order-section">

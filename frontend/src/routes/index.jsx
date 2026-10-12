@@ -31,6 +31,7 @@ import RoleEdit from "../pages/admin/Roles/RoleEdit/RoleEdit";
 import RoleDetail from "../pages/admin/Roles/RoleDetail/RoleDetail";
 import ReceivedOrder from "../pages/admin/Shipper/ReceivedOrder/ReceivedOrder";
 import OrderShipDetail from "../pages/admin/Shipper/OrderShipDetail/OrderShipDetail";
+import OrderAdminDetail from "../pages/admin/Orders/OrderDetail/OrderDetail";
 
 export const routes = [
   {
@@ -110,7 +111,17 @@ export const routes = [
           },
           {
             path: "orders",
-            element: <OrderView />,
+
+            children: [
+              {
+                path: "",
+                element: <OrderView />,
+              },
+              {
+                path: ":orderId",
+                element: <OrderAdminDetail />,
+              },
+            ],
           },
           {
             path: "users",

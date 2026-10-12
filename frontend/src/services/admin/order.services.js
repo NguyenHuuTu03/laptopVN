@@ -13,3 +13,9 @@ export const changeStatus = async (id, orderStatus) => {
 
   return result;
 };
+
+export const getOrder = async (id) => {
+  const result = await get(`/admin/orders/${id}`);
+
+  return result;
+};
