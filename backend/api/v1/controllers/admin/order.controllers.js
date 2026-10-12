@@ -7,7 +7,9 @@ const ProductVariants = require("../../../../models/product_variants.model");
 //[GET] /api/admin/orders
 module.exports.index = async (req, res) => {
   try {
-    let find = {};
+    let find = {
+      paymentStatus: { $in: ["PENDING", "PAID"] },
+    };
 
     //search
     if (req.query.keyword) {
@@ -142,12 +144,12 @@ module.exports.changeStatus = async (req, res) => {
     await order.save();
     res.json({
       code: 200,
-      message: "Cập nhật trạng thái đơn hàng thành công!",
+      message: "Đã xác nhận đơn hàng!",
     });
   } catch (error) {
     res.json({
       code: 500,
-      message: "Cập nhật trạng thái đơn hàng thất bại!",
+      message: "Xác nhận đơn hàng thất bại!",
     });
   }
 };

@@ -56,26 +56,18 @@ function OrderTable({ data = [], pagination, onPageChange, onReload }) {
 
   const handleChangeStatus = async (record) => {
     const status = record.orderStatus;
-    if (status === "CANCELLED") {
+    const orderStatus = [
+      "CANCELLED",
+      "FAILED",
+      "DELIVERED",
+      "SHIPPING",
+      "CONFIRMED",
+    ];
+    if (orderStatus.includes(status)) {
       return;
     }
-    let newStatus;
-    switch (status) {
-      case "PENDING":
-        newStatus = "CONFIRMED";
-        break;
-      case "CONFIRMED":
-        newStatus = "SHIPPING";
-        break;
-      case "SHIPPING":
-        newStatus = "DELIVERED";
-        break;
 
-      default:
-        break;
-    }
-
-    const result = await changeStatus(record._id, newStatus);
+    const result = await changeStatus(record._id, "CONFIRMED");
 
     if (result.code === 200) {
       notification.success({
