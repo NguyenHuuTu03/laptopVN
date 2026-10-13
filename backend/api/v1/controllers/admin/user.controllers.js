@@ -290,8 +290,26 @@ module.exports.resetPassword = async (req, res) => {
       });
     }
 
-    const { password } = req.body;
+    const role = await Roles.findOne({
+      slug: "admin",
+      deleted: false,
+    });
+
+    if (role._id.equals(user.roleId)) {
+      return res.json({
+        code: 400,
+        message: "Không có quyền đổi mật khẩu!",
+      });
+    }
+
+    const { password, confirmPassword } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+    if (password !== confirmPassword) {
+      return res.json({
+        code: 400,
+        message: "Mật khẩu xác nhận không khớp!",
+      });
+    }
 
     await Users.updateOne(
       {
@@ -306,6 +324,7 @@ module.exports.resetPassword = async (req, res) => {
       message: "Đặt lại mật khẩu thành công!",
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 500,
       message: "Đặt lại mật khẩu thất bại",
