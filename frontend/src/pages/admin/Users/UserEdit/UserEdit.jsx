@@ -88,12 +88,6 @@ function UserEdit() {
       const result = await patchUser(userId, formData);
 
       if (result.code === 200) {
-        dispatch(
-          setAdminAuth({
-            isLoggedIn: true,
-            user: result.data.user,
-          }),
-        );
         notification.success({
           title: result.message,
         });
