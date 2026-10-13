@@ -16,8 +16,6 @@ import { UploadOutlined } from "@ant-design/icons";
 
 import "./UserEdit.scss";
 import { gethUser, patchUser } from "../../../../services/admin/user.services";
-import { useDispatch } from "react-redux";
-import { setAdminAuth } from "../../../../actions/authActions";
 
 function UserEdit() {
   const [loading, setLoading] = useState(false);
@@ -26,8 +24,6 @@ function UserEdit() {
   const [form] = Form.useForm();
 
   const { userId } = useParams();
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchRole = async () => {
