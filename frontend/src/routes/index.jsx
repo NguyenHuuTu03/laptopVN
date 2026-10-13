@@ -34,6 +34,7 @@ import OrderShipDetail from "../pages/admin/Shipper/OrderShipDetail/OrderShipDet
 import OrderAdminDetail from "../pages/admin/Orders/OrderDetail/OrderDetail";
 import UserCreate from "../pages/admin/Users/UserCreate/UserCreate";
 import UserEdit from "../pages/admin/Users/UserEdit/UserEdit";
+import UserDetail from "../pages/admin/Users/UserDetail/UserDetail";
 
 export const routes = [
   {
@@ -139,6 +140,10 @@ export const routes = [
               {
                 path: `edit/:userId`,
                 element: <UserEdit />,
+              },
+              {
+                path: `:userId`,
+                element: <UserDetail />,
               },
             ],
           },

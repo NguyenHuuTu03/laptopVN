@@ -89,7 +89,9 @@ module.exports.detail = async (req, res) => {
     const user = await Users.findOne({
       _id: userId,
       deleted: false,
-    }).select("-password");
+    })
+      .select("-password")
+      .lean();
 
     if (!user) {
       return res.json({
@@ -102,13 +104,13 @@ module.exports.detail = async (req, res) => {
       _id: user.roleId,
       deleted: false,
     }).select("title permission");
+    user.role = role;
 
     res.json({
       code: 200,
       message: "Thành công!",
       data: {
         user,
-        role,
       },
     });
   } catch (error) {
@@ -186,14 +188,26 @@ module.exports.edit = async (req, res) => {
       {
         _id: userId,
       },
-      req.body,
+      {
+        fullName: req.body.fullName,
+        email: req.body.email,
+        phone: req.body.phone || "",
+        address: req.body.address || "",
+        roleId: req.body.roleId || "",
+        avatar: req.body.avatar || "",
+      },
     );
+
+    const newUser = await Users.findOne({
+      _id: userId,
+      deleted: false,
+    });
 
     res.json({
       code: 200,
       message: "Cập nhật thông tin người dùng thành công!",
       data: {
-        user,
+        user: newUser,
       },
     });
   } catch (error) {
