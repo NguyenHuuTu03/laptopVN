@@ -65,8 +65,17 @@ function RoleCreate() {
               layout="vertical"
               onFinish={handleSubmit}
             >
-              <Form.Item label="Tên vai trò" name="title">
-                <Input />
+              <Form.Item
+                label="Tên vai trò"
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập tên vai trò!",
+                  },
+                ]}
+              >
+                <Input placeholder="Nhập tên vai trò" />
               </Form.Item>
               <Form.Item label="Mô tả" name="description">
                 <TextArea rows={3} />

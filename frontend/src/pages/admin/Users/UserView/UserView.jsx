@@ -2,7 +2,7 @@ import { Input } from "antd";
 const { Search } = Input;
 import { Select } from "antd";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import "./UserView.scss";
 import { getUsers } from "../../../../services/admin/user.services";
@@ -102,10 +102,10 @@ function UserView() {
                 onSearch={handleSearch}
               />
             </div>
-            <div className="admin-users__add">
+            <Link to={`/admin/users/create`} className="admin-users__add">
               <i className="fa-solid fa-plus"></i>
               <p>Thêm người dùng</p>
-            </div>
+            </Link>
           </div>
         </div>
 

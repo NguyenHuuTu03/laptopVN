@@ -68,7 +68,14 @@ function UserTable({ data = [], pagination, onPageChange, onReload }) {
       key: "avatar",
       align: "center",
       render: (text, item) => (
-        <img className="user-avatar" src={text} alt={item.avatar} />
+        <img
+          className="user-avatar"
+          src={
+            text ||
+            "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+          }
+          alt={item.fullName}
+        />
       ),
     },
     {

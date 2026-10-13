@@ -74,6 +74,7 @@ module.exports.index = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 500,
       message: "Thất bại!",
@@ -132,12 +133,15 @@ module.exports.create = async (req, res) => {
       });
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
     const user = new Users({
       fullName: req.body.fullName,
       email: req.body.email,
       password: hashedPassword,
-      phone: req.body.phone ? req.body.phone : "",
-      roleId: req.body.roleId ? req.body.roleId : "",
+      phone: req.body.phone || "",
+      roleId: req.body.roleId || "",
+      address: req.body.address || "",
+      avatar: req.body.avatar || "",
     });
     await user.save();
     res.json({
@@ -145,6 +149,7 @@ module.exports.create = async (req, res) => {
       message: "Thêm người dùng thành công!",
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 500,
       message: "Thêm người dùng thất bại!",

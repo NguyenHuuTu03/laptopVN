@@ -1,4 +1,4 @@
-import { get, patch, del } from "../../utils/request";
+import { get, patch, del, post } from "../../utils/request";
 
 export const getUsers = async (params = {}) => {
   const result = await get("/admin/users", { params });
@@ -15,6 +15,12 @@ export const changeStatus = async (id, status) => {
 };
 export const removeUser = async (id) => {
   const result = await del(`/admin/users/${id}`);
+
+  return result;
+};
+
+export const postUser = async (data) => {
+  const result = await post(`/admin/users`, data);
 
   return result;
 };
