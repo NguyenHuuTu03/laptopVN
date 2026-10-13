@@ -4,6 +4,7 @@ import {
   changeStatus,
   removeCoupon,
 } from "../../../services/admin/coupon.services";
+import { Link } from "react-router-dom";
 
 function CouponTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
@@ -128,13 +129,21 @@ function CouponTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="coupon-action">
-          <button className="coupon-action__view" title="Xem chi tiết">
+          <Link
+            to={`/admin/coupons/${record._id}`}
+            className="coupon-action__view"
+            title="Xem chi tiết"
+          >
             <i className="fa-solid fa-eye"></i>
-          </button>
+          </Link>
 
-          <button className="coupon-action__edit" title="Chỉnh sửa">
+          <Link
+            to={`/admin/coupons/edit/${record._id}`}
+            className="coupon-action__edit"
+            title="Chỉnh sửa"
+          >
             <i className="fa-solid fa-pen-to-square"></i>
-          </button>
+          </Link>
 
           <button
             className="coupon-action__delete"

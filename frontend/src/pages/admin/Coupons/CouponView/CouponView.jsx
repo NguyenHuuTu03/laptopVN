@@ -2,7 +2,7 @@ import { Input } from "antd";
 const { Search } = Input;
 import { Select } from "antd";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import "./CouponView.scss";
 import { getCoupons } from "../../../../services/admin/coupon.services";
@@ -89,8 +89,6 @@ function CouponView() {
     },
   ];
 
-  console.log(data);
-
   return (
     <>
       <div className="admin-coupons">
@@ -106,10 +104,10 @@ function CouponView() {
                 onSearch={handleSearch}
               />
             </div>
-            <button className="admin-coupons__add">
+            <Link to={"/admin/coupons/create"} className="admin-coupons__add">
               <i className="fa-solid fa-plus"></i>
               <p>Thêm mã giảm</p>
-            </button>
+            </Link>
           </div>
         </div>
 

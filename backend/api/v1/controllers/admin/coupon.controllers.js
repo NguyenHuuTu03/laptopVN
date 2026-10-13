@@ -140,16 +140,17 @@ module.exports.create = async (req, res) => {
 
     const coupon = new Coupons({
       code: req.body.code,
-      description: req.body.description,
+      description: req.body.description || "",
       discountType: req.body.discountType,
       discountValue: req.body.discountValue,
+      minOrderValue: req.body.minOrderValue || "",
       maxDiscount: req.body.maxDiscount,
       quantity: req.body.quantity,
       startDate: req.body.startDate,
       endDate: req.body.endDate,
     });
 
-    await Coupons.save();
+    await coupon.save();
 
     res.json({
       code: 200,

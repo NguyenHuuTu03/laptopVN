@@ -35,6 +35,7 @@ import OrderAdminDetail from "../pages/admin/Orders/OrderDetail/OrderDetail";
 import UserCreate from "../pages/admin/Users/UserCreate/UserCreate";
 import UserEdit from "../pages/admin/Users/UserEdit/UserEdit";
 import UserDetail from "../pages/admin/Users/UserDetail/UserDetail";
+import CouponCreate from "../pages/admin/Coupons/CouponCreate/CouponCreate";
 
 export const routes = [
   {
@@ -149,7 +150,16 @@ export const routes = [
           },
           {
             path: "coupons",
-            element: <CouponView />,
+            children: [
+              {
+                path: "",
+                element: <CouponView />,
+              },
+              {
+                path: "create",
+                element: <CouponCreate />,
+              },
+            ],
           },
           {
             path: "shipper",
