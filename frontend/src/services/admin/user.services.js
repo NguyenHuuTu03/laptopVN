@@ -24,3 +24,15 @@ export const postUser = async (data) => {
 
   return result;
 };
+
+export const patchUser = async (id, data) => {
+  const result = await patch(`/admin/users/${id}`, data);
+
+  return result;
+};
+
+export const gethUser = async (id) => {
+  const result = await get(`/admin/users/${id}`);
+
+  return result;
+};

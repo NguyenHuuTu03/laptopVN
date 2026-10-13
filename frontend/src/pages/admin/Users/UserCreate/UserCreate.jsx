@@ -75,7 +75,7 @@ function UserCreate() {
             <h1>Thêm người dùng</h1>
           </div>
           <div className="user-create__nav">
-            <Link to="/admin/roles" className="user-create__back">
+            <Link to="/admin/users" className="user-create__back">
               <i className="fa-solid fa-arrow-left"></i>
               Quay lại
             </Link>

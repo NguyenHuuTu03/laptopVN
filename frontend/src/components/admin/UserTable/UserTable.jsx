@@ -6,6 +6,7 @@ import {
 } from "../../../services/admin/user.services";
 
 import "./UserTable.scss";
+import { Link } from "react-router-dom";
 
 function UserTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
@@ -130,13 +131,21 @@ function UserTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="user-action">
-          <button className="user-action__view" title="Xem chi tiết">
+          <Link
+            to={`/admin/users/${record._id}`}
+            className="user-action__view"
+            title="Xem chi tiết"
+          >
             <i className="fa-solid fa-eye"></i>
-          </button>
+          </Link>
 
-          <button className="user-action__edit" title="Chỉnh sửa">
+          <Link
+            to={`/admin/users/edit/${record._id}`}
+            className="user-action__edit"
+            title="Chỉnh sửa"
+          >
             <i className="fa-solid fa-pen-to-square"></i>
-          </button>
+          </Link>
 
           <button
             className="user-action__delete"

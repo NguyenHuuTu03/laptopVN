@@ -14,7 +14,12 @@ router.post(
   uploadMiddleware.uploadSingle,
   controllers.create,
 );
-router.patch("/:userId", controllers.edit);
+router.patch(
+  "/:userId",
+  upload.single("avatar"),
+  uploadMiddleware.uploadSingle,
+  controllers.edit,
+);
 router.patch("/:userId/change-status", controllers.changeStatus);
 router.patch("/:userId/reset-password", controllers.resetPassword);
 router.delete("/:userId", controllers.delete);
