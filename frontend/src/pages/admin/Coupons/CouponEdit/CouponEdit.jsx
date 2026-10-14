@@ -100,23 +100,23 @@ function CouponEdit() {
   };
   return (
     <>
-      <div className="coupon-create">
-        <div className="coupon-create__header">
-          <div className="coupon-create__title">
+      <div className="coupon-edit">
+        <div className="coupon-edit__header">
+          <div className="coupon-edit__title">
             <h1>Chỉnh sửa mã giảm giá</h1>
           </div>
 
-          <div className="coupon-create__nav">
-            <Link to="/admin/coupons" className="coupon-create__back">
+          <div className="coupon-edit__nav">
+            <Link to="/admin/coupons" className="coupon-edit__back">
               <i className="fa-solid fa-arrow-left"></i>
               Quay lại
             </Link>
             <Button
               loading={loading}
-              className="coupon-create__save"
+              className="coupon-edit__save"
               type="primary"
               htmlType="submit"
-              form="coupon-create__form"
+              form="coupon-edit__form"
             >
               <i className="fa-solid fa-floppy-disk"></i>
               <p>Lưu thay đổi</p>
@@ -124,10 +124,10 @@ function CouponEdit() {
           </div>
         </div>
 
-        <div className="coupon-create__main">
+        <div className="coupon-edit__main">
           <Spin spinning={loading}>
             <Form
-              id="coupon-create__form"
+              id="coupon-edit__form"
               layout="vertical"
               form={form}
               onFinish={handleSubmit}

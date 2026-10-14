@@ -196,10 +196,35 @@ module.exports.edit = async (req, res) => {
         message: "Không tìm thấy thương hiệu!",
       });
     }
-    if (req.body.thumbnail) {
-      brand.thumbnail = req.body.thumbnail;
+
+    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+
+    const existsBrand = await Brands.findOne({
+      _id: { $ne: brandId },
+      slug: slug,
+      deleted: false,
+    });
+
+    if (existsBrand) {
+      return res.json({
+        code: 400,
+        message: "Tên thương hiệu đã tồn tại!",
+      });
     }
-    await brand.save();
+
+    await Brands.updateOne(
+      {
+        _id: brandId,
+      },
+      {
+        title: req.body.title,
+        thumbnail: req.body.thumbnail,
+        description: req.body.description,
+        country: req.body.country,
+        website: req.body.website,
+        status: req.body.status,
+      },
+    );
     res.json({
       code: 200,
       message: "Cập nhật thương hiệu thành công!",

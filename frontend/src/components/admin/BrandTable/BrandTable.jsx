@@ -4,6 +4,7 @@ import {
   changeStatus,
   removeBrand,
 } from "../../../services/admin/brand.services";
+import { Link } from "react-router-dom";
 
 function BrandTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
@@ -107,13 +108,13 @@ function BrandTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="brand-action">
-          <button className="brand-action__view" title="Xem chi tiết">
+          <Link to={`/admin/brands/${record._id}`} className="brand-action__view" title="Xem chi tiết">
             <i className="fa-solid fa-eye"></i>
-          </button>
+          </Link>
 
-          <button className="brand-action__edit" title="Chỉnh sửa">
+          <Link to={`/admin/brands/edit/${record._id}`} className="brand-action__edit" title="Chỉnh sửa">
             <i className="fa-solid fa-pen-to-square"></i>
-          </button>
+          </Link>
 
           <button
             className="brand-action__delete"
