@@ -37,6 +37,7 @@ import UserEdit from "../pages/admin/Users/UserEdit/UserEdit";
 import UserDetail from "../pages/admin/Users/UserDetail/UserDetail";
 import CouponCreate from "../pages/admin/Coupons/CouponCreate/CouponCreate";
 import CouponEdit from "../pages/admin/Coupons/CouponEdit/CouponEdit";
+import CouponDetail from "../pages/admin/Coupons/CouponDetail/CouponDetail";
 
 export const routes = [
   {
@@ -163,6 +164,10 @@ export const routes = [
               {
                 path: "edit/:couponId",
                 element: <CouponEdit />,
+              },
+              {
+                path: ":couponId",
+                element: <CouponDetail />,
               },
             ],
           },
