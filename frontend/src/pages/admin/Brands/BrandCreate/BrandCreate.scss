@@ -1,0 +1,435 @@
+.brand-create {
+  min-height: 100vh;
+  color: #1f2937;
+  background: #f5f7fb;
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 24px;
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #e8edf5;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgb(15 23 42 / 3%);
+  }
+
+  &__title {
+    position: relative;
+    flex-shrink: 0;
+    padding-left: 14px;
+
+    &::before {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 0;
+      width: 4px;
+      background: #1677ff;
+      border-radius: 4px;
+      content: "";
+    }
+
+    h1 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__back,
+  &__save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 13px;
+    }
+  }
+
+  &__back {
+    color: #475569;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid #d9e0ea;
+
+    &:hover {
+      color: #1677ff;
+      background: #f0f7ff;
+      border-color: #1677ff;
+    }
+  }
+
+  &__save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    color: #fff;
+    background: #1677ff;
+    border: 1px solid #1677ff;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      color: #fff !important;
+      background: #0958d9 !important;
+      border-color: #0958d9 !important;
+    }
+
+    i {
+      font-size: 13px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  }
+
+  // Form
+  &__form {
+    width: 100%;
+    min-width: 0;
+
+    .ant-spin-container {
+      min-width: 0;
+    }
+
+    .ant-row {
+      align-items: stretch;
+    }
+
+    .ant-col {
+      display: flex;
+      min-width: 0;
+    }
+
+    // Card thông tin
+    .section-info {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #e8edf5;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgb(15 23 42 / 3%);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        border-color: #d6e4ff;
+        box-shadow: 0 5px 16px rgb(15 23 42 / 5%);
+      }
+
+      &__header {
+        display: flex;
+        align-items: center;
+        min-height: 66px;
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f5;
+
+        h3 {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin: 0;
+          color: #1f2937;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 1.5;
+
+          &::before {
+            flex-shrink: 0;
+            width: 4px;
+            height: 20px;
+            background: #1677ff;
+            border-radius: 4px;
+            content: "";
+          }
+        }
+      }
+
+      &__main {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 4px;
+        padding: 24px 22px;
+
+        .ant-form-item {
+          margin-bottom: 20px;
+        }
+
+        .ant-form-item:last-child {
+          margin-bottom: 0;
+        }
+
+        .ant-form-item-label {
+          padding-bottom: 7px;
+
+          > label {
+            height: auto;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+          }
+        }
+
+        .ant-input,
+        .ant-input-affix-wrapper {
+          min-height: 40px;
+          color: #1f2937;
+          font-size: 13px;
+          border-color: #d9e0ea;
+          border-radius: 8px;
+          box-shadow: none;
+          transition: all 0.2s ease;
+
+          &::placeholder {
+            color: #9ca3af;
+          }
+
+          &:hover {
+            border-color: #91caff;
+          }
+
+          &:focus,
+          &-focused {
+            border-color: #1677ff;
+            box-shadow: 0 0 0 3px rgb(22 119 255 / 10%);
+          }
+        }
+
+        textarea.ant-input {
+          min-height: 100px;
+          padding: 10px 12px;
+          line-height: 1.6;
+          resize: vertical;
+        }
+
+        // Upload ảnh
+        .ant-upload-wrapper {
+          width: 100%;
+        }
+
+        .ant-upload-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .ant-upload-list-item-container,
+        .ant-upload.ant-upload-select {
+          width: 120px !important;
+          height: 120px !important;
+        }
+
+        .ant-upload.ant-upload-select {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f8fbff;
+          border-color: #d9e0ea;
+          border-radius: 10px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #f0f7ff;
+            border-color: #1677ff;
+          }
+
+          > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 12px;
+          }
+
+          .anticon {
+            color: #1677ff;
+            font-size: 23px;
+          }
+        }
+
+        .ant-upload-list-item {
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+}
+
+// Tablet
+@media (max-width: 1199px) {
+  .brand-create {
+    &__form {
+      .section-info {
+        &__header {
+          padding: 17px 20px;
+        }
+
+        &__main {
+          padding: 22px 20px;
+        }
+      }
+    }
+  }
+}
+
+// Mobile
+@media (max-width: 768px) {
+  .brand-create {
+    padding: 14px;
+
+    &__header {
+      align-items: flex-start;
+      padding: 16px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    &__nav {
+      gap: 8px;
+    }
+
+    &__back,
+    &__save {
+      min-height: 38px;
+      padding: 0 12px;
+      font-size: 12px;
+    }
+
+    &__save {
+      height: 38px;
+    }
+
+    &__form {
+      .section-info {
+        &__header {
+          min-height: 60px;
+          padding: 16px 18px;
+
+          h3 {
+            font-size: 15px;
+          }
+        }
+
+        &__main {
+          padding: 20px 18px;
+
+          .ant-form-item {
+            margin-bottom: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Điện thoại nhỏ
+@media (max-width: 576px) {
+  .brand-create {
+    padding: 10px;
+
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 18px;
+      }
+    }
+
+    &__nav {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
+    }
+
+    &__back,
+    &__save {
+      width: 100%;
+      min-width: 0;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+
+    &__form {
+      .section-info {
+        border-radius: 10px;
+
+        &__header {
+          min-height: 56px;
+          padding: 14px 16px;
+
+          h3 {
+            font-size: 14px;
+
+            &::before {
+              height: 18px;
+            }
+          }
+        }
+
+        &__main {
+          padding: 18px 16px;
+
+          .ant-form-item {
+            margin-bottom: 16px;
+          }
+
+          .ant-input,
+          .ant-input-affix-wrapper {
+            font-size: 13px;
+          }
+
+          .ant-upload-list-item-container,
+          .ant-upload.ant-upload-select {
+            width: 104px !important;
+            height: 104px !important;
+          }
+        }
+      }
+    }
+  }
+}

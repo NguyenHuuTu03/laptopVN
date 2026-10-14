@@ -134,16 +134,16 @@ module.exports.create = async (req, res) => {
     const totalBrand = await Brands.countDocuments();
     const brand = new Brands({
       title: req.body.title,
-      thumbnail: req.body.thumbnail ? req.body.thumbnail : "",
-      description: req.body.description,
-      country: req.body.country,
-      website: req.body.website ? req.body.website : "",
-      position: req.body.position ? req.body.position : totalBrand + 1,
+      thumbnail: req.body.thumbnail || "",
+      description: req.body.description || "",
+      country: req.body.country || "",
+      website: req.body.website || "",
+      position: req.body.position || totalBrand + 1,
     });
     await brand.save();
     res.json({
       code: 200,
-      message: "Thành công!",
+      message: "Thêm thương hiệu thành công!",
     });
   } catch (error) {
     res.json({
