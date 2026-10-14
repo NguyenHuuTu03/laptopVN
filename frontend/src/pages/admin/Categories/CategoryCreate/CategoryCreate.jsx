@@ -91,7 +91,6 @@ function CategoryCreate() {
     } finally {
       setLoading(false);
     }
-    console.log(values);
   };
   return (
     <>

@@ -4,6 +4,7 @@ import {
   changeStatus,
   removeCategory,
 } from "../../../services/admin/category.services";
+import { Link } from "react-router-dom";
 
 function CategoryTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
@@ -100,13 +101,21 @@ function CategoryTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="category-action">
-          <button className="category-action__view" title="Xem chi tiết">
+          <Link
+            to={`/admin/categories/${record._id}`}
+            className="category-action__view"
+            title="Xem chi tiết"
+          >
             <i className="fa-solid fa-eye"></i>
-          </button>
+          </Link>
 
-          <button className="category-action__edit" title="Chỉnh sửa">
+          <Link
+            to={`/admin/categories/edit/${record._id}`}
+            className="category-action__edit"
+            title="Chỉnh sửa"
+          >
             <i className="fa-solid fa-pen-to-square"></i>
-          </button>
+          </Link>
 
           <button
             className="category-action__delete"

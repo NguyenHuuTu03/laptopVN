@@ -191,11 +191,32 @@ module.exports.edit = async (req, res) => {
       });
     }
 
-    if (req.body.thumbnail) {
-      category.thumbnail = req.body.thumbnail;
+    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+    const exitsCategory = await Categories.findOne({
+      _id: { $ne: categoryId },
+      slug: slug,
+      deleted: false,
+    });
+
+    if (exitsCategory) {
+      return res.json({
+        code: 400,
+        message: "Danh mục đã tồn tại!",
+      });
     }
 
-    await category.save();
+    await Categories.updateOne(
+      {
+        _id: categoryId,
+      },
+      {
+        title: req.body.title,
+        description: req.body.description,
+        thumbnail: req.body.thumbnail,
+        parentId: req.body.parentId,
+        status: req.body.status,
+      },
+    );
 
     res.json({
       code: 200,

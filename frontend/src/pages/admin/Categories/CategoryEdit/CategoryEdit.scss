@@ -1,0 +1,537 @@
+.category-edit {
+  min-height: 100vh;
+  color: #1f2937;
+  background: #f5f7fb;
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 24px;
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #e8edf5;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgb(15 23 42 / 3%);
+  }
+
+  &__title {
+    position: relative;
+    flex-shrink: 0;
+    padding-left: 14px;
+
+    &::before {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 0;
+      width: 4px;
+      background: #1677ff;
+      border-radius: 4px;
+      content: "";
+    }
+
+    h1 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__back,
+  &__save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 13px;
+    }
+  }
+
+  // Nút quay lại
+  &__back {
+    color: #475569;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid #d9e0ea;
+
+    &:hover {
+      color: #1677ff;
+      background: #f0f7ff;
+      border-color: #1677ff;
+    }
+  }
+
+  // Nút lưu
+  &__save {
+    height: 40px;
+    color: #fff;
+    background: #1677ff;
+    border: 1px solid #1677ff;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      color: #fff !important;
+      background: #0958d9 !important;
+      border-color: #0958d9 !important;
+    }
+
+    p {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  }
+
+  // Nội dung chính
+  &__main {
+    width: 100%;
+    min-width: 0;
+
+    .ant-spin-container {
+      min-width: 0;
+    }
+
+    .ant-row {
+      align-items: stretch;
+    }
+
+    .ant-col {
+      display: flex;
+      min-width: 0;
+    }
+
+    // Card thông tin
+    .section-info {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #e8edf5;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgb(15 23 42 / 3%);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        border-color: #d6e4ff;
+        box-shadow: 0 5px 16px rgb(15 23 42 / 5%);
+      }
+
+      // Tiêu đề card
+      .section-info__header {
+        display: flex;
+        align-items: center;
+        min-height: 66px;
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f5;
+
+        h3 {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin: 0;
+          color: #1f2937;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 1.5;
+
+          &::before {
+            flex-shrink: 0;
+            width: 4px;
+            height: 20px;
+            background: #1677ff;
+            border-radius: 4px;
+            content: "";
+          }
+        }
+      }
+
+      // Nội dung card
+      .section-info__main {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-width: 0;
+        padding: 24px 22px;
+
+        .ant-form-item {
+          margin-bottom: 20px;
+        }
+
+        .ant-form-item:last-child {
+          margin-bottom: 0;
+        }
+
+        // Label
+        .ant-form-item-label {
+          padding-bottom: 7px;
+
+          > label {
+            height: auto;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+          }
+        }
+
+        // Input
+        .ant-input,
+        .ant-input-affix-wrapper {
+          min-height: 40px;
+          color: #1f2937;
+          font-size: 13px;
+          background: #fff;
+          border-color: #d9e0ea;
+          border-radius: 8px;
+          box-shadow: none;
+          transition: all 0.2s ease;
+
+          &::placeholder {
+            color: #9ca3af;
+          }
+
+          &:hover {
+            border-color: #91caff;
+          }
+
+          &:focus,
+          &-focused {
+            border-color: #1677ff;
+            box-shadow: 0 0 0 3px rgb(22 119 255 / 10%);
+          }
+        }
+
+        // TextArea
+        textarea.ant-input {
+          min-height: 110px;
+          padding: 10px 12px;
+          line-height: 1.6;
+          resize: vertical;
+        }
+
+        // Select danh mục cha
+        .ant-select {
+          width: 100%;
+          font-size: 13px;
+
+          .ant-select-selector {
+            min-height: 40px;
+            padding: 4px 11px;
+            border-color: #d9e0ea;
+            border-radius: 8px;
+            box-shadow: none;
+            transition: all 0.2s ease;
+          }
+
+          .ant-select-selection-placeholder,
+          .ant-select-selection-item {
+            line-height: 30px;
+          }
+
+          &:hover .ant-select-selector {
+            border-color: #91caff;
+          }
+
+          &.ant-select-focused .ant-select-selector {
+            border-color: #1677ff;
+            box-shadow: 0 0 0 3px rgb(22 119 255 / 10%);
+          }
+        }
+
+        // Upload ảnh
+        .ant-upload-wrapper {
+          width: 100%;
+        }
+
+        .ant-upload-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .ant-upload-list-item-container,
+        .ant-upload.ant-upload-select {
+          width: 120px !important;
+          height: 120px !important;
+        }
+
+        .ant-upload.ant-upload-select {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f8fbff;
+          border-color: #d9e0ea;
+          border-radius: 10px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #f0f7ff;
+            border-color: #1677ff;
+          }
+
+          > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 12px;
+          }
+
+          .anticon {
+            color: #1677ff;
+            font-size: 23px;
+          }
+        }
+
+        .ant-upload-list-item {
+          border-radius: 10px;
+        }
+
+        .ant-upload-list-item-thumbnail img {
+          object-fit: cover;
+        }
+
+        // Switch trạng thái
+        .ant-switch {
+          height: 28px;
+          min-width: 64px;
+          line-height: 28px;
+          background: #cbd5e1;
+
+          // Nút tròn
+          .ant-switch-handle {
+            top: 3px;
+            inset-inline-start: 3px;
+            width: 22px;
+            height: 22px;
+
+            &::before {
+              border-radius: 11px;
+            }
+          }
+
+          // Chữ bên trong (Bật / Tắt)
+          .ant-switch-inner {
+            padding-inline: 30px 10px; // trạng thái tắt: chừa chỗ cho nút tròn bên trái
+
+            .ant-switch-inner-checked,
+            .ant-switch-inner-unchecked {
+              font-size: 12px;
+              line-height: 28px;
+            }
+
+            .ant-switch-inner-unchecked {
+              margin-top: -28px; // luôn bằng chiều cao track
+            }
+          }
+
+          // Trạng thái bật
+          &.ant-switch-checked {
+            background: #1677ff;
+
+            .ant-switch-handle {
+              inset-inline-start: calc(100% - 25px); // 22px nút + 3px mép
+            }
+
+            .ant-switch-inner {
+              padding-inline: 0px 20px;
+            }
+          }
+
+          // Icon loading (nếu dùng)
+          .ant-switch-loading-icon {
+            top: 3px;
+            font-size: 22px;
+          }
+
+          &:focus-visible {
+            outline: 3px solid rgba(22, 119, 255, 0.2);
+            outline-offset: 2px;
+          }
+        }
+
+        .ant-switch-inner {
+          font-size: 10px;
+          font-weight: 500;
+        }
+
+        // Lỗi validate
+        .ant-form-item-explain-error {
+          margin-top: 4px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+// Tablet và laptop nhỏ
+@media (max-width: 1199px) {
+  .category-edit {
+    &__main {
+      .section-info {
+        .section-info__header {
+          padding: 17px 20px;
+        }
+
+        .section-info__main {
+          padding: 22px 20px;
+        }
+      }
+    }
+  }
+}
+
+// Tablet và điện thoại
+@media (max-width: 768px) {
+  .category-edit {
+    padding: 14px;
+
+    &__header {
+      align-items: flex-start;
+      padding: 16px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    &__nav {
+      gap: 8px;
+    }
+
+    &__back,
+    &__save {
+      min-height: 38px;
+      padding: 0 12px;
+      font-size: 12px;
+    }
+
+    &__save {
+      height: 38px;
+    }
+
+    &__main {
+      .section-info {
+        .section-info__header {
+          min-height: 60px;
+          padding: 16px 18px;
+
+          h3 {
+            font-size: 15px;
+          }
+        }
+
+        .section-info__main {
+          padding: 20px 18px;
+
+          .ant-form-item {
+            margin-bottom: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Điện thoại nhỏ
+@media (max-width: 576px) {
+  .category-edit {
+    padding: 10px;
+
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    &__title {
+      h1 {
+        font-size: 18px;
+      }
+    }
+
+    &__nav {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
+    }
+
+    &__back,
+    &__save {
+      width: 100%;
+      min-width: 0;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+
+    &__main {
+      .section-info {
+        border-radius: 10px;
+
+        .section-info__header {
+          min-height: 56px;
+          padding: 14px 16px;
+
+          h3 {
+            font-size: 14px;
+
+            &::before {
+              height: 18px;
+            }
+          }
+        }
+
+        .section-info__main {
+          padding: 18px 16px;
+
+          .ant-form-item {
+            margin-bottom: 16px;
+          }
+
+          .ant-input,
+          .ant-input-affix-wrapper {
+            font-size: 13px;
+          }
+
+          .ant-upload-list-item-container,
+          .ant-upload.ant-upload-select {
+            width: 104px !important;
+            height: 104px !important;
+          }
+        }
+      }
+    }
+  }
+}

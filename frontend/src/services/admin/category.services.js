@@ -24,7 +24,12 @@ export const postCategory = async (data) => {
   return result;
 };
 export const patchCategory = async (id, data) => {
-  const result = await post(`/admin/categories/${id}`, data);
+  const result = await patch(`/admin/categories/${id}`, data);
+
+  return result;
+};
+export const getCategory = async (id) => {
+  const result = await get(`/admin/categories/${id}`);
 
   return result;
 };
