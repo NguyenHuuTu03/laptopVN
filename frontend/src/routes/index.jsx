@@ -40,6 +40,7 @@ import CouponEdit from "../pages/admin/Coupons/CouponEdit/CouponEdit";
 import CouponDetail from "../pages/admin/Coupons/CouponDetail/CouponDetail";
 import BrandCreate from "../pages/admin/Brands/BrandCreate/BrandCreate";
 import BrandEdit from "../pages/admin/Brands/BrandEdit/BrandEdit";
+import BrandDetail from "../pages/admin/Brands/BrandDetail/BrandDetail";
 
 export const routes = [
   {
@@ -127,6 +128,10 @@ export const routes = [
               {
                 path: "edit/:brandId",
                 element: <BrandEdit />,
+              },
+              {
+                path: ":brandId",
+                element: <BrandDetail />,
               },
             ],
           },

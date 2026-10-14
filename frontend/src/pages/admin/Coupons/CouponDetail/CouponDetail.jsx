@@ -64,7 +64,10 @@ function CouponDetail() {
               <i className="fa-solid fa-arrow-left"></i>
               Quay lại
             </Link>
-            <Link to={`/admin/coupons/edit`} className="coupon-detail__save">
+            <Link
+              to={`/admin/coupons/edit/${coupon?._id}`}
+              className="coupon-detail__save"
+            >
               <i className="fa-solid fa-pen-to-square"></i>
               Chỉnh sửa
             </Link>
