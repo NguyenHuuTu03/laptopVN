@@ -128,9 +128,9 @@ module.exports.create = async (req, res) => {
     const category = new Categories({
       title: req.body.title,
       description: req.body.description,
-      thumbnail: req.body.thumbnail ? req.body.thumbnail : "",
+      thumbnail: req.body.thumbnail || "",
       parentId: req.body.parentId,
-      position: req.body.position ? req.body.position : totalCategories + 1,
+      position: req.body.position || totalCategories + 1,
     });
 
     await category.save();

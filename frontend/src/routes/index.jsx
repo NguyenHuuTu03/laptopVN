@@ -41,6 +41,7 @@ import CouponDetail from "../pages/admin/Coupons/CouponDetail/CouponDetail";
 import BrandCreate from "../pages/admin/Brands/BrandCreate/BrandCreate";
 import BrandEdit from "../pages/admin/Brands/BrandEdit/BrandEdit";
 import BrandDetail from "../pages/admin/Brands/BrandDetail/BrandDetail";
+import CategoryCreate from "../pages/admin/Categories/CategoryCreate/CategoryCreate";
 
 export const routes = [
   {
@@ -112,7 +113,16 @@ export const routes = [
           },
           {
             path: "categories",
-            element: <CategoryView />,
+            children: [
+              {
+                path: "",
+                element: <CategoryView />,
+              },
+              {
+                path: "create",
+                element: <CategoryCreate />,
+              },
+            ],
           },
           {
             path: "brands",

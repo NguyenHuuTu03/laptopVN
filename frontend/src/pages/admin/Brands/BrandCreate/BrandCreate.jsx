@@ -75,7 +75,7 @@ function BrandCreate() {
           </div>
         </div>
 
-        <div className="brand-create__form">
+        <div className="brand-create__main">
           <Spin spinning={loading}>
             <Form
               layout="vertical"

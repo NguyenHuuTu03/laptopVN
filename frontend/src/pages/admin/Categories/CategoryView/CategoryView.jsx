@@ -3,7 +3,7 @@ const { Search } = Input;
 import { Select } from "antd";
 import { useEffect, useState } from "react";
 import CategoryTable from "../../../../components/admin/CategoryTable/CategoryTable";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { getCategories } from "../../../../services/admin/category.services";
 
@@ -109,10 +109,13 @@ function CategoryView() {
                 onSearch={handleSearch}
               />
             </div>
-            <div className="admin-categories__add">
+            <Link
+              to={"/admin/categories/create"}
+              className="admin-categories__add"
+            >
               <i className="fa-solid fa-plus"></i>
               <p>Thêm danh mục</p>
-            </div>
+            </Link>
           </div>
         </div>
 
