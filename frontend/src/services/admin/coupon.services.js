@@ -24,3 +24,15 @@ export const postCoupon = async (data) => {
 
   return result;
 };
+
+export const getCoupon = async (id) => {
+  const result = await get(`/admin/coupons/${id}`);
+
+  return result;
+};
+
+export const patchCoupon = async (id, data) => {
+  const result = await patch(`/admin/coupons/${id}`, data);
+
+  return result;
+};

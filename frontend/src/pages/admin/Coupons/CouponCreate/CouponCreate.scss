@@ -1,5 +1,6 @@
 .coupon-create {
   min-height: 100vh;
+  padding: 24px;
   background: #f5f7fb;
   color: #1e293b;
 
@@ -15,7 +16,7 @@
     padding: 18px 24px;
     margin-bottom: 24px;
 
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #e8edf4;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
@@ -27,14 +28,14 @@
     padding-left: 14px;
 
     &::before {
-      content: "";
       position: absolute;
       top: 2px;
       left: 0;
       width: 4px;
       height: 28px;
-      border-radius: 4px;
+      content: "";
       background: #1677ff;
+      border-radius: 4px;
     }
 
     h1 {
@@ -68,7 +69,6 @@
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
-
     transition: all 0.2s ease;
 
     i {
@@ -78,7 +78,7 @@
 
   &__back {
     color: #475569;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #dbe2ea;
     text-decoration: none;
 
@@ -90,20 +90,15 @@
   }
 
   &__save {
-    color: #ffffff !important;
+    color: #fff !important;
     background: #1677ff !important;
     border: 1px solid #1677ff !important;
     box-shadow: 0 3px 8px rgba(22, 119, 255, 0.16);
 
     &:hover {
-      color: #ffffff !important;
+      color: #fff !important;
       background: #0958d9 !important;
       border-color: #0958d9 !important;
-      box-shadow: 0 4px 12px rgba(22, 119, 255, 0.22);
-    }
-
-    &:disabled {
-      opacity: 0.65;
     }
 
     p {
@@ -141,10 +136,10 @@
   // SECTION CARD
   // =========================
   .section-info {
-    overflow: hidden;
     min-width: 0;
+    overflow: hidden;
 
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #e6ebf2;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(15, 23, 42, 0.025);
@@ -158,13 +153,14 @@
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
     }
 
+    // Card header
     &__header {
       display: flex;
       align-items: center;
       gap: 14px;
 
       padding: 20px 24px;
-      background: #ffffff;
+      background: #fff;
       border-bottom: 1px solid #edf0f5;
     }
 
@@ -180,11 +176,11 @@
       color: #1677ff;
       background: #edf4ff;
       border-radius: 11px;
-
       font-size: 20px;
     }
 
     &__header-content {
+      flex: 1;
       min-width: 0;
 
       h3 {
@@ -203,6 +199,32 @@
       }
     }
 
+    // Status switch in card header
+    &__header-action {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      gap: 10px;
+      margin-left: auto;
+
+      .ant-form-item {
+        margin: 0;
+      }
+
+      .ant-switch {
+        flex-shrink: 0;
+      }
+    }
+
+    &__status-label {
+      color: #475569;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    // Card body
     &__main {
       padding: 24px;
     }
@@ -226,21 +248,21 @@
       }
     }
 
+    .ant-form-item-control,
+    .ant-form-item-control-input,
+    .ant-form-item-control-input-content {
+      width: 100%;
+      min-width: 0;
+    }
+
     .ant-form-item-explain-error {
       margin-top: 5px;
       font-size: 12px;
     }
-
-    .ant-form-item-control,
-    .ant-form-item-control-input,
-    .ant-form-item-control-input-content {
-      min-width: 0;
-      width: 100%;
-    }
   }
 
   // =========================
-  // INPUT
+  // INPUT & TEXTAREA
   // =========================
   .ant-input {
     width: 100%;
@@ -248,7 +270,7 @@
     padding: 10px 12px;
 
     color: #334155;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #dbe2ea;
     border-radius: 8px;
     box-shadow: none;
@@ -285,7 +307,8 @@
     width: 100%;
     height: 42px;
 
-    border-color: #dbe2ea;
+    background: #fff;
+    border: 1px solid #dbe2ea;
     border-radius: 8px;
     box-shadow: none;
     transition: all 0.2s ease;
@@ -316,10 +339,11 @@
 
   // =========================
   // SELECT
+  // Không đặt padding trên .ant-select
   // =========================
   .ant-select {
     width: 100%;
-    padding: 10px 12px;
+
     .ant-select-selector {
       display: flex;
       align-items: center;
@@ -328,7 +352,7 @@
       height: 42px !important;
       padding: 0 12px !important;
 
-      background: #ffffff !important;
+      background: #fff !important;
       border: 1px solid #dbe2ea !important;
       border-radius: 8px !important;
       box-shadow: none !important;
@@ -361,12 +385,16 @@
     height: 42px;
     padding: 0 12px;
 
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #dbe2ea;
     border-radius: 8px;
     box-shadow: none;
-
     transition: all 0.2s ease;
+
+    .ant-picker-input {
+      flex: 1;
+      min-width: 0;
+    }
 
     input {
       min-width: 0;
@@ -376,11 +404,6 @@
       &::placeholder {
         color: #a0aaba;
       }
-    }
-
-    .ant-picker-input {
-      flex: 1;
-      min-width: 0;
     }
 
     .ant-picker-suffix {
@@ -394,6 +417,67 @@
     &.ant-picker-focused {
       border-color: #1677ff;
       box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.1);
+    }
+  }
+
+  // =========================
+  // SWITCH
+  // =========================
+  .ant-switch {
+    height: 28px;
+    min-width: 64px;
+    line-height: 28px;
+    background: #cbd5e1;
+
+    // Nút tròn
+    .ant-switch-handle {
+      top: 3px;
+      inset-inline-start: 3px;
+      width: 22px;
+      height: 22px;
+
+      &::before {
+        border-radius: 11px;
+      }
+    }
+
+    // Chữ bên trong (Bật / Tắt)
+    .ant-switch-inner {
+      padding-inline: 30px 10px; // trạng thái tắt: chừa chỗ cho nút tròn bên trái
+
+      .ant-switch-inner-checked,
+      .ant-switch-inner-unchecked {
+        font-size: 12px;
+        line-height: 28px;
+      }
+
+      .ant-switch-inner-unchecked {
+        margin-top: -28px; // luôn bằng chiều cao track
+      }
+    }
+
+    // Trạng thái bật
+    &.ant-switch-checked {
+      background: #1677ff;
+
+      .ant-switch-handle {
+        inset-inline-start: calc(100% - 25px); // 22px nút + 3px mép
+      }
+
+      .ant-switch-inner {
+        padding-inline: 0px 20px;
+      }
+    }
+
+    // Icon loading (nếu dùng)
+    .ant-switch-loading-icon {
+      top: 3px;
+      font-size: 22px;
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgba(22, 119, 255, 0.2);
+      outline-offset: 2px;
     }
   }
 
@@ -479,6 +563,7 @@
       border-radius: 10px;
 
       &__header {
+        flex-wrap: wrap;
         gap: 11px;
         padding: 16px 14px;
       }
@@ -491,6 +576,8 @@
       }
 
       &__header-content {
+        flex: 1;
+
         h3 {
           font-size: 15px;
         }
@@ -498,6 +585,14 @@
         span {
           font-size: 12px;
         }
+      }
+
+      &__header-action {
+        width: 100%;
+        justify-content: flex-end;
+        padding-top: 10px;
+        margin-left: 0;
+        border-top: 1px solid #edf0f5;
       }
 
       &__main {
