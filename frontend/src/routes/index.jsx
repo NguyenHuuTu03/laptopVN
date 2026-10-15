@@ -44,6 +44,7 @@ import BrandDetail from "../pages/admin/Brands/BrandDetail/BrandDetail";
 import CategoryCreate from "../pages/admin/Categories/CategoryCreate/CategoryCreate";
 import CategoryEdit from "../pages/admin/Categories/CategoryEdit/CategoryEdit";
 import CategoryDetail from "../pages/admin/Categories/CategoryDetail/CategoryDetail";
+import ProductCreate from "../pages/admin/Products/ProductCreate/ProductCreate";
 
 export const routes = [
   {
@@ -111,7 +112,16 @@ export const routes = [
           },
           {
             path: "products",
-            element: <ProductView />,
+            children: [
+              {
+                path: "",
+                element: <ProductView />,
+              },
+              {
+                path: "create",
+                element: <ProductCreate />,
+              },
+            ],
           },
           {
             path: "categories",

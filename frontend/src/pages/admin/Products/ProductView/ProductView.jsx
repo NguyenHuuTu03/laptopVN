@@ -4,7 +4,7 @@ import { Select } from "antd";
 import { useEffect, useState } from "react";
 import { getProducts } from "../../../../services/admin/product.services";
 import ProductTable from "../../../../components/admin/ProductTable/ProductTable";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import "./ProductView.scss";
 
@@ -145,10 +145,10 @@ function Products() {
                 onSearch={handleSearch}
               />
             </div>
-            <button className="admin-products__add">
+            <Link to={"/admin/products/create"} className="admin-products__add">
               <i className="fa-solid fa-plus"></i>
               <p>Thêm sản phẩm</p>
-            </button>
+            </Link>
           </div>
         </div>
 

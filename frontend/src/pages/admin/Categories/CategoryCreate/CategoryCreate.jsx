@@ -41,7 +41,6 @@ function CategoryCreate() {
     fetchData();
   }, []);
 
-  console.log(categories);
   const setLevel = (category, categories) => {
     let level = 0;
     let parentId = category.parentId;
