@@ -80,7 +80,7 @@ module.exports.detail = async (req, res) => {
     const category = await Categories.findOne({
       _id: categoryId,
       deleted: false,
-    });
+    }).lean();
     if (!category) {
       return res.json({
         code: 404,
@@ -92,6 +92,15 @@ module.exports.detail = async (req, res) => {
       parentId: category.id,
       deleted: false,
     }).sort({ position: -1 });
+
+    if (category.parentId) {
+      const parent = await Categories.findOne({
+        _id: category.parentId,
+        deleted: false,
+      });
+
+      category.parent = parent.title;
+    }
 
     res.json({
       code: 200,

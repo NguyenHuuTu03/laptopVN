@@ -43,6 +43,7 @@ import BrandEdit from "../pages/admin/Brands/BrandEdit/BrandEdit";
 import BrandDetail from "../pages/admin/Brands/BrandDetail/BrandDetail";
 import CategoryCreate from "../pages/admin/Categories/CategoryCreate/CategoryCreate";
 import CategoryEdit from "../pages/admin/Categories/CategoryEdit/CategoryEdit";
+import CategoryDetail from "../pages/admin/Categories/CategoryDetail/CategoryDetail";
 
 export const routes = [
   {
@@ -126,6 +127,10 @@ export const routes = [
               {
                 path: "edit/:categoryId",
                 element: <CategoryEdit />,
+              },
+              {
+                path: ":categoryId",
+                element: <CategoryDetail />,
               },
             ],
           },
