@@ -15,7 +15,10 @@ const productVariantSchema = new mongoose.Schema(
     stock: Number,
     sold: Number,
     thumbnail: String,
-    status: String,
+    status: {
+      type: "String",
+      default: "active",
+    },
   },
   {
     timestamps: true,

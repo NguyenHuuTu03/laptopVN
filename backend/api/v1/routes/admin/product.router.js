@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const controllers = require("../../controllers/admin/product.controllers");
 const permissionMiddleware = require("../../../../middlewares/permission.middleware");
+const multer = require("multer");
+const upload = multer();
+const uploadMiddleware = require("../../../../middlewares/uploadToCloudinary");
 
 router.get(
   "/",
@@ -11,6 +14,11 @@ router.get(
 router.post(
   "/",
   permissionMiddleware.requirePermission("product-create"),
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "images", maxCount: 5 },
+  ]),
+  uploadMiddleware.uploadFields,
   controllers.create,
 );
 router.patch(
@@ -21,6 +29,11 @@ router.patch(
 router.patch(
   "/:productId",
   permissionMiddleware.requirePermission("product-edit"),
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "images", maxCount: 5 },
+  ]),
+  uploadMiddleware.uploadFields,
   controllers.edit,
 );
 router.get(

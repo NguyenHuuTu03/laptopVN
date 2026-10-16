@@ -127,6 +127,11 @@
     .ant-col {
       display: flex;
       min-width: 0;
+
+      > .ant-form-item {
+        flex: 1;
+        min-width: 0;
+      }
     }
 
     // Card thông tin
@@ -294,10 +299,11 @@
           width: 100%;
           min-width: 0;
           font-size: 13px;
+          padding: 10px;
 
           .ant-select-selector {
             min-height: 40px;
-            padding: 4px 11px;
+            padding: 5px 11px;
             border-color: #d9e0ea;
             border-radius: 8px;
             box-shadow: none;
@@ -379,27 +385,181 @@
         }
 
         // Hàng thông số kỹ thuật
-        .ant-row {
+
+        // =========================
+        // FORM LIST - THÔNG SỐ KỸ THUẬT
+        // =========================
+        .spec-group {
+          width: 100%;
           min-width: 0;
+          padding: 16px;
+          margin-bottom: 16px;
+          background: #fff;
+          border: 1px solid #e8edf5;
+          border-radius: 10px;
+          transition: border-color 0.2s ease;
+
+          &:hover {
+            border-color: #c6dcff;
+          }
+
+          // Tên nhóm + nút xóa nhóm
+          &__header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+
+            .spec-group__name {
+              flex: 1;
+              min-width: 0;
+              margin-bottom: 0;
+
+              .ant-form-item-control-input {
+                min-height: 40px;
+              }
+            }
+
+            > .ant-btn {
+              display: inline-flex;
+              flex-shrink: 0;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+              height: 40px;
+              padding: 0;
+              color: #dc2626;
+              background: #fff;
+              border: 1px solid #d9e0ea;
+              border-radius: 8px;
+              box-shadow: none;
+              transition: all 0.2s ease;
+
+              &:hover {
+                color: #dc2626;
+                background: #fff1f0;
+                border-color: #ffccc7;
+              }
+            }
+          }
+
+          // Các dòng key - value
+          .ant-row {
+            align-items: flex-start;
+            margin-bottom: 4px;
+
+            > .ant-col {
+              min-width: 0;
+            }
+
+            .ant-form-item {
+              width: 100%;
+              margin-bottom: 12px;
+            }
+
+            .ant-form-item-control-input {
+              min-height: 40px;
+            }
+
+            // Input tên thông số và giá trị
+            .ant-input {
+              width: 100%;
+              height: 40px;
+              padding: 8px 12px;
+              color: #1f2937;
+              font-size: 13px;
+              background: #fff;
+              border: 1px solid #d9e0ea;
+              border-radius: 8px;
+              box-shadow: none;
+              transition: all 0.2s ease;
+
+              &::placeholder {
+                color: #9ca3af;
+                font-size: 12px;
+              }
+
+              &:hover {
+                border-color: #91caff;
+              }
+
+              &:focus {
+                border-color: #1677ff;
+                box-shadow: 0 0 0 3px rgb(22 119 255 / 10%);
+              }
+            }
+
+            // Nút xóa từng thông số
+            > .ant-col:last-child {
+              display: flex;
+              // justify-content: center;
+
+              > .ant-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                padding: 0;
+                color: #dc2626;
+                background: #fff;
+                border: 1px solid #d9e0ea;
+                border-radius: 8px;
+                box-shadow: none;
+                transition: all 0.2s ease;
+
+                &:hover {
+                  color: #dc2626;
+                  background: #fff1f0;
+                  border-color: #ffccc7;
+                }
+              }
+            }
+          }
+
+          // Nút thêm thông số
+          > .ant-btn-dashed {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            height: 38px;
+            margin-top: 2px;
+            color: #1677ff;
+            font-size: 13px;
+            font-weight: 500;
+            background: #fff;
+            border-color: #b6d4fe;
+            border-radius: 8px;
+            box-shadow: none;
+            transition: all 0.2s ease;
+
+            &:hover {
+              color: #0958d9;
+              background: #f0f7ff;
+              border-color: #1677ff;
+            }
+          }
         }
 
-        // Nút xóa thông số
-        .ant-btn:not(.ant-btn-primary) {
+        // Nút thêm nhóm thông số
+        .ant-btn.ant-btn-primary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
           min-height: 40px;
-          padding: 0 14px;
-          color: #dc2626;
           font-size: 13px;
           font-weight: 600;
-          background: #fff;
-          border-color: #fecaca;
+          background: #1677ff;
+          border-color: #1677ff;
           border-radius: 8px;
           box-shadow: none;
           transition: all 0.2s ease;
 
           &:hover {
-            color: #b91c1c;
-            background: #fef2f2;
-            border-color: #f87171;
+            background: #0958d9;
+            border-color: #0958d9;
           }
         }
 
@@ -461,6 +621,209 @@
         .ant-form-item-explain-error {
           margin-top: 4px;
           font-size: 12px;
+        }
+        .variant-item {
+          width: 100%;
+          min-width: 0;
+          padding: 20px;
+          margin-bottom: 20px;
+          background: #fff;
+          border: 1px solid #e8edf5;
+          border-radius: 12px;
+          transition: border-color 0.2s ease;
+
+          &:hover {
+            border-color: #c6dcff;
+          }
+
+          /* Tiêu đề phiên bản */
+          &__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #eef1f6;
+
+            strong {
+              color: #1f2937;
+              font-size: 15px;
+              font-weight: 600;
+            }
+
+            .ant-btn {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              gap: 6px;
+              height: 34px;
+              padding: 0 12px;
+              color: #dc2626;
+              font-size: 12px;
+              background: #fff;
+              border: 1px solid #fecaca;
+              border-radius: 7px;
+              box-shadow: none;
+
+              &:hover {
+                color: #b91c1c;
+                background: #fef2f2;
+                border-color: #fca5a5;
+              }
+            }
+          }
+
+          /* Các trường SKU, giá, giảm giá, tồn kho */
+          .ant-row {
+            align-items: flex-start;
+
+            > .ant-col {
+              min-width: 0;
+            }
+          }
+
+          .ant-form-item {
+            width: 100%;
+            margin-bottom: 16px;
+          }
+
+          .ant-form-item-label {
+            padding-bottom: 6px;
+
+            > label {
+              height: auto;
+              color: #374151;
+              font-size: 13px;
+              font-weight: 500;
+            }
+          }
+
+          .ant-input,
+          .ant-input-number {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #d9e0ea;
+            border-radius: 8px;
+            box-shadow: none;
+            transition: all 0.2s ease;
+
+            &:hover {
+              border-color: #91caff;
+            }
+          }
+
+          .ant-input {
+            padding: 8px 12px;
+            font-size: 13px;
+          }
+
+          .ant-input-number {
+            display: flex;
+            align-items: center;
+
+            .ant-input-number-input-wrap {
+              width: 100%;
+              height: 100%;
+            }
+
+            .ant-input-number-input {
+              width: 100%;
+              height: 100%;
+              padding: 0 12px;
+              font-size: 13px;
+            }
+          }
+
+          .ant-input:focus,
+          .ant-input-number-focused {
+            border-color: #1677ff;
+            box-shadow: 0 0 0 2px rgb(22 119 255 / 10%);
+          }
+
+          /* Khu vực thuộc tính RAM, SSD, màu sắc... */
+          .ant-form-item + .ant-form-item {
+            margin-bottom: 16px;
+          }
+
+          .ant-row:has(.ant-input)::after {
+            content: "";
+            display: block;
+          }
+
+          /* Nút xóa thuộc tính */
+          .ant-row > .ant-col:last-child {
+            .ant-btn-dangerous:not(.ant-btn-primary) {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+              height: 40px;
+              padding: 0;
+              color: #dc2626;
+              background: #fff;
+              border: 1px solid #fecaca;
+              border-radius: 8px;
+              box-shadow: none;
+              transition: all 0.2s ease;
+
+              &:hover {
+                color: #b91c1c;
+                background: #fef2f2;
+                border-color: #fca5a5;
+              }
+            }
+          }
+
+          /* Nút thêm thuộc tính */
+          > .ant-btn-dashed,
+          .ant-form-list > .ant-btn-dashed {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            width: 100%;
+            height: 38px;
+            margin-top: 2px;
+            color: #1677ff;
+            font-size: 13px;
+            font-weight: 500;
+            background: #fff;
+            border: 1px dashed #b6d4fe;
+            border-radius: 8px;
+            box-shadow: none;
+            transition: all 0.2s ease;
+
+            &:hover {
+              color: #0958d9;
+              background: #f0f7ff;
+              border-color: #1677ff;
+            }
+          }
+        }
+
+        /* Nút thêm phiên bản */
+        > .ant-btn.ant-btn-primary {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
+          height: 42px;
+          margin-top: 4px;
+          color: #fff;
+          font-size: 13px;
+          font-weight: 600;
+          background: #1677ff;
+          border-color: #1677ff;
+          border-radius: 8px;
+          box-shadow: none;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #0958d9;
+            border-color: #0958d9;
+          }
         }
       }
     }

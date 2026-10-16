@@ -9,13 +9,16 @@ import {
   Upload,
   Select,
   Switch,
+  InputNumber,
+  notification,
 } from "antd";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCategories } from "../../../../services/admin/category.services";
 import { getBrands } from "../../../../services/admin/brand.services";
 
 import "./ProductCreate.scss";
+import { postProduct } from "../../../../services/admin/product.services";
 
 function ProductCreate() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +26,7 @@ function ProductCreate() {
   const [categories, setCategories] = useState(null);
   const [brands, setBrands] = useState(null);
 
-  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +77,51 @@ function ProductCreate() {
       label: item.title,
     };
   });
+
+  const handleSubmit = async (values) => {
+    try {
+      setLoading(true);
+      const data = new FormData();
+      data.append("title", values.title);
+      data.append("brandId", values.brandId || "");
+      data.append("categoryId", values.categoryId || "");
+      data.append("description", values.description || "");
+      data.append("featured", values.featured || "");
+      data.append(
+        "specifications",
+        JSON.stringify(values.specifications || []),
+      );
+      data.append("warranty", values.warranty || "");
+      data.append("variants", JSON.stringify(values.variants || []));
+
+      const thumbnail = values?.thumbnail?.[0]?.originFileObj;
+      if (thumbnail) {
+        data.append("thumbnail", thumbnail);
+      }
+
+      values.images.forEach((item) => {
+        if (item.originFileObj) {
+          data.append("images", item.originFileObj);
+        }
+      });
+
+      const result = await postProduct(data);
+      if (result.code === 200) {
+        notification.success({
+          title: result.message,
+        });
+        navigate("/admin/products");
+      } else {
+        notification.error({
+          title: result.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <div className="product-create">
@@ -101,7 +149,11 @@ function ProductCreate() {
 
         <div className="product-create__main">
           <Spin spinning={loading}>
-            <Form layout="vertical" id="product-create__form" form={form}>
+            <Form
+              layout="vertical"
+              id="product-create__form"
+              onFinish={handleSubmit}
+            >
               <Row gutter={[16, 16]} className="product-create__row">
                 <Col xs={24} xl={12}>
                   <div className="section-info">
@@ -147,53 +199,19 @@ function ProductCreate() {
                       </Form.Item>
 
                       <Form.Item
-                        label="Trạng thái"
-                        name="status"
+                        label="Sản phẩm nổi bật"
+                        name="featured"
                         valuePropName="checked"
                       >
                         <Switch
-                          checkedChildren="Hoạt động"
-                          unCheckedChildren="Dừng hoạt động"
+                          checkedChildren="Nôi bật"
+                          unCheckedChildren="Không nổi bật"
                         ></Switch>
                       </Form.Item>
                     </div>
                   </div>
                 </Col>
-
                 <Col xs={24} xl={12}>
-                  <div className="section-info">
-                    <div className="section-info__header">
-                      <h3>Thông số kỹ thuật</h3>
-                      <div className="section-info__header-action">
-                        <span>
-                          <i className="fa-solid fa-plus"></i>
-                        </span>
-                        <span>Thêm</span>
-                      </div>
-                    </div>
-                    <div className="section-info__main">
-                      <Row gutter={[16, 16]}>
-                        <Col xs={24} xl={10}>
-                          <Form.Item name="key">
-                            <Input placeholder="VD: CPU, RAM" />
-                          </Form.Item>
-                        </Col>
-                        <Col xs={24} xl={10}>
-                          <Form.Item name="value">
-                            <Input placeholder="Giá trị (VD: Intel Core i5-1335U)" />
-                          </Form.Item>
-                        </Col>
-                        <Col xs={24} xl={4}>
-                          <Button>Xoá</Button>
-                        </Col>
-                      </Row>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-
-              <Row gutter={[16, 16]} className="product-create__row">
-                <Col xs={24}>
                   <div className="section-info">
                     <div className="section-info__header">
                       <h3>Ảnh sản phẩm</h3>
@@ -236,6 +254,288 @@ function ProductCreate() {
                           </div>
                         </Upload>
                       </Form.Item>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row gutter={[16, 16]} className="product-create__row">
+                <Col xs={12}>
+                  <div className="section-info">
+                    <div className="section-info__header">
+                      <h3>Thông số kỹ thuật</h3>
+                    </div>
+                    <div className="section-info__main">
+                      <Form.List name="specifications">
+                        {(groups, { add: addGroup, remove: removeGroup }) => (
+                          <>
+                            {groups.map((group) => (
+                              <div key={group.key} className="spec-group">
+                                <div className="spec-group__header">
+                                  <Form.Item
+                                    name={[group.name, "group"]}
+                                    className="spec-group__name"
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: "Vui lòng nhập tên nhóm!",
+                                      },
+                                    ]}
+                                  >
+                                    <Input placeholder="Tên nhóm (VD: Bộ xử lý, Màn hình)" />
+                                  </Form.Item>
+                                  <Button
+                                    danger
+                                    onClick={() => removeGroup(group.name)}
+                                  >
+                                    <i className="fa-solid fa-trash"></i>
+                                  </Button>
+                                </div>
+
+                                {/* Danh sách con: các cặp key-value của nhóm */}
+                                <Form.List name={[group.name, "items"]}>
+                                  {(
+                                    items,
+                                    { add: addItem, remove: removeItem },
+                                  ) => (
+                                    <>
+                                      {items.map((item) => (
+                                        <Row key={item.key} gutter={8}>
+                                          <Col xs={24} sm={9}>
+                                            <Form.Item
+                                              name={[item.name, "key"]}
+                                              rules={[
+                                                {
+                                                  required: true,
+                                                  message: "Nhập tên thông số",
+                                                },
+                                              ]}
+                                            >
+                                              <Input placeholder="VD: CPU, RAM" />
+                                            </Form.Item>
+                                          </Col>
+                                          <Col xs={24} sm={12}>
+                                            <Form.Item
+                                              name={[item.name, "value"]}
+                                              rules={[
+                                                {
+                                                  required: true,
+                                                  message: "Nhập giá trị",
+                                                },
+                                              ]}
+                                            >
+                                              <Input placeholder="VD: Intel Core i5-1335U" />
+                                            </Form.Item>
+                                          </Col>
+                                          <Col xs={24} sm={3}>
+                                            <Button
+                                              danger
+                                              onClick={() =>
+                                                removeItem(item.name)
+                                              }
+                                            >
+                                              <i className="fa-solid fa-xmark"></i>
+                                            </Button>
+                                          </Col>
+                                        </Row>
+                                      ))}
+                                      <Button
+                                        type="dashed"
+                                        block
+                                        onClick={() =>
+                                          addItem({ key: "", value: "" })
+                                        }
+                                      >
+                                        <i className="fa-solid fa-plus"></i>{" "}
+                                        Thêm thông số
+                                      </Button>
+                                    </>
+                                  )}
+                                </Form.List>
+                              </div>
+                            ))}
+
+                            <Button
+                              type="primary"
+                              block
+                              onClick={() =>
+                                addGroup({
+                                  group: "",
+                                  items: [{ key: "", value: "" }],
+                                })
+                              }
+                            >
+                              <i className="fa-solid fa-plus"></i> Thêm nhóm
+                              thông số
+                            </Button>
+                          </>
+                        )}
+                      </Form.List>
+                    </div>
+                  </div>
+                </Col>
+
+                <Col xs={12}>
+                  <div className="section-info">
+                    <div className="section-info__header">
+                      <h3>Phiên bản sản phẩm</h3>
+                    </div>
+                    <div className="section-info__main">
+                      <Form.List name="variants">
+                        {(
+                          variants,
+                          { add: addVariant, remove: removeVariant },
+                        ) => (
+                          <>
+                            {variants.map((variant, index) => (
+                              <div key={variant.key} className="variant-item">
+                                <div className="variant-item__header">
+                                  <strong>Phiên bản {index + 1}</strong>
+                                  <Button
+                                    danger
+                                    onClick={() => removeVariant(variant.name)}
+                                  >
+                                    <i className="fa-solid fa-trash"></i> Xóa
+                                  </Button>
+                                </div>
+
+                                <Row gutter={[16, 16]}>
+                                  <Col xs={24} sm={12} xl={8}>
+                                    <Form.Item
+                                      label="Giá (đ)"
+                                      name={[variant.name, "price"]}
+                                      rules={[
+                                        {
+                                          required: true,
+                                          message:
+                                            "Vui lòng nhập giá sản phẩm!",
+                                        },
+                                      ]}
+                                    >
+                                      <InputNumber
+                                        formatter={(v) =>
+                                          `${v}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ".",
+                                          )
+                                        }
+                                        parser={(v) => v?.replace(/\./g, "")}
+                                      />
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={12} sm={8} xl={8}>
+                                    <Form.Item
+                                      label="Giảm giá (%)"
+                                      name={[variant.name, "discount"]}
+                                    >
+                                      <InputNumber min={0} max={100} />
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={12} sm={8} xl={8}>
+                                    <Form.Item
+                                      label="Tồn kho"
+                                      name={[variant.name, "stock"]}
+                                      rules={[
+                                        {
+                                          required: true,
+                                          message:
+                                            "Vui lòng nhập số lượng tồn kho!",
+                                        },
+                                      ]}
+                                    >
+                                      <InputNumber min={0} />
+                                    </Form.Item>
+                                  </Col>
+                                  {/* <Col xs={24} sm={8} xl={4}>
+                                    <Form.Item
+                                      label="Trạng thái"
+                                      name={[variant.name, "status"]}
+                                    >
+                                      <Select
+                                        options={[
+                                          {
+                                            value: "active",
+                                            label: "Đang bán",
+                                          },
+                                          { value: "inactive", label: "Ẩn" },
+                                        ]}
+                                      />
+                                    </Form.Item>
+                                  </Col> */}
+                                </Row>
+
+                                <Form.List name={[variant.name, "attributes"]}>
+                                  {(
+                                    attrs,
+                                    { add: addAttr, remove: removeAttr },
+                                  ) => (
+                                    <>
+                                      {attrs.map((attr) => (
+                                        <Row key={attr.key} gutter={8}>
+                                          <Col xs={24} sm={9}>
+                                            <Form.Item
+                                              name={[attr.name, "key"]}
+                                              rules={[
+                                                {
+                                                  required: true,
+                                                  message:
+                                                    "Vui lòng nhập tên thuộc tính",
+                                                },
+                                              ]}
+                                            >
+                                              <Input placeholder="Thuộc tính (VD: Màu sắc, RAM)" />
+                                            </Form.Item>
+                                          </Col>
+                                          <Col xs={24} sm={11}>
+                                            <Form.Item
+                                              name={[attr.name, "value"]}
+                                              rules={[
+                                                {
+                                                  required: true,
+                                                  message:
+                                                    "Vui lòng nhập giá trị",
+                                                },
+                                              ]}
+                                            >
+                                              <Input placeholder="Giá trị (VD: Bạc, 16GB)" />
+                                            </Form.Item>
+                                          </Col>
+                                          <Col xs={24} sm={4}>
+                                            <Button
+                                              danger
+                                              onClick={() =>
+                                                removeAttr(attr.name)
+                                              }
+                                            >
+                                              <i className="fa-solid fa-xmark"></i>
+                                            </Button>
+                                          </Col>
+                                        </Row>
+                                      ))}
+                                      <Button
+                                        type="dashed"
+                                        block
+                                        onClick={() => addAttr()}
+                                      >
+                                        <i className="fa-solid fa-plus"></i>
+                                        Thêm thuộc tính
+                                      </Button>
+                                    </>
+                                  )}
+                                </Form.List>
+                              </div>
+                            ))}
+                            <Button
+                              type="primary"
+                              block
+                              onClick={() => addVariant()}
+                            >
+                              <i className="fa-solid fa-plus"></i> Thêm phiên
+                              bản
+                            </Button>
+                          </>
+                        )}
+                      </Form.List>
                     </div>
                   </div>
                 </Col>

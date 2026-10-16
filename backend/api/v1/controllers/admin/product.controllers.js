@@ -4,6 +4,7 @@ const Brands = require("../../../../models/brand.model");
 const Categories = require("../../../../models/category.model");
 const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
 const sortHelpers = require("../../../../helpers/sort");
+const generateHelpers = require("../../../../helpers/generate");
 
 //[GET] /api/admin/products
 module.exports.index = async (req, res) => {
@@ -162,7 +163,7 @@ module.exports.changeStatus = async (req, res) => {
 module.exports.create = async (req, res) => {
   try {
     const slug = convertToSlugHelpers.convertToSlug(req.body.title);
-    const exitsProduct = await Products.find({
+    const exitsProduct = await Products.findOne({
       slug: slug,
       deleted: false,
     });
@@ -180,14 +181,31 @@ module.exports.create = async (req, res) => {
       categoryId: req.body.categoryId,
       brandId: req.body.brandId,
       description: req.body.description,
-      images: req.body.images ? req.body.images : [],
-      thumbnail: req.body.thumbnail ? req.body.thumbnail : "",
-      position: req.body.position ? req.body.position : totalProduct + 1,
-      specifications: req.body.specifications,
+      images: req.body.images,
+      thumbnail: req.body.thumbnail[0],
+      position: req.body.position || totalProduct + 1,
+      specifications: JSON.parse(req.body.specifications),
       warranty: req.body.warranty,
-      featured: req.body.featured ? req.body.featured : false,
+      featured: req.body.featured,
     });
     await product.save();
+
+    let cnt = 0;
+    const variants = JSON.parse(req.body.variants || "[]");
+    for (const variant of variants) {
+      const variantData = new ProductVariants({
+        productId: product._id,
+        sku: generateHelpers.generateSKU(8),
+        price: variant.price,
+        discount: variant.discount,
+        stock: variant.stock,
+        attributes: variant.attributes,
+        thumbnail: product.images[cnt],
+      });
+      await variantData.save();
+      cnt++;
+    }
+
     res.json({
       code: 200,
       message: "Thêm sản phẩm thành công!",
