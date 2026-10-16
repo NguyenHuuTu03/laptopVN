@@ -30,7 +30,7 @@ function ProductDetail() {
     variant?.attributes?.forEach((attribute) => {
       const key = attribute.key?.toLowerCase();
       if (key === "ram") ram = attribute.value;
-      if (key === "storage") storage = attribute.value;
+      if (key === "storage" || key === "ssd") storage = attribute.value;
       if (key === "color") color = attribute.value;
     });
 

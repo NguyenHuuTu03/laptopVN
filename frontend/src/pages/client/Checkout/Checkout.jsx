@@ -92,7 +92,7 @@ function Checkout() {
           ram = v.value;
         }
 
-        if (key === "storage") {
+        if (key === "storage" || key === "ssd") {
           storage = v.value;
         }
 
