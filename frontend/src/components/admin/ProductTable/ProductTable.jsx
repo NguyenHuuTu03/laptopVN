@@ -4,6 +4,7 @@ import {
   changeStatus,
   removeProduct,
 } from "../../../services/admin/product.services";
+import { Link } from "react-router-dom";
 
 function ProductTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
@@ -131,13 +132,21 @@ function ProductTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="product-action">
-          <button className="product-action__view" title="Xem chi tiết">
+          <Link
+            to={`/admin/products/${record._id}`}
+            className="product-action__view"
+            title="Xem chi tiết"
+          >
             <i className="fa-solid fa-eye"></i>
-          </button>
+          </Link>
 
-          <button className="product-action__edit" title="Chỉnh sửa">
+          <Link
+            to={`/admin/products/edit/${record._id}`}
+            className="product-action__edit"
+            title="Chỉnh sửa"
+          >
             <i className="fa-solid fa-pen-to-square"></i>
-          </button>
+          </Link>
 
           <button
             className="product-action__delete"

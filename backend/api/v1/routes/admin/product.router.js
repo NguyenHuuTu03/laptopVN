@@ -38,7 +38,7 @@ router.patch(
 );
 router.get(
   "/:productId",
-  permissionMiddleware.requirePermission("product-detail"),
+  permissionMiddleware.requirePermission("product-view"),
   controllers.detail,
 );
 router.delete(

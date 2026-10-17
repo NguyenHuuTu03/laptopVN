@@ -45,6 +45,7 @@ import CategoryCreate from "../pages/admin/Categories/CategoryCreate/CategoryCre
 import CategoryEdit from "../pages/admin/Categories/CategoryEdit/CategoryEdit";
 import CategoryDetail from "../pages/admin/Categories/CategoryDetail/CategoryDetail";
 import ProductCreate from "../pages/admin/Products/ProductCreate/ProductCreate";
+import ProductEdit from "../pages/admin/Products/ProductEdit/ProductEdit";
 
 export const routes = [
   {
@@ -120,6 +121,10 @@ export const routes = [
               {
                 path: "create",
                 element: <ProductCreate />,
+              },
+              {
+                path: "edit/:productId",
+                element: <ProductEdit />,
               },
             ],
           },

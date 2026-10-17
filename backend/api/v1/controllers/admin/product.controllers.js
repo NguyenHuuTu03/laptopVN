@@ -190,9 +190,8 @@ module.exports.create = async (req, res) => {
     });
     await product.save();
 
-    let cnt = 0;
     const variants = JSON.parse(req.body.variants || "[]");
-    for (const variant of variants) {
+    for (const [index, variant] of variants.entries()) {
       const variantData = new ProductVariants({
         productId: product._id,
         sku: generateHelpers.generateSKU(8),
@@ -200,10 +199,9 @@ module.exports.create = async (req, res) => {
         discount: variant.discount,
         stock: variant.stock,
         attributes: variant.attributes,
-        thumbnail: product.images[cnt],
+        thumbnail: product.images[index],
       });
       await variantData.save();
-      cnt++;
     }
 
     res.json({
@@ -225,33 +223,95 @@ module.exports.create = async (req, res) => {
 module.exports.edit = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const product = await Products.findOne({
-      _id: productId,
+
+    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+
+    const exitsProduct = await Products.findOne({
+      _id: { $ne: productId },
+      slug: slug,
       deleted: false,
     });
-    if (!product) {
+
+    if (exitsProduct) {
       res.json({
-        code: 404,
-        message: "Không tìm thấy sản phẩm!",
+        code: 400,
+        message: "Tên sản phẩm đã tồn tại!",
       });
       return;
     }
 
-    if (req.body.images) {
-      product.images = req.body.images;
+    const thumbnail = req.body.thumbnail;
+    if (thumbnail) {
+      req.body.thumbnail = thumbnail[0];
     }
 
-    if (req.body.thumbnail) {
-      product.thumbnail = req.body.thumbnail;
+    const oldImages = JSON.parse(req.body.oldImages);
+    const result = [];
+    if (oldImages.length > 0) {
+      oldImages.forEach((item) => result.push(item));
+    }
+    const images = req.body.images;
+    if (images) {
+      images.forEach((item) => result.push(item));
     }
 
-    await product.save();
+    req.body.images = result;
+
+    const updateData = {
+      title: req.body.title,
+      categoryId: req.body.categoryId,
+      brandId: req.body.brandId,
+      description: req.body.description,
+      images: req.body.images,
+      thumbnail: req.body.thumbnail,
+      specifications: JSON.parse(req.body.specifications),
+      warranty: req.body.warranty,
+      featured: req.body.featured,
+      slug: slug,
+      status: req.body.status,
+    };
+
+    await Products.updateOne(
+      {
+        _id: productId,
+      },
+      updateData,
+    );
+
+    const variants = JSON.parse(req.body.variants || "[]");
+
+    const keepIds = variants.filter((v) => v._id).map((v) => v._id);
+
+    await ProductVariants.deleteMany({
+      productId,
+      _id: { $nin: keepIds },
+    });
+
+    for (const [index, variant] of variants.entries()) {
+      const data = {
+        price: variant.price,
+        discount: variant.discount,
+        stock: variant.stock,
+        attributes: variant.attributes,
+      };
+      if (variant._id) {
+        await ProductVariants.updateOne({ _id: variant._id, productId }, data);
+      } else {
+        await ProductVariants.create({
+          ...data,
+          productId,
+          sku: generateHelpers.generateSKU(8),
+          thumbnail: result[index],
+        });
+      }
+    }
 
     res.json({
       code: 200,
       message: "Cập nhật sản phẩm thành công!",
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 500,
       message: "Cập nhật sản phẩm thất bại!",
@@ -321,7 +381,6 @@ module.exports.detail = async (req, res) => {
 
     const variants = await ProductVariants.find({
       productId: product._id,
-      status: "active",
     });
 
     res.json({
