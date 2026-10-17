@@ -50,7 +50,7 @@ function Header() {
 
   const handleMenuClick = ({ key }) => {
     if (key === "profile") {
-      navigate("/admin/auth/profile");
+      navigate("/admin/account/profile");
     }
 
     if (key === "logout") {

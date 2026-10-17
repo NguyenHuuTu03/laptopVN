@@ -22,6 +22,7 @@ router.patch(
 );
 router.patch("/:userId/change-status", controllers.changeStatus);
 router.patch("/:userId/reset-password", controllers.resetPassword);
+router.patch("/:userId/change-password", controllers.changePassword);
 router.delete("/:userId", controllers.delete);
 
 module.exports = router;

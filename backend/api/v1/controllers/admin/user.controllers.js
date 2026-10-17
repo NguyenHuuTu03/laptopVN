@@ -191,18 +191,24 @@ module.exports.edit = async (req, res) => {
       {
         fullName: req.body.fullName,
         email: req.body.email,
-        phone: req.body.phone || "",
-        address: req.body.address || "",
-        roleId: req.body.roleId || "",
-        avatar: req.body.avatar || "",
+        phone: req.body.phone,
+        address: req.body.address,
+        roleId: req.body.roleId,
+        avatar: req.body.avatar,
       },
     );
 
     const newUser = await Users.findOne({
       _id: userId,
       deleted: false,
-    });
+    }).lean();
 
+    const role = await Roles.findOne({
+      _id: newUser.roleId,
+      deleted: false,
+    }).select("title");
+
+    newUser.role = role;
     res.json({
       code: 200,
       message: "Cập nhật thông tin người dùng thành công!",
@@ -328,6 +334,69 @@ module.exports.resetPassword = async (req, res) => {
     res.json({
       code: 500,
       message: "Đặt lại mật khẩu thất bại",
+    });
+  }
+};
+
+// [PATCH] /api/admin/users/:userId/change-password
+module.exports.changePassword = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await Users.findOne({
+      _id: userId,
+      deleted: false,
+      status: "active",
+    });
+    if (!user) {
+      return res.json({
+        code: 404,
+        message: "Không tìm thấy người dùng!",
+      });
+    }
+
+    const { password, newPassword, confirmPassword } = req.body;
+
+    const checkPassword = await bcrypt.compare(password, user.password);
+
+    if (!checkPassword) {
+      return res.json({
+        code: 400,
+        message: "Mật khẩu hiện tại không chính xác!",
+      });
+    }
+
+    if (password === newPassword) {
+      return res.json({
+        code: 400,
+        message: "Mật khẩu mới phải khác mật khẩu hiện tại!",
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.json({
+        code: 400,
+        message: "Mật khẩu xác nhận không khớp!",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await Users.updateOne(
+      {
+        _id: userId,
+      },
+      {
+        password: hashedPassword,
+      },
+    );
+    res.json({
+      code: 200,
+      message: "Đổi mật khẩu thành công!",
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Đổi mật khẩu thất bại!",
     });
   }
 };

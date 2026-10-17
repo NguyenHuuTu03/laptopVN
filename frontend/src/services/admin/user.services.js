@@ -42,3 +42,9 @@ export const resetPassword = async (id, data) => {
 
   return result;
 };
+
+export const changePassword = async (id, data) => {
+  const result = await patch(`/admin/users/${id}/change-password`, data);
+
+  return result;
+};

@@ -47,6 +47,7 @@ import CategoryDetail from "../pages/admin/Categories/CategoryDetail/CategoryDet
 import ProductCreate from "../pages/admin/Products/ProductCreate/ProductCreate";
 import ProductEdit from "../pages/admin/Products/ProductEdit/ProductEdit";
 import AdminProductDetail from "../pages/admin/Products/ProductDetail/ProductDetail";
+import AdminProfile from "../pages/admin/Account/Profile/Profile";
 
 export const routes = [
   {
@@ -274,6 +275,16 @@ export const routes = [
           {
             path: "settings",
             element: <Setting />,
+          },
+
+          {
+            path: "account",
+            children: [
+              {
+                path: "profile",
+                element: <AdminProfile />,
+              },
+            ],
           },
         ],
       },
