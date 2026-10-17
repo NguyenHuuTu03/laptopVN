@@ -224,7 +224,12 @@ function CouponEdit() {
                         name="minOrderValue"
                         initialValue={0}
                       >
-                        <InputNumber placeholder="Nhập đơn tối thiểu" />
+                        <InputNumber
+                          formatter={(v) =>
+                            `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                          }
+                          parser={(v) => v?.replace(/\./g, "")}
+                        />
                       </Form.Item>
                     </Col>
 
@@ -248,7 +253,12 @@ function CouponEdit() {
                         name="maxDiscount"
                         initialValue={0}
                       >
-                        <InputNumber placeholder="Nhập giảm tối đa" />
+                        <InputNumber
+                          formatter={(v) =>
+                            `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                          }
+                          parser={(v) => v?.replace(/\./g, "")}
+                        />
                       </Form.Item>
                     </Col>
                   </Row>
