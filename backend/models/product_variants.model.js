@@ -13,7 +13,10 @@ const productVariantSchema = new mongoose.Schema(
     price: Number,
     discount: Number,
     stock: Number,
-    sold: Number,
+    sold: {
+      type: Number,
+      default: 0,
+    },
     thumbnail: String,
     status: {
       type: "String",

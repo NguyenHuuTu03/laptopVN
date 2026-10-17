@@ -1,251 +1,267 @@
-.product-detail__technical {
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+.product-detail {
+  &__technical {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    color: #1e293b;
+    background: #fff;
+    border: 1px solid #e6ebf2;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.025);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      border-color: #d9e5f5;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+  }
 }
 
 .product-technical {
   &__header {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #edf0f5;
+    background: #fff;
 
-    padding: 16px 20px;
-
-    border-bottom: 1px solid #eee;
-
-    i {
-      width: 34px;
-      height: 34px;
-
+    > i {
       display: flex;
       align-items: center;
       justify-content: center;
-
       flex-shrink: 0;
-
-      border-radius: 8px;
-      background: #eaf3ff;
+      width: 40px;
+      height: 40px;
       color: #1677ff;
-
-      font-size: 15px;
+      font-size: 18px;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
     }
 
     .description {
+      min-width: 0;
+
       span {
-        color: #222;
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 1.4;
+        position: relative;
+        display: block;
+        padding-left: 12px;
+        color: #1e293b;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.5;
+
+        &::before {
+          position: absolute;
+          top: 3px;
+          bottom: 3px;
+          left: 0;
+          width: 4px;
+          content: "";
+          background: #1677ff;
+          border-radius: 4px;
+        }
       }
     }
   }
 
   &__content {
-    padding: 16px 20px 20px;
+    padding: 20px 24px;
 
     .ant-collapse {
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
       overflow: hidden;
+      border: 1px solid #e6ebf2;
+      border-radius: 10px;
       background: #fff;
+
+      > .ant-collapse-item {
+        border-bottom: 1px solid #e8edf3;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        > .ant-collapse-header {
+          display: flex;
+          align-items: center;
+          padding: 15px 18px;
+          color: #334155;
+          font-size: 14px;
+          font-weight: 600;
+          background: #f8fafc;
+          transition:
+            color 0.2s ease,
+            background 0.2s ease;
+
+          &:hover {
+            color: #1677ff;
+            background: #f0f7ff;
+          }
+
+          .ant-collapse-expand-icon {
+            color: #64748b;
+          }
+        }
+
+        &.ant-collapse-item-active {
+          > .ant-collapse-header {
+            color: #1677ff;
+            background: #f0f7ff;
+
+            .ant-collapse-expand-icon {
+              color: #1677ff;
+            }
+          }
+        }
+
+        > .ant-collapse-content {
+          border-top: 1px solid #edf0f5;
+
+          > .ant-collapse-content-box {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// =========================
+// SPECIFICATIONS
+// =========================
+.specs-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .specs-item {
+    display: grid;
+    grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+    gap: 20px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0f2f5;
+    transition: background 0.2s ease;
+
+    &:last-child {
+      border-bottom: none;
     }
 
-    .ant-collapse-item {
-      border-bottom: 1px solid #e5e7eb;
+    &:nth-child(odd) {
+      background: #f8fafc;
+    }
 
-      &:last-child {
-        border-bottom: none;
+    &:hover {
+      background: #f0f7ff;
+    }
+  }
+
+  .specs-label {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .specs-value {
+    color: #1e293b;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+// =========================
+// RESPONSIVE TABLET
+// =========================
+@media (max-width: 768px) {
+  .product-detail {
+    &__technical {
+      margin-top: 20px;
+    }
+  }
+
+  .product-technical {
+    &__header {
+      padding: 18px 20px;
+    }
+
+    &__content {
+      padding: 16px 20px;
+    }
+  }
+
+  .specs-list {
+    .specs-item {
+      grid-template-columns: minmax(120px, 170px) minmax(0, 1fr);
+      gap: 14px;
+      padding: 12px 14px;
+    }
+  }
+}
+
+// =========================
+// RESPONSIVE MOBILE
+// =========================
+@media (max-width: 576px) {
+  .product-detail {
+    &__technical {
+      margin-top: 16px;
+      border-radius: 10px;
+    }
+  }
+
+  .product-technical {
+    &__header {
+      gap: 10px;
+      padding: 16px;
+
+      > i {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        border-radius: 8px;
       }
 
-      &.ant-collapse-item-active {
-        .ant-collapse-header {
-          color: #1677ff;
-          background: #f5f9ff;
+      .description {
+        span {
+          font-size: 15px;
         }
       }
     }
 
-    .ant-collapse-header {
-      display: flex;
-      align-items: center;
+    &__content {
+      padding: 12px;
 
-      padding: 13px 14px !important;
+      .ant-collapse {
+        border-radius: 8px;
 
-      color: #333 !important;
-      background: #fafafa;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      transition: all 0.2s ease;
-
-      &:hover {
-        color: #1677ff !important;
-        background: #f5f9ff;
+        > .ant-collapse-item > .ant-collapse-header {
+          padding: 13px 12px;
+          font-size: 13px;
+        }
       }
     }
+  }
 
-    .ant-collapse-content {
-      border-top: 1px solid #eee;
-      background: #fff;
-    }
-
-    .ant-collapse-content-box {
-      padding: 0 !important;
-    }
-
-    // Danh sách thông số
-    .specs-list {
-      width: 100%;
-    }
-
+  .specs-list {
     .specs-item {
-      display: grid;
-      grid-template-columns: 35% 65%;
-
-      min-height: 46px;
-
-      border-bottom: 1px solid #f0f0f0;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      &:hover {
-        background: #fafafa;
-      }
-    }
-
-    .specs-label,
-    .specs-value {
-      display: flex;
-      align-items: center;
-
-      padding: 11px 14px;
-
-      font-size: 14px;
-      line-height: 1.5;
+      grid-template-columns: 1fr;
+      gap: 4px;
+      padding: 11px 12px;
     }
 
     .specs-label {
-      color: #555;
-      background: #fafafa;
-
-      font-weight: 500;
-
-      border-right: 1px solid #f0f0f0;
+      font-size: 12px;
     }
 
     .specs-value {
-      color: #333;
-      font-weight: 400;
-
-      word-break: break-word;
-    }
-  }
-}
-
-// Responsive
-@media (max-width: 768px) {
-  .product-detail__technical {
-    border-radius: 10px;
-  }
-
-  .product-technical {
-    &__header {
-      padding: 15px 16px;
-
-      .description {
-        span {
-          font-size: 17px;
-        }
-      }
-    }
-
-    &__content {
-      padding: 14px 16px 16px;
-
-      .specs-item {
-        grid-template-columns: 40% 60%;
-      }
-
-      .specs-label,
-      .specs-value {
-        padding: 10px 12px;
-        font-size: 13px;
-      }
-    }
-  }
-}
-
-@media (max-width: 576px) {
-  .product-detail__technical {
-    border-radius: 8px;
-  }
-
-  .product-technical {
-    &__header {
-      padding: 14px 15px;
-
-      i {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-      }
-
-      .description {
-        span {
-          font-size: 16px;
-        }
-      }
-    }
-
-    &__content {
-      padding: 10px;
-
-      .ant-collapse {
-        border-radius: 7px;
-      }
-
-      .ant-collapse-header {
-        padding: 12px !important;
-
-        font-size: 13px;
-      }
-
-      .specs-item {
-        grid-template-columns: 42% 58%;
-      }
-
-      .specs-label,
-      .specs-value {
-        padding: 9px 10px;
-
-        font-size: 13px;
-        line-height: 1.45;
-      }
-    }
-  }
-}
-
-@media (max-width: 400px) {
-  .product-technical {
-    &__content {
-      padding: 8px;
-
-      .specs-item {
-        grid-template-columns: 45% 55%;
-      }
-
-      .specs-label,
-      .specs-value {
-        padding: 8px;
-
-        font-size: 12px;
-      }
+      font-size: 13px;
     }
   }
 }

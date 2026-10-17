@@ -383,6 +383,12 @@ module.exports.detail = async (req, res) => {
       productId: product._id,
     });
 
+    const stock = variants.reduce((total, item) => total + item.stock, 0);
+    const sold = variants.reduce((total, item) => total + item.sold, 0);
+
+    product.stock = stock;
+    product.sold = sold;
+
     res.json({
       code: 200,
       message: "Thành công!",
