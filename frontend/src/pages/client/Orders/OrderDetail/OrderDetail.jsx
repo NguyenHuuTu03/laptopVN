@@ -18,7 +18,6 @@ function OrderDetail() {
     const fetchOrderDetail = async () => {
       try {
         const result = await getOrderDetail(orderCode);
-        console.log(result.data.order);
 
         if (result.code === 200) {
           setData(result.data);
@@ -32,7 +31,6 @@ function OrderDetail() {
 
     fetchOrderDetail();
   }, [orderCode]);
-  console.log(data);
 
   const formatPrice = (price) => {
     return `${new Intl.NumberFormat("vi-VN").format(price || 0)}đ`;
