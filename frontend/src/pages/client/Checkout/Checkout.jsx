@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import vnpay from "../../../assets/images/vnpay.webp";
 
 import "./Checkout.scss";
 import { useEffect, useState } from "react";
 import {
   applyCoupon,
+  buyNow,
   getCheckout,
   postOrder,
 } from "../../../services/client/order.services";
@@ -23,6 +24,11 @@ function Checkout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
+  const isBuyNow = location.state?.buyNow;
+  const item = location.state?.items;
+
   const user = useSelector((state) => state.authReducer.client.user);
 
   const [formData, setFormData] = useState({
@@ -35,7 +41,12 @@ function Checkout() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getCheckout();
+      let result;
+      if (isBuyNow) {
+        result = await buyNow(item);
+      } else {
+        result = await getCheckout();
+      }
       if (result.code === 200) {
         setData(result.data);
         setSummary(result.data.summary);
@@ -43,7 +54,7 @@ function Checkout() {
     };
 
     fetchData();
-  }, []);
+  }, [isBuyNow, item]);
 
   const handleApplyVoucher = async () => {
     const code = couponCode.trim();
@@ -53,7 +64,13 @@ function Checkout() {
       return;
     }
 
-    const result = await applyCoupon(code);
+    const payload = {
+      couponCode: code,
+      buyNow: !!isBuyNow,
+      items: isBuyNow ? [item] : undefined,
+    };
+
+    const result = await applyCoupon(payload);
 
     if (result.code === 200) {
       setSummary(result.data.summary);
@@ -65,7 +82,12 @@ function Checkout() {
   };
 
   const handleRemoveVoucher = async () => {
-    const result = await getCheckout();
+    let result;
+    if (isBuyNow) {
+      result = await buyNow(item);
+    } else {
+      result = await getCheckout();
+    }
     if (result.code === 200) {
       setSummary(result.data.summary);
       setActiveVoucher("");
@@ -111,13 +133,17 @@ function Checkout() {
     const orderData = {
       ...formData,
       couponCode: activeVoucher,
+      buyNow: !!isBuyNow,
+      items: isBuyNow ? [item] : undefined,
     };
 
     const result = await postOrder(orderData);
 
     if (result.code === 200) {
       if (result.data.paymentMethod === "COD") {
-        dispatch(setCart([]));
+        if (!isBuyNow) {
+          dispatch(setCart([]));
+        }
         navigate(`/orders/success/${result.data.orderCode}`);
 
         return;

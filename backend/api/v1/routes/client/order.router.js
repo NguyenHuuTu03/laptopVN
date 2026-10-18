@@ -4,6 +4,7 @@ const controllers = require("../../controllers/client/order.controllers");
 const orderValidation = require("../../../../validations/client/order.validation");
 
 router.get("/checkout", controllers.checkout);
+router.post("/buy-now", controllers.buyNow);
 router.post("/apply-coupon", controllers.applyCoupon);
 router.post("/", orderValidation.createOrder, controllers.order);
 router.get("/my-orders", controllers.myOrders);

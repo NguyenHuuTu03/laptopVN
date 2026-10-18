@@ -96,22 +96,9 @@ module.exports.checkout = async (req, res) => {
 // [POST] /api/order/apply-coupon
 module.exports.applyCoupon = async (req, res) => {
   try {
-    const { couponCode = "" } = req.body;
+    const { couponCode, buyNow, items } = req.body;
+
     const userId = req.userId;
-    const cart = await Carts.findOne({
-      userId: userId,
-    });
-
-    if (!cart) {
-      return res.json({
-        code: 400,
-        message: "Giỏ hàng đang trống!",
-      });
-    }
-
-    const cartItems = await CartItems.find({
-      cartId: cart._id,
-    });
 
     const code = couponCode.trim();
 
@@ -123,40 +110,98 @@ module.exports.applyCoupon = async (req, res) => {
     }
 
     const result = [];
+    if (buyNow) {
+      for (const item of items) {
+        const { productId, variantId, quantity } = item;
 
-    for (const item of cartItems) {
-      const product = await Products.findOne({
-        _id: item.productId,
-        deleted: false,
-        status: "active",
+        const product = await Products.findOne({
+          _id: productId,
+          deleted: false,
+          status: "active",
+        }).lean();
+
+        if (!product) {
+          return res.json({
+            code: 400,
+            message: "Sản phẩm không tồn tại hoặc đã ngừng bán!",
+          });
+        }
+
+        const variant = await ProductVariants.findOne({
+          _id: variantId,
+          productId,
+          status: "active",
+        }).lean();
+
+        if (!variant) {
+          return res.json({
+            code: 400,
+            message: `Không tìm thấy phiên bản của sản phẩm "${product.title}"!`,
+          });
+        }
+        const price = variant.price;
+        const priceNew = Math.round(
+          price * (1 - (variant.discount || 0) / 100),
+        );
+
+        result.push({
+          price,
+          priceNew,
+          quantity,
+        });
+      }
+    } else {
+      const cart = await Carts.findOne({
+        userId: userId,
       });
 
-      if (!product) {
+      if (!cart) {
         return res.json({
           code: 400,
-          message: "Sản phẩm không tồn tại!",
+          message: "Giỏ hàng đang trống!",
         });
       }
 
-      const variant = await ProductVariants.findOne({
-        _id: item.variantId,
-        productId: item.productId,
-        status: "active",
+      const cartItems = await CartItems.find({
+        cartId: cart._id,
       });
 
-      if (!variant) {
-        return res.json({
-          code: 400,
-          message: `Không tìm thấy phiên bản của sản phẩm "${product.title}"!`,
+      for (const item of cartItems) {
+        const product = await Products.findOne({
+          _id: item.productId,
+          deleted: false,
+          status: "active",
+        });
+
+        if (!product) {
+          return res.json({
+            code: 400,
+            message: "Sản phẩm không tồn tại!",
+          });
+        }
+
+        const variant = await ProductVariants.findOne({
+          _id: item.variantId,
+          productId: item.productId,
+          status: "active",
+        });
+
+        if (!variant) {
+          return res.json({
+            code: 400,
+            message: `Không tìm thấy phiên bản của sản phẩm "${product.title}"!`,
+          });
+        }
+
+        const priceNew = Math.round(
+          variant.price * (1 - variant.discount / 100),
+        );
+        result.push({
+          quantity: item.quantity,
+          price: item.price,
+          priceNew: priceNew,
         });
       }
-
-      const priceNew = Math.round(variant.price * (1 - variant.discount / 100));
-      result.push({
-        quantity: item.quantity,
-        price: item.price,
-        priceNew: priceNew,
-      });
     }
 
     const subtotal = result.reduce(
@@ -276,33 +321,46 @@ module.exports.order = async (req, res) => {
       note,
       paymentMethod,
       couponCode,
+      buyNow,
+      items,
     } = req.body;
-    const cart = await Carts.findOne({
-      userId: userId,
-    });
 
-    if (!cart) {
-      return res.json({
-        code: 404,
-        message: "Giỏ hàng không tồn tại",
+    let result = [];
+    let cart = null;
+
+    if (buyNow) {
+      result = items;
+    } else {
+      cart = await Carts.findOne({
+        userId: userId,
       });
-    }
 
-    const cartItems = await CartItems.find({
-      cartId: cart._id,
-    });
+      if (!cart) {
+        return res.json({
+          code: 404,
+          message: "Giỏ hàng không tồn tại",
+        });
+      }
 
-    if (cartItems.length === 0) {
-      return res.json({
-        code: 400,
-        message: "Chưa có sản phẩm nào được chọn",
+      const cartItems = await CartItems.find({
+        cartId: cart._id,
       });
+
+      if (cartItems.length === 0) {
+        return res.json({
+          code: 400,
+          message: "Chưa có sản phẩm nào được chọn",
+        });
+      }
+
+      result = cartItems;
     }
 
     const orderItems = [];
-    let totalPrice = 0;
 
-    for (const item of cartItems) {
+    for (const item of result) {
+      const quantity = Number(item.quantity);
+
       const product = await Products.findOne({
         _id: item.productId,
         deleted: false,
@@ -322,7 +380,7 @@ module.exports.order = async (req, res) => {
         status: "active",
       });
 
-      if (item.quantity > variant.stock) {
+      if (quantity > variant.stock) {
         return res.json({
           code: 400,
           message: `Sản phẩm "${product.title}" chỉ còn ${variant.stock} sản phẩm`,
@@ -330,11 +388,11 @@ module.exports.order = async (req, res) => {
       }
 
       orderItems.push({
-        productId: item.productId,
-        variantId: item.variantId,
-        price: item.price,
-        discount: item.discount,
-        quantity: item.quantity,
+        productId: product._id,
+        variantId: variant._id,
+        price: variant.price,
+        discount: variant.discount || 0,
+        quantity: quantity,
       });
     }
 
@@ -416,9 +474,9 @@ module.exports.order = async (req, res) => {
       }
     }
 
-    totalPrice = afterProductDiscount - voucherDiscount;
+    const totalPrice = afterProductDiscount - voucherDiscount;
 
-    const orderCode = "ORD-" + Date.now();
+    const orderCode = "ORD" + Date.now();
 
     const order = new Orders({
       orderCode: orderCode,
@@ -448,7 +506,7 @@ module.exports.order = async (req, res) => {
       })),
     );
 
-    if (paymentMethod === "COD") {
+    if (!buyNow && paymentMethod === "COD") {
       await CartItems.deleteMany({
         cartId: cart._id,
       });
@@ -726,6 +784,72 @@ module.exports.cancel = async (req, res) => {
     res.json({
       code: 500,
       message: "Huỷ đơn hàng thất bại!",
+    });
+  }
+};
+
+//[POST] /api/order/buy-now
+module.exports.buyNow = async (req, res) => {
+  try {
+    const { productId, variantId, quantity } = req.body;
+    const product = await Products.findOne({
+      _id: productId,
+      deleted: false,
+      status: "active",
+    });
+
+    if (!product) {
+      return res.json({
+        code: 404,
+        message: "Sản phẩm không tồn tại hoặc đã ngừng bán!",
+      });
+    }
+
+    const variant = await ProductVariants.findOne({
+      _id: variantId,
+      productId: productId,
+    });
+
+    if (!variant) {
+      return res.json({
+        code: 404,
+        message: "Phiên bản sản phẩm không tồn tại!",
+      });
+    }
+
+    if (quantity > variant.stock) {
+      return res.json({
+        code: 400,
+        message: `Sản phẩm chỉ còn ${variant.stock} sản phẩm!`,
+      });
+    }
+    const priceNew = Math.round(variant.price * (1 - variant.discount / 100));
+
+    const result = {
+      title: product.title,
+      thumbnail: variant.thumbnail,
+      attributes: variant.attributes,
+      price: variant.price,
+      discount: variant.discount,
+      priceNew: priceNew,
+      quantity: quantity,
+    };
+    res.json({
+      code: 200,
+      message: "Thành công!",
+      data: {
+        items: [result],
+        summary: {
+          subtotal: priceNew,
+          total: priceNew,
+          totalQuantity: quantity,
+        },
+      },
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Thất bại",
     });
   }
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProductDetail } from "../../../../services/client/product.services";
 import Gallery from "../../../../components/client/Gallery/Gallery";
 import "./ProductDetail.scss";
@@ -17,6 +17,8 @@ function ProductDetail() {
   const [selectedVersion, setSelectedVersion] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const { slugProduct } = useParams();
+
+  const navigate = useNavigate();
 
   const isLoggedIn = useSelector(
     (state) => state.authReducer.client.isLoggedIn,
@@ -183,6 +185,26 @@ function ProductDetail() {
     }
   };
 
+  const handleBuyNow = async () => {
+    try {
+      setLoading(true);
+      navigate("/checkout", {
+        state: {
+          buyNow: true,
+          items: {
+            productId: data.product._id,
+            variantId: selectedVariant._id,
+            quantity: 1,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -323,6 +345,7 @@ function ProductDetail() {
                           type="button"
                           title={isCurrentInStock ? "Mua ngay" : "Hết hàng"}
                           disabled={!isCurrentInStock}
+                          onClick={handleBuyNow}
                         >
                           {isCurrentInStock ? "Mua ngay" : "Hết hàng"}
                         </button>

@@ -5,8 +5,8 @@ export const getCheckout = async () => {
   return result;
 };
 
-export const applyCoupon = async (couponCode) => {
-  const result = await post("/order/apply-coupon", { couponCode });
+export const applyCoupon = async (data) => {
+  const result = await post("/order/apply-coupon", data);
 
   return result;
 };
@@ -25,5 +25,9 @@ export const patchOrderCancel = async (orderCode) => {
 };
 export const getMyOrders = async (page = 1, limit = 2) => {
   const result = await get(`/order/my-orders?page=${page}&limit=${limit}`);
+  return result;
+};
+export const buyNow = async (data) => {
+  const result = await post(`/order/buy-now`, data);
   return result;
 };
