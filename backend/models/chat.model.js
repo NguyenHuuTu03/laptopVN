@@ -32,3 +32,4 @@ const chatSchema = new mongoose.Schema(
 );
 
 const ChatAI = mongoose.model("ChatAI", chatSchema, "chats");
+module.exports = ChatAI;
