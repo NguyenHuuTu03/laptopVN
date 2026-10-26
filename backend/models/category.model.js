@@ -2,33 +2,36 @@ const mongoose = require("mongoose");
 const slug = require("mongoose-slug-updater");
 mongoose.plugin(slug);
 
-const categorySchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  thumbnail: String,
-  parentId: String,
-  position: Number,
-  status: {
-    type: String,
-    default: "active",
+const categorySchema = new mongoose.Schema(
+  {
+    title: String,
+    description: String,
+    thumbnail: String,
+    parentId: String,
+    position: Number,
+    status: {
+      type: String,
+      default: "active",
+    },
+    slug: {
+      type: String,
+      slug: "title",
+      unique: true,
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: Date,
+    createdBy: String,
+    updatedBy: {
+      type: Array,
+      default: [],
+    },
+    deletedBy: String,
   },
-  slug: {
-    type: String,
-    slug: "title",
-    unique: true,
-  },
-  deleted: {
-    type: Boolean,
-    default: false,
-  },
-  deletedAt: Date,
-  createdBy: String,
-  updatedBy: {
-    type: Array,
-    default: [],
-  },
-  deletedBy: String,
-});
+  { timestamps: true },
+);
 
 const Categories = mongoose.model("Categories", categorySchema, "categories");
 module.exports = Categories;
