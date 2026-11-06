@@ -164,14 +164,14 @@ module.exports.changeStatus = async (req, res) => {
     });
   }
 
-  if (order.orderStatus !== "SHIPPING") {
-    return res.json({
-      code: 400,
-      message: "Đơn hàng không ở trạng thái đang giao!",
-    });
-  }
+  // if (order.orderStatus !== "SHIPPING") {
+  //   return res.json({
+  //     code: 400,
+  //     message: "Đơn hàng không ở trạng thái đang giao!",
+  //   });
+  // }
 
-  const status = ["DELIVERED", "FAILED"];
+  const status = ["DELIVERED", "FAILED", "SHIPPING"];
 
   if (!status.includes(orderStatus)) {
     return res.json({
@@ -213,7 +213,15 @@ module.exports.detail = async (req, res) => {
     const order = await Orders.findOne({
       _id: orderId,
       shipperId: shipperId,
+    }).lean();
+
+    const shipper = await Users.findOne({
+      _id: shipperId,
+      deleted: false,
+      status: "active",
     });
+
+    order.shipper = shipper;
     if (!order) {
       return res.json({
         code: 404,

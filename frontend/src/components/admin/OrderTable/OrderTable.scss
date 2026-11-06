@@ -387,13 +387,23 @@
       }
     }
 
+    /* Nút Đang Active (Kiểu Outline thanh lịch) */
     .ant-pagination-item-active {
-      // background: #3b82f6;
-      border-color: #3b82f6;
-      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+      background: #ffffff; /* Nền trắng */
+      border-color: #3b82f6; /* Viền xanh */
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); /* Bóng mờ nhẹ cho nổi bật */
 
       a {
-        color: #fff;
+        color: #3b82f6; /* Chữ màu xanh */
+        font-weight: 600; /* Làm đậm số trang một chút */
+      }
+
+      &:hover {
+        background: #f8fbff; /* Hover vào hơi xanh nhạt */
+        border-color: #2563eb;
+        a {
+          color: #2563eb;
+        }
       }
     }
 

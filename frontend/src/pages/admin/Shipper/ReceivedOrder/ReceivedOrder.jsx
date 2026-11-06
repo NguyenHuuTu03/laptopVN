@@ -2,7 +2,7 @@ import { Input } from "antd";
 const { Search } = Input;
 import { Select } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import "./ReceivedOrder.scss";
 import ReceivedTable from "../../../../components/admin/ReceivedTable/ReceivedTable";
@@ -79,7 +79,7 @@ function ReceivedOrder() {
       <div className="admin-received">
         <div className="admin-received__header">
           <div className="admin-received__title">
-            <h1>Đơn hàng đã nhận</h1>
+            <h1>Đơn hàng cần giao</h1>
           </div>
 
           <div className="admin-received__nav">
@@ -89,11 +89,6 @@ function ReceivedOrder() {
                 onSearch={handleSearch}
               />
             </div>
-
-            <Link to="/admin/shipper" className="admin-received__back">
-              <i className="fa-solid fa-arrow-left"></i>
-              Quay lại
-            </Link>
           </div>
         </div>
 

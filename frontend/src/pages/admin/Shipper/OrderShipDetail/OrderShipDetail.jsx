@@ -18,6 +18,10 @@ function OrderShipDetail() {
       content: "Đơn hàng đã xác nhận",
     },
     {
+      title: "Phân công",
+      content: "Đơn hàng đã được phân công cho nhân viên giao hàng",
+    },
+    {
       title: "Đang giao",
       content: "Đơn hàng đang được vận chuyển",
     },
@@ -27,13 +31,16 @@ function OrderShipDetail() {
     },
   ];
 
-  const handleProgress = (status) => {
+  const handleProgress = (status, shipperId) => {
     switch (status) {
       case "PENDING":
         return { current: 0, status: "process" };
 
       case "CONFIRMED":
-        return { current: 1, status: "process" };
+        return {
+          current: shipperId ? 2 : 1,
+          status: "process",
+        };
 
       case "COMPLETED":
         return { current: 2, status: "process" };
@@ -71,6 +78,20 @@ function OrderShipDetail() {
   };
   const handleFailed = async () => {
     const result = await changeStatus(orderId, "FAILED");
+
+    if (result.code === 200) {
+      setOrder(result.data.order);
+      notification.success({
+        title: result.message,
+      });
+    } else {
+      notification.error({
+        title: result.message,
+      });
+    }
+  };
+  const handleShipping = async () => {
+    const result = await changeStatus(orderId, "SHIPPING");
 
     if (result.code === 200) {
       setOrder(result.data.order);
@@ -161,8 +182,6 @@ function OrderShipDetail() {
   };
   handleVersion();
 
-  console.log(order);
-
   return (
     <>
       <div className="admin-order__detail">
@@ -192,10 +211,19 @@ function OrderShipDetail() {
               </>
             )}
 
-            <Link
-              to="/admin/shipper/orders/received"
-              className="admin-order__detail-back"
-            >
+            {order?.orderStatus === "CONFIRMED" && (
+              <>
+                <button
+                  className="section-action__confirmed"
+                  onClick={handleShipping}
+                >
+                  <i className="fa-solid fa-truck-fast"></i>
+                  Bắt đầu giao
+                </button>
+              </>
+            )}
+
+            <Link to="/admin/shipper" className="admin-order__detail-back">
               <i className="fa-solid fa-arrow-left"></i>
               Quay lại
             </Link>
@@ -319,8 +347,14 @@ function OrderShipDetail() {
                   <Steps
                     orientation="vertical"
                     items={items}
-                    current={handleProgress(order?.orderStatus).current}
-                    status={handleProgress(order?.orderStatus).status}
+                    current={
+                      handleProgress(order?.orderStatus, order?.shipper?._id)
+                        .current
+                    }
+                    status={
+                      handleProgress(order?.orderStatus, order?.shipper?._id)
+                        .status
+                    }
                   ></Steps>
                 </div>
               </Col>
