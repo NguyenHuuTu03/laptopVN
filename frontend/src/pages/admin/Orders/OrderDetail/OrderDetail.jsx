@@ -422,10 +422,11 @@ function OrderDetail() {
                             </div>
                           </div>
                         </div>
-
-                        <Button type="default" block onClick={handleAssign}>
-                          Thay đổi nhân viên giao hàng
-                        </Button>
+                        {order?.orderStatus === "CONFIRMED" && (
+                          <Button type="default" block onClick={handleAssign}>
+                            Thay đổi nhân viên giao hàng
+                          </Button>
+                        )}
                       </>
                     ) : (
                       <>
