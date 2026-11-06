@@ -37,13 +37,13 @@ function ProductEdit() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await getCategories();
+        const result = await getCategories({ limit: 1000 });
         if (result.code === 200) {
           const data = result.data.categories;
           setCategories(data);
         }
 
-        const record = await getBrands();
+        const record = await getBrands({ limit: 1000 });
         if (record.code === 200) {
           setBrands(record.data.brands);
         }
@@ -180,7 +180,7 @@ function ProductEdit() {
       <div className="product-create">
         <div className="product-create__header">
           <div className="product-create__title">
-            <h1>Thêm sản phẩm</h1>
+            <h1>Chỉnh sửa sản phẩm</h1>
           </div>
           <div className="product-create__nav">
             <Link to="/admin/products" className="product-create__back">

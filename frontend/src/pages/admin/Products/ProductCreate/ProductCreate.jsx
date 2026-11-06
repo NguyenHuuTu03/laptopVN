@@ -32,13 +32,13 @@ function ProductCreate() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await getCategories();
+        const result = await getCategories({ limit: 1000 });
         if (result.code === 200) {
           const data = result.data.categories;
           setCategories(data);
         }
 
-        const record = await getBrands();
+        const record = await getBrands({ limit: 1000 });
         if (record.code === 200) {
           setBrands(record.data.brands);
         }
@@ -86,7 +86,7 @@ function ProductCreate() {
       data.append("brandId", values.brandId || "");
       data.append("categoryId", values.categoryId || "");
       data.append("description", values.description || "");
-      data.append("featured", values.featured || "");
+      data.append("featured", values.featured ? true : false);
       data.append(
         "specifications",
         JSON.stringify(values.specifications || []),
@@ -402,7 +402,7 @@ function ProductCreate() {
                                 <Row gutter={[16, 16]}>
                                   <Col xs={24} sm={12} xl={8}>
                                     <Form.Item
-                                      label="Giá (đ)"
+                                      label="Giá(đ)"
                                       name={[variant.name, "price"]}
                                       rules={[
                                         {
@@ -425,8 +425,9 @@ function ProductCreate() {
                                   </Col>
                                   <Col xs={12} sm={8} xl={8}>
                                     <Form.Item
-                                      label="Giảm giá (%)"
+                                      label="Giảm giá(%)"
                                       name={[variant.name, "discount"]}
+                                      initialValue={0}
                                     >
                                       <InputNumber min={0} max={100} />
                                     </Form.Item>

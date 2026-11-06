@@ -108,11 +108,19 @@ function BrandTable({ data = [], pagination, onPageChange, onReload }) {
       align: "center",
       render: (_, record) => (
         <div className="brand-action">
-          <Link to={`/admin/brands/${record._id}`} className="brand-action__view" title="Xem chi tiết">
+          <Link
+            to={`/admin/brands/${record._id}`}
+            className="brand-action__view"
+            title="Xem chi tiết"
+          >
             <i className="fa-solid fa-eye"></i>
           </Link>
 
-          <Link to={`/admin/brands/edit/${record._id}`} className="brand-action__edit" title="Chỉnh sửa">
+          <Link
+            to={`/admin/brands/edit/${record._id}`}
+            className="brand-action__edit"
+            title="Chỉnh sửa"
+          >
             <i className="fa-solid fa-pen-to-square"></i>
           </Link>
 
@@ -148,7 +156,7 @@ function BrandTable({ data = [], pagination, onPageChange, onReload }) {
           pagination={{
             current: pagination.currentPage,
             pageSize: pagination.limit,
-            total: pagination.totalCategories,
+            total: pagination.totalBrands,
             onChange: onPageChange,
           }}
         />
