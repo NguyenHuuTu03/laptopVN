@@ -1,10 +1,23 @@
-import { Col, notification, Row, Spin, Steps } from "antd";
+import {
+  Button,
+  Col,
+  notification,
+  Row,
+  Spin,
+  Steps,
+  Modal,
+  Radio,
+} from "antd";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   changeStatus,
   getOrder,
 } from "../../../../services/admin/order.services";
+import {
+  acceptOrder,
+  getShipper,
+} from "../../../../services/admin/shipper.services";
 
 function OrderDetail() {
   const items = [
@@ -17,6 +30,10 @@ function OrderDetail() {
       content: "Đơn hàng đã xác nhận",
     },
     {
+      title: "Phân công",
+      content: "Chờ nhân viên giao hàng nhận đơn",
+    },
+    {
       title: "Đang giao",
       content: "Đơn hàng đang được vận chuyển",
     },
@@ -26,13 +43,16 @@ function OrderDetail() {
     },
   ];
 
-  const handleProgress = (status) => {
+  const handleProgress = (status, shipperId) => {
     switch (status) {
       case "PENDING":
         return { current: 0, status: "process" };
 
       case "CONFIRMED":
-        return { current: 1, status: "process" };
+        return {
+          current: shipperId ? 2 : 1,
+          status: "process",
+        };
 
       case "COMPLETED":
         return { current: 2, status: "process" };
@@ -86,6 +106,9 @@ function OrderDetail() {
   const [order, setOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [selectedShipperId, setSelectedShipperId] = useState("");
+  const [shippers, setShippers] = useState([]);
 
   const { orderId } = useParams();
 
@@ -160,7 +183,65 @@ function OrderDetail() {
   };
   handleVersion();
 
-  console.log(order);
+  const handleAssign = async () => {
+    setSelectedShipperId(order?.shipper?._id);
+    setIsModal(true);
+
+    try {
+      const result = await getShipper();
+
+      if (result.code === 200) {
+        setShippers(result.data.shippers);
+      } else {
+        notification.error({
+          title: result.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      notification.error({
+        title: "Không thể lấy danh sách nhân viên giao hàng!",
+      });
+    }
+  };
+
+  const handleConfirmAssign = async () => {
+    if (!selectedShipperId) {
+      notification.warning({
+        message: "Vui lòng chọn nhân viên giao hàng!",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const result = await acceptOrder(orderId, selectedShipperId);
+
+      if (result.code === 200) {
+        setOrder(result.data.order);
+
+        notification.success({
+          title: "Phân công giao hàng thành công!",
+        });
+
+        setIsModal(false);
+        setSelectedShipperId("");
+      } else {
+        notification.error({
+          message: result.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      notification.error({
+        title: "Không thể phân công nhân viên giao hàng!",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -311,13 +392,155 @@ function OrderDetail() {
                 <div className="order-section">
                   <h3>Tiến trình giao hàng</h3>
 
+                  <div className="shipper-info">
+                    {order?.shipperId ? (
+                      <>
+                        <div>
+                          <strong>Nhân viên giao hàng</strong>
+
+                          <div className="assign-shipper">
+                            <div className="assign-shipper__avatar">
+                              <img
+                                src={
+                                  order?.shipper?.avatar ||
+                                  "/images/default-avatar.png"
+                                }
+                                alt={order?.shipper?.fullName}
+                              />
+                            </div>
+
+                            <div className="assign-shipper__info">
+                              <span className="assign-shipper__name">
+                                {order?.shipper?.fullName}
+                              </span>
+
+                              <span className="assign-shipper__detail">
+                                <i className="fa-solid fa-phone"></i>
+                                {order?.shipper?.phone ||
+                                  "Chưa cập nhật số điện thoại"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <Button type="default" block onClick={handleAssign}>
+                          Thay đổi nhân viên giao hàng
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <p>Đơn hàng chưa được phân công</p>
+
+                        <Button
+                          type="primary"
+                          block
+                          onClick={handleAssign}
+                          disabled={order?.orderStatus !== "CONFIRMED"}
+                        >
+                          Phân công giao hàng
+                        </Button>
+                      </>
+                    )}
+                  </div>
+
                   <Steps
                     orientation="vertical"
                     items={items}
-                    current={handleProgress(order?.orderStatus).current}
-                    status={handleProgress(order?.orderStatus).status}
+                    current={
+                      handleProgress(order?.orderStatus, order?.shipper?._id)
+                        .current
+                    }
+                    status={
+                      handleProgress(order?.orderStatus, order?.shipper?._id)
+                        .status
+                    }
                   ></Steps>
                 </div>
+
+                <Modal
+                  open={isModal}
+                  onCancel={() => setIsModal(false)}
+                  footer={null}
+                  width={560}
+                  centered
+                  destroyOnHidden
+                  className="assign-modal"
+                >
+                  <div className="assign-modal__header">
+                    <div className="assign-modal__icon">
+                      <i className="fa-solid fa-truck-fast"></i>
+                    </div>
+
+                    <div>
+                      <h2>Phân công giao hàng</h2>
+                      <p>Chọn nhân viên phụ trách giao đơn hàng này</p>
+                    </div>
+                  </div>
+
+                  <div className="assign-modal__body">
+                    <div className="assign-modal__list-header">
+                      <span>Danh sách nhân viên</span>
+                    </div>
+
+                    {shippers.length > 0 ? (
+                      <Radio.Group
+                        value={selectedShipperId}
+                        onChange={(e) => setSelectedShipperId(e.target.value)}
+                        className="assign-list"
+                      >
+                        {shippers.map((shipper) => (
+                          <Radio
+                            key={shipper._id}
+                            value={shipper._id}
+                            className="assign-radio"
+                          >
+                            <div className="assign-shipper">
+                              <div className="assign-shipper__avatar">
+                                <img
+                                  src={
+                                    shipper.avatar ||
+                                    "/images/default-avatar.png"
+                                  }
+                                  alt={shipper.fullName}
+                                />
+                              </div>
+
+                              <div className="assign-shipper__info">
+                                <span className="assign-shipper__name">
+                                  {shipper.fullName}
+                                </span>
+
+                                <span className="assign-shipper__detail">
+                                  <i className="fa-solid fa-phone"></i>
+                                  {shipper.phone ||
+                                    "Chưa cập nhật số điện thoại"}
+                                </span>
+                              </div>
+                            </div>
+                          </Radio>
+                        ))}
+                      </Radio.Group>
+                    ) : (
+                      <div className="assign-empty">
+                        <i className="fa-solid fa-users-slash"></i>
+                        <p>Hiện chưa có nhân viên giao hàng nào</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="assign-modal__footer">
+                    <Button onClick={() => setIsModal(false)}>Hủy bỏ</Button>
+
+                    <Button
+                      type="primary"
+                      disabled={!selectedShipperId}
+                      onClick={handleConfirmAssign}
+                    >
+                      <i className="fa-solid fa-check"></i>
+                      Xác nhận phân công
+                    </Button>
+                  </div>
+                </Modal>
               </Col>
             </Row>
           </div>

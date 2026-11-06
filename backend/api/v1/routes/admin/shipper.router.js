@@ -21,4 +21,6 @@ router.patch(
   controllers.changeStatus,
 );
 
+router.get("/", authMiddleware.requireAdminAuth, controllers.shipper);
+
 module.exports = router;

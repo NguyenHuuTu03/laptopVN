@@ -3,6 +3,8 @@ const OrderItems = require("../../../../models/order_item.model");
 const Products = require("../../../../models/product.model");
 const ProductVariants = require("../../../../models/product_variants.model");
 const Coupons = require("../../../../models/coupon.model");
+const Users = require("../../../../models/user.model");
+const Roles = require("../../../../models/role.model");
 
 //[GET] /api/admin/shipper/orders
 module.exports.orders = async (req, res) => {
@@ -52,37 +54,38 @@ module.exports.orders = async (req, res) => {
 module.exports.acceptOrder = async (req, res) => {
   try {
     const orderId = req.params.orderId;
-
-    const order = await Orders.findOne({
-      _id: orderId,
-      orderStatus: "CONFIRMED",
-    });
-
-    if (!order) {
-      return res.json({
-        code: 404,
-        message: "Đơn hàng không tồn tại hoặc đã được nhận",
-      });
-    }
+    const { shipperId } = req.body;
 
     await Orders.updateOne(
       { _id: orderId },
       {
-        orderStatus: "SHIPPING",
-        shipperId: req.userId,
+        shipperId: shipperId,
       },
     );
 
-    return res.json({
-      code: 200,
-      message: "Nhận đơn hàng thành công!",
+    const shipper = await Users.findOne({
+      _id: shipperId,
+      status: "active",
+      deleted: false,
     });
-  } catch (error) {
-    console.log("ACCEPT ORDER ERROR:", error);
+
+    const newOrder = await Orders.findOne({
+      _id: orderId,
+    }).lean();
+
+    newOrder.shipper = shipper;
 
     return res.json({
+      code: 200,
+      message: "Phân công đơn hàng thành công!",
+      data: {
+        order: newOrder,
+      },
+    });
+  } catch (error) {
+    return res.json({
       code: 500,
-      message: "Nhận đơn hàng thất bại!",
+      message: "Phân công đơn hàng thất bại!",
     });
   }
 };
@@ -248,7 +251,43 @@ module.exports.detail = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    res.json({
+      code: 500,
+      message: "Thất bại!",
+    });
+  }
+};
+
+//[GET] /api/admin/shipper
+module.exports.shipper = async (req, res) => {
+  try {
+    const role = await Roles.findOne({
+      title: "Shipper",
+      deleted: false,
+      status: "active",
+    });
+
+    if (!role) {
+      return res.json({
+        code: 404,
+        message: "Không tìm thấy vai trò Shipper!",
+      });
+    }
+
+    const shippers = await Users.find({
+      roleId: role.id,
+      deleted: false,
+      status: "active",
+    }).select("fullName avatar email phone");
+
+    res.json({
+      code: 200,
+      message: "Thành công!",
+      data: {
+        shippers,
+      },
+    });
+  } catch (error) {
     res.json({
       code: 500,
       message: "Thất bại!",

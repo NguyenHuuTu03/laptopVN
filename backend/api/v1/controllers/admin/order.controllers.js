@@ -3,6 +3,7 @@ const OrderItems = require("../../../../models/order_item.model");
 const Coupons = require("../../../../models/coupon.model");
 const Products = require("../../../../models/product.model");
 const ProductVariants = require("../../../../models/product_variants.model");
+const Users = require("../../../../models/user.model");
 
 //[GET] /api/admin/orders
 module.exports.index = async (req, res) => {
@@ -79,13 +80,22 @@ module.exports.detail = async (req, res) => {
     const orderId = req.params.orderId;
     const order = await Orders.findOne({
       _id: orderId,
-    });
+    }).lean();
     if (!order) {
       return res.json({
         code: 404,
         message: "Không tìm thấy đơn hàng!",
       });
     }
+
+    const shipper = await Users.findOne({
+      _id: order.shipperId,
+      deleted: false,
+      status: "active",
+    });
+
+    order.shipper = shipper;
+
     const coupon = await Coupons.findOne({
       _id: order.couponId,
     });
@@ -118,7 +128,6 @@ module.exports.detail = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
     res.json({
       code: 500,
       message: "Lấy thông tin đơn hàng thất bại!",
