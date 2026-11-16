@@ -89,6 +89,10 @@ function OrderView() {
       value: "CANCELLED",
       label: "Đã huỷ",
     },
+    {
+      value: "FAILED",
+      label: "Thất bại",
+    },
   ];
 
   const optionMethod = [

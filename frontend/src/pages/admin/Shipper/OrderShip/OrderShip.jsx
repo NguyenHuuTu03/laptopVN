@@ -59,10 +59,6 @@ function OrderShip() {
 
   const optionStatus = [
     {
-      value: "",
-      label: "Tất cả",
-    },
-    {
       value: "CONFIRMED",
       label: "Chờ giao",
     },
