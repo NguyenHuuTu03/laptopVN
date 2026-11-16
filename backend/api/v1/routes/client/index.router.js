@@ -8,6 +8,7 @@ const couponRoutes = require("./coupon.router");
 const orderRoutes = require("./order.router");
 const paymentRoutes = require("./payment.router");
 const settingRoutes = require("./setting.router");
+const chatBotRoutes = require("./chatbot.router");
 
 const authMiddleware = require("../../../../middlewares/auth.middleware");
 
@@ -22,4 +23,5 @@ module.exports = (app) => {
   app.use("/api/settings", settingRoutes);
   app.use("/api/order", authMiddleware.requireClientAuth, orderRoutes);
   app.use("/api/payment", authMiddleware.requireClientAuth, paymentRoutes);
+  app.use("/api/chatbot", chatBotRoutes);
 };

@@ -43,7 +43,7 @@ function PermissionTable({ permissions = [], onChange }) {
     {
       key: "shipper",
       name: "Giao hàng",
-      actions: ["view", "accept", "update"],
+      actions: ["view", "update"],
     },
     {
       key: "user",
@@ -154,24 +154,6 @@ function PermissionTable({ permissions = [], onChange }) {
       render: (_, record) => {
         if (!record.actions.includes("permission")) return null;
         const permission = `${record.key}-permission`;
-
-        return (
-          <Checkbox
-            checked={permissions.includes(permission)}
-            onChange={(e) =>
-              handlePermissionChange(permission, e.target.checked)
-            }
-          />
-        );
-      },
-    },
-    {
-      title: "Nhận đơn",
-      key: "accept",
-      align: "center",
-      render: (_, record) => {
-        if (!record.actions.includes("accept")) return null;
-        const permission = `${record.key}-accept`;
 
         return (
           <Checkbox

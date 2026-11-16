@@ -1,6 +1,6 @@
 const Products = require("../../../../models/product.model");
 const ProductVariants = require("../../../../models/product_variants.model");
-const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
+const convertHelpers = require("../../../../helpers/convert");
 const Brands = require("../../../../models/brand.model");
 const Categories = require("../../../../models/category.model");
 const sortHelpers = require("../../../../helpers/sort");
@@ -16,7 +16,7 @@ module.exports.index = async (req, res) => {
     if (req.query.keyword) {
       const keywordReg = new RegExp(req.query.keyword, "i");
       const slugReg = new RegExp(
-        convertToSlugHelpers.convertToSlug(req.query.keyword),
+        convertHelpers.convertToSlug(req.query.keyword),
         "i",
       );
       find.$or = [{ title: keywordReg }, { slug: slugReg }];
@@ -231,7 +231,7 @@ module.exports.suggest = async (req, res) => {
     }
     const keywordReg = new RegExp(req.query.keyword, "i");
     const slugReg = new RegExp(
-      convertToSlugHelpers.convertToSlug(req.query.keyword),
+      convertHelpers.convertToSlug(req.query.keyword),
       "i",
     );
     find.$or = [{ title: keywordReg }, { slug: slugReg }];

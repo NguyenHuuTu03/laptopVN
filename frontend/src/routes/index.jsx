@@ -27,26 +27,20 @@ import UserView from "../pages/admin/Users/UserView/UserView";
 import CouponView from "../pages/admin/Coupons/CouponView/CouponView";
 import RoleCreate from "../pages/admin/Roles/RoleCreate/RoleCreate";
 import RoleEdit from "../pages/admin/Roles/RoleEdit/RoleEdit";
-import RoleDetail from "../pages/admin/Roles/RoleDetail/RoleDetail";
-import ReceivedOrder from "../pages/admin/Shipper/ReceivedOrder/ReceivedOrder";
 import OrderShipDetail from "../pages/admin/Shipper/OrderShipDetail/OrderShipDetail";
 import OrderAdminDetail from "../pages/admin/Orders/OrderDetail/OrderDetail";
 import UserCreate from "../pages/admin/Users/UserCreate/UserCreate";
 import UserEdit from "../pages/admin/Users/UserEdit/UserEdit";
-import UserDetail from "../pages/admin/Users/UserDetail/UserDetail";
 import CouponCreate from "../pages/admin/Coupons/CouponCreate/CouponCreate";
 import CouponEdit from "../pages/admin/Coupons/CouponEdit/CouponEdit";
-import CouponDetail from "../pages/admin/Coupons/CouponDetail/CouponDetail";
 import BrandCreate from "../pages/admin/Brands/BrandCreate/BrandCreate";
 import BrandEdit from "../pages/admin/Brands/BrandEdit/BrandEdit";
-import BrandDetail from "../pages/admin/Brands/BrandDetail/BrandDetail";
 import CategoryCreate from "../pages/admin/Categories/CategoryCreate/CategoryCreate";
 import CategoryEdit from "../pages/admin/Categories/CategoryEdit/CategoryEdit";
-import CategoryDetail from "../pages/admin/Categories/CategoryDetail/CategoryDetail";
 import ProductCreate from "../pages/admin/Products/ProductCreate/ProductCreate";
 import ProductEdit from "../pages/admin/Products/ProductEdit/ProductEdit";
-import AdminProductDetail from "../pages/admin/Products/ProductDetail/ProductDetail";
 import AdminProfile from "../pages/admin/Account/Profile/Profile";
+import OrderShip from "../pages/admin/Shipper/OrderShip/OrderShip";
 
 export const routes = [
   {
@@ -127,10 +121,6 @@ export const routes = [
                 path: "edit/:productId",
                 element: <ProductEdit />,
               },
-              {
-                path: ":productId",
-                element: <AdminProductDetail />,
-              },
             ],
           },
           {
@@ -148,10 +138,6 @@ export const routes = [
                 path: "edit/:categoryId",
                 element: <CategoryEdit />,
               },
-              {
-                path: ":categoryId",
-                element: <CategoryDetail />,
-              },
             ],
           },
           {
@@ -168,10 +154,6 @@ export const routes = [
               {
                 path: "edit/:brandId",
                 element: <BrandEdit />,
-              },
-              {
-                path: ":brandId",
-                element: <BrandDetail />,
               },
             ],
           },
@@ -204,10 +186,6 @@ export const routes = [
                 path: `edit/:userId`,
                 element: <UserEdit />,
               },
-              {
-                path: `:userId`,
-                element: <UserDetail />,
-              },
             ],
           },
           {
@@ -225,10 +203,6 @@ export const routes = [
                 path: "edit/:couponId",
                 element: <CouponEdit />,
               },
-              {
-                path: ":couponId",
-                element: <CouponDetail />,
-              },
             ],
           },
           {
@@ -236,7 +210,7 @@ export const routes = [
             children: [
               {
                 path: "",
-                element: <ReceivedOrder />,
+                element: <OrderShip />,
               },
               {
                 path: "orders/:orderId",
@@ -260,12 +234,11 @@ export const routes = [
                 element: <RoleEdit />,
               },
               {
-                path: "detail/:roleId",
-                element: <RoleDetail />,
+                path: "permissions",
+                element: <Permission />,
               },
             ],
           },
-          { path: "permissions", element: <Permission /> },
 
           {
             path: "settings",

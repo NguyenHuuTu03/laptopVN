@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   notification,
+  Switch,
 } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -44,6 +45,7 @@ function UserEdit() {
             phone: data.phone,
             address: data.address,
             roleId: data.roleId,
+            status: data.status === "active",
             avatar: data.avatar
               ? [
                   {
@@ -75,6 +77,7 @@ function UserEdit() {
       formData.append("phone", values.phone);
       formData.append("address", values.address);
       formData.append("roleId", values.roleId);
+      formData.append("status", values.status === true ? "active" : "inactive");
 
       const avatar = values.avatar?.[0]?.originFileObj;
       if (avatar) {
@@ -127,11 +130,7 @@ function UserEdit() {
           </div>
         </div>
 
-        <div className="user-edit__main">
-          <div className="user-edit__main-title">
-            <h3>Thông tin người dùng</h3>
-          </div>
-
+        <div className="user-edit__form">
           <Spin spinning={loading}>
             <Form
               id="user-edit__form"
@@ -140,89 +139,108 @@ function UserEdit() {
               onFinish={handleSubmit}
             >
               <Row gutter={[16, 16]}>
-                <Col xs={24} sm={12} xl={12}>
-                  <Form.Item
-                    label="Họ tên"
-                    name="fullName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập họ tên!",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Nhập họ tên" />
-                  </Form.Item>
+                <Col xs={24} xl={16}>
+                  <div className="section-info">
+                    <div className="section-info__header">
+                      <h3>Thông tin người dùng</h3>
+                    </div>
 
-                  <Form.Item label="Số điện thoại" name="phone">
-                    <Input placeholder="Nhập số điện thoại" />
-                  </Form.Item>
+                    <div className="section-info__main">
+                      <Form.Item
+                        label="Họ tên"
+                        name="fullName"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập họ tên!",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Nhập họ tên" />
+                      </Form.Item>
+
+                      <Form.Item label="Số điện thoại" name="phone">
+                        <Input placeholder="Nhập số điện thoại" />
+                      </Form.Item>
+
+                      <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập email!",
+                          },
+                          {
+                            type: "email",
+                            message: "Email không đúng định dạng!",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Nhập email" disabled />
+                      </Form.Item>
+
+                      <Form.Item
+                        label="Vai trò"
+                        name="roleId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng chọn vai trò!",
+                          },
+                        ]}
+                      >
+                        <Select
+                          options={optionRole}
+                          placeholder="Chọn vai trò"
+                        ></Select>
+                      </Form.Item>
+
+                      <Form.Item label="Địa chỉ" name="address">
+                        <Input.TextArea placeholder="Nhập địa chỉ" />
+                      </Form.Item>
+                    </div>
+                  </div>
                 </Col>
 
-                <Col xs={24} sm={12} xl={12}>
-                  <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập email!",
-                      },
-                      {
-                        type: "email",
-                        message: "Email không đúng định dạng!",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Nhập email" disabled />
-                  </Form.Item>
+                <Col xs={24} xl={8}>
+                  <div className="section-info">
+                    <div className="section-info__header">
+                      <h3>Ảnh đại diện</h3>
+                    </div>
 
-                  <Form.Item
-                    label="Vai trò"
-                    name="roleId"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng chọn vai trò!",
-                      },
-                    ]}
-                  >
-                    <Select
-                      options={optionRole}
-                      placeholder="Chọn vai trò"
-                    ></Select>
-                  </Form.Item>
-                </Col>
-              </Row>
+                    <div className="section-info__main">
+                      <Form.Item
+                        label="Ảnh"
+                        name="avatar"
+                        valuePropName="fileList"
+                        getValueFromEvent={(e) => e?.fileList}
+                      >
+                        <Upload
+                          listType="picture-card"
+                          maxCount={1}
+                          accept="image/png,image/jpeg,image/webp"
+                          beforeUpload={() => false}
+                        >
+                          <div>
+                            <UploadOutlined />
+                            <div>Chọn ảnh</div>
+                          </div>
+                        </Upload>
+                      </Form.Item>
 
-              <Row gutter={[16, 16]}>
-                <Col xs={24}>
-                  <Form.Item label="Địa chỉ" name="address">
-                    <Input.TextArea placeholder="Nhập địa chỉ" />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={[16, 16]}>
-                <Col xs={24} sm={12} xl={12}>
-                  <Form.Item
-                    label="Ảnh"
-                    name="avatar"
-                    valuePropName="fileList"
-                    getValueFromEvent={(e) => e?.fileList}
-                  >
-                    <Upload
-                      listType="picture-card"
-                      maxCount={1}
-                      accept="image/png,image/jpeg,image/webp"
-                      beforeUpload={() => false}
-                    >
-                      <div>
-                        <UploadOutlined />
-                        <div>Chọn ảnh</div>
-                      </div>
-                    </Upload>
-                  </Form.Item>
+                      <Form.Item
+                        label="Trạng thái"
+                        name="status"
+                        valuePropName="checked"
+                      >
+                        <Switch
+                          checkedChildren="Hoạt động"
+                          unCheckedChildren="Dừng hoạt động"
+                        ></Switch>
+                      </Form.Item>
+                    </div>
+                  </div>
                 </Col>
               </Row>
             </Form>

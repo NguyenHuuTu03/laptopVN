@@ -130,14 +130,6 @@ function CouponTable({ data = [], pagination, onPageChange, onReload }) {
       render: (_, record) => (
         <div className="coupon-action">
           <Link
-            to={`/admin/coupons/${record._id}`}
-            className="coupon-action__view"
-            title="Xem chi tiết"
-          >
-            <i className="fa-solid fa-eye"></i>
-          </Link>
-
-          <Link
             to={`/admin/coupons/edit/${record._id}`}
             className="coupon-action__edit"
             title="Chỉnh sửa"

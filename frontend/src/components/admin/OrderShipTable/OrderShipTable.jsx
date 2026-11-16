@@ -1,30 +1,84 @@
 import { notification, Table } from "antd";
-import "./OrderShipTable.scss";
-import { acceptOrder } from "../../../services/admin/shipper.services";
+
+import { changeStatus } from "../../../services/admin/shipper.services";
+import { Link } from "react-router-dom";
 
 function OrderShipTable({ data = [], pagination, onPageChange, onReload }) {
   const formatStatus = (status) => {
     switch (status) {
       case "PENDING":
         return {
-          text: "Chưa thanh toán",
+          text: "Chờ xác nhận",
           className: "pending",
         };
 
-      case "PAID":
+      case "CONFIRMED":
         return {
-          text: "Đã thanh toán",
-          className: "paid",
+          text: "Đã xác nhận",
+          className: "confirmed",
+        };
+
+      case "SHIPPING":
+        return {
+          text: "Đang giao",
+          className: "shipping",
+        };
+
+      case "DELIVERED":
+        return {
+          text: "Đã giao",
+          className: "delivered",
+        };
+
+      case "CANCELLED":
+        return {
+          text: "Đã huỷ",
+          className: "cancelled",
+        };
+
+      case "FAILED":
+        return {
+          text: "Thất bại",
+          className: "failed",
+        };
+
+      default:
+        return {
+          text: status,
+          className: "",
         };
     }
   };
 
-  const handleAcceptOrder = async (record) => {
-    const result = await acceptOrder(record._id);
+  const handleChangeStatus = async (record) => {
+    const status = record.orderStatus;
+    const orderStatus = ["CANCELLED", "FAILED", "DELIVERED"];
+    if (orderStatus.includes(status)) {
+      return;
+    }
+    let newStatus;
+    switch (status) {
+      case "PENDING":
+        newStatus = "CONFIRMED";
+        break;
+      case "CONFIRMED":
+        newStatus = "SHIPPING";
+        break;
+      case "SHIPPING":
+        newStatus = "DELIVERED";
+        break;
+
+      default:
+        break;
+    }
+
+    const result = await changeStatus(record._id, newStatus);
+
     if (result.code === 200) {
       notification.success({
         title: result.message,
       });
+
       onReload();
     } else {
       notification.error({
@@ -41,25 +95,25 @@ function OrderShipTable({ data = [], pagination, onPageChange, onReload }) {
       render: (_, __, index) => index + 1,
     },
     {
+      title: "Mã đơn hàng",
+      dataIndex: "orderCode",
+      key: "orderCode",
+      align: "left",
+      render: (text) => <span className="order-code">{text}</span>,
+    },
+    {
       title: "Khách hàng",
       dataIndex: "shippingName",
       align: "left",
       key: "shippingName",
-      render: (text) => <span className="ship-name">{text}</span>,
+      render: (text) => <span className="order-name">{text}</span>,
     },
     {
       title: "Số điện thoại",
       dataIndex: "shippingPhone",
       align: "left",
       key: "shippingPhone",
-      render: (text) => <span className="ship-phone">{text}</span>,
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "shippingAddress",
-      align: "left",
-      key: "shippingAddress",
-      render: (text) => <span className="ship-address">{text}</span>,
+      render: (text) => <span className="order-phone">{text}</span>,
     },
     {
       title: "Tổng tiền",
@@ -67,21 +121,29 @@ function OrderShipTable({ data = [], pagination, onPageChange, onReload }) {
       key: "totalPrice",
       align: "center",
       render: (text) => (
-        <span className="ship-price">
+        <span className="order-price">
           {Number(text).toLocaleString("vi-VN")}₫
         </span>
       ),
     },
+
     {
-      title: "Thanh toán",
-      dataIndex: "paymentStatus",
-      key: "paymentStatus",
+      title: "Trạng thái",
+      dataIndex: "orderStatus",
+      key: "orderStatus",
       align: "center",
-      render: (status) => {
+      render: (status, record) => {
         const statusData = formatStatus(status);
 
         return (
-          <span className={`ship-status ${statusData.className}`}>
+          <span
+            className={`order-status ${statusData.className}`}
+            onClick={
+              status === "CANCELLED"
+                ? undefined
+                : () => handleChangeStatus(record)
+            }
+          >
             {statusData.text}
           </span>
         );
@@ -92,14 +154,14 @@ function OrderShipTable({ data = [], pagination, onPageChange, onReload }) {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <div className="ship-action">
-          <button
-            className="ship-action__view"
-            title="Nhận đơn"
-            onClick={() => handleAcceptOrder(record)}
+        <div className="order-action">
+          <Link
+            to={`/admin/shipper/orders/${record._id}`}
+            className="order-action__view"
+            title="Xem chi tiết"
           >
-            <i className="fa-regular fa-square-check"></i>
-          </button>
+            <i className="fa-solid fa-eye"></i>
+          </Link>
         </div>
       ),
     },
@@ -108,11 +170,11 @@ function OrderShipTable({ data = [], pagination, onPageChange, onReload }) {
   const dataTable = data.map((item) => ({
     key: item._id,
     _id: item._id,
+    orderCode: `#${item.orderCode}`,
     shippingName: item.shippingName,
     shippingPhone: item.shippingPhone,
-    shippingAddress: item.shippingAddress,
     totalPrice: item.totalPrice,
-    paymentStatus: item.paymentStatus,
+    orderStatus: item.orderStatus,
   }));
 
   return (

@@ -2,7 +2,7 @@ const Products = require("../../../../models/product.model");
 const ProductVariants = require("../../../../models/product_variants.model");
 const Brands = require("../../../../models/brand.model");
 const Categories = require("../../../../models/category.model");
-const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
+const convertHelpers = require("../../../../helpers/convert");
 const sortHelpers = require("../../../../helpers/sort");
 const generateHelpers = require("../../../../helpers/generate");
 
@@ -16,7 +16,7 @@ module.exports.index = async (req, res) => {
     // search
     if (req.query.keyword) {
       const keywordRegex = new RegExp(req.query.keyword, "i");
-      const slug = convertToSlugHelpers.convertToSlug(req.query.keyword);
+      const slug = convertHelpers.convertToSlug(req.query.keyword);
       const slugRegex = new RegExp(slug, "i");
       find.$or = [{ title: keywordRegex }, { slug: slugRegex }];
     }
@@ -162,7 +162,7 @@ module.exports.changeStatus = async (req, res) => {
 //[POST] /api/admin/products
 module.exports.create = async (req, res) => {
   try {
-    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+    const slug = convertHelpers.convertToSlug(req.body.title);
     const exitsProduct = await Products.findOne({
       slug: slug,
       deleted: false,
@@ -224,7 +224,7 @@ module.exports.edit = async (req, res) => {
   try {
     const productId = req.params.productId;
 
-    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+    const slug = convertHelpers.convertToSlug(req.body.title);
 
     const exitsProduct = await Products.findOne({
       _id: { $ne: productId },

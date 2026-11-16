@@ -6,92 +6,8 @@ const Coupons = require("../../../../models/coupon.model");
 const Users = require("../../../../models/user.model");
 const Roles = require("../../../../models/role.model");
 
-//[GET] /api/admin/shipper/orders
+//[GET] /api/shipper/orders
 module.exports.orders = async (req, res) => {
-  try {
-    let find = {
-      orderStatus: "CONFIRMED",
-    };
-    // pagination
-    const page = Math.max(Number(req.query.page) || 1, 1);
-    const limit = Math.max(Number(req.query.limit) || 10, 1);
-
-    const skip = (page - 1) * limit;
-
-    const totalOrders = await Orders.countDocuments(find);
-
-    const totalPages = Math.ceil(totalOrders / limit);
-    // pagination
-    const orders = await Orders.find(find)
-      .sort({
-        createdAt: -1,
-      })
-      .skip(skip)
-      .limit(limit);
-
-    res.json({
-      code: 200,
-      message: "Thành công!",
-      data: {
-        orders,
-        pagination: {
-          currentPage: page,
-          limit: limit,
-          totalOrders,
-          totalPages,
-        },
-      },
-    });
-  } catch (error) {
-    res.json({
-      code: 500,
-      message: "Thất bại!",
-    });
-  }
-};
-
-//[PATCH] /api/admin/shipper/:orderId/accept
-module.exports.acceptOrder = async (req, res) => {
-  try {
-    const orderId = req.params.orderId;
-    const { shipperId } = req.body;
-
-    await Orders.updateOne(
-      { _id: orderId },
-      {
-        shipperId: shipperId,
-      },
-    );
-
-    const shipper = await Users.findOne({
-      _id: shipperId,
-      status: "active",
-      deleted: false,
-    });
-
-    const newOrder = await Orders.findOne({
-      _id: orderId,
-    }).lean();
-
-    newOrder.shipper = shipper;
-
-    return res.json({
-      code: 200,
-      message: "Phân công đơn hàng thành công!",
-      data: {
-        order: newOrder,
-      },
-    });
-  } catch (error) {
-    return res.json({
-      code: 500,
-      message: "Phân công đơn hàng thất bại!",
-    });
-  }
-};
-
-//[GET] /api/admin/shipper/orders/received
-module.exports.receivedOrders = async (req, res) => {
   try {
     const shipperId = req.userId;
     let find = { shipperId: shipperId };
@@ -146,7 +62,47 @@ module.exports.receivedOrders = async (req, res) => {
   }
 };
 
-//[PATCH] /api/admin/shipper/:orderId/change-status
+//[PATCH] /api/shipper/:orderId/assignment
+module.exports.assignment = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    const { shipperId } = req.body;
+
+    await Orders.updateOne(
+      { _id: orderId },
+      {
+        shipperId: shipperId,
+      },
+    );
+
+    const shipper = await Users.findOne({
+      _id: shipperId,
+      status: "active",
+      deleted: false,
+    });
+
+    const newOrder = await Orders.findOne({
+      _id: orderId,
+    }).lean();
+
+    newOrder.shipper = shipper;
+
+    return res.json({
+      code: 200,
+      message: "Phân công đơn hàng thành công!",
+      data: {
+        order: newOrder,
+      },
+    });
+  } catch (error) {
+    return res.json({
+      code: 500,
+      message: "Phân công đơn hàng thất bại!",
+    });
+  }
+};
+
+//[PATCH] /api/shipper/:orderId/change-status
 module.exports.changeStatus = async (req, res) => {
   const orderId = req.params.orderId;
   const shipperId = req.userId;
@@ -205,7 +161,7 @@ module.exports.changeStatus = async (req, res) => {
   }
 };
 
-//[GET] /api/admin/shipper/:orderId
+//[GET] /api/shipper/:orderId
 module.exports.detail = async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -266,7 +222,7 @@ module.exports.detail = async (req, res) => {
   }
 };
 
-//[GET] /api/admin/shipper
+//[GET] /api/shipper
 module.exports.shipper = async (req, res) => {
   try {
     const role = await Roles.findOne({

@@ -4,7 +4,7 @@ import "./OrderShipDetail.scss";
 import { useEffect, useState } from "react";
 import {
   changeStatus,
-  getOrder,
+  getOrderShipDetail,
 } from "../../../../services/admin/shipper.services";
 
 function OrderShipDetail() {
@@ -115,7 +115,7 @@ function OrderShipDetail() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await getOrder(orderId);
+        const result = await getOrderShipDetail(orderId);
         if (result.code === 200) {
           setOrder(result.data.order);
           setOrderItems(result.data.orderItems);

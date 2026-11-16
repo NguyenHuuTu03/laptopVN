@@ -102,14 +102,6 @@ function RoleTable({ data = [], pagination, onPageChange, onReload }) {
       render: (_, record) => (
         <div className="role-action">
           <Link
-            to={`/admin/roles/detail/${record._id}`}
-            className="role-action__view"
-            title="Xem chi tiết"
-          >
-            <i className="fa-solid fa-eye"></i>
-          </Link>
-
-          <Link
             to={`/admin/roles/edit/${record._id}`}
             className="role-action__edit"
             title="Chỉnh sửa"

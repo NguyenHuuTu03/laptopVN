@@ -7,6 +7,7 @@ import {
 } from "../../../../services/admin/role.services";
 import PermissionTable from "../../../../components/admin/PermissionTable/PermissionTable";
 import { notification } from "antd";
+import { Link } from "react-router-dom";
 
 function Permission() {
   const [roles, setRoles] = useState([]);
@@ -60,6 +61,13 @@ function Permission() {
       <div className="admin-permissions__header">
         <div className="admin-permissions__title">
           <h1>Phân quyền</h1>
+        </div>
+
+        <div className="admin-permissions__nav">
+          <Link to="/admin/roles" className="admin-permissions__back">
+            <i className="fa-solid fa-arrow-left"></i>
+            Quay lại
+          </Link>
         </div>
       </div>
 

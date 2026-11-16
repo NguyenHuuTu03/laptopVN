@@ -4,6 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 function SideBar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isRole = ["/admin/roles", "/admin/permissions"].includes([
+    location.pathname,
+  ]);
   const menuItem = [
     {
       key: "/admin",
@@ -52,14 +55,9 @@ function SideBar() {
       label: "Nhóm quyền",
     },
     {
-      key: "/admin/permissions",
-      icon: <i className="fa-solid fa-key"></i>,
-      label: "Phân quyền",
-    },
-    {
       key: "/admin/settings",
       icon: <i className="fa-solid fa-gear"></i>,
-      label: "Cài đặt",
+      label: "Cài đặt chung",
     },
   ];
   return (
@@ -68,6 +66,7 @@ function SideBar() {
         mode="inline"
         items={menuItem}
         selectedKeys={[location.pathname]}
+        defaultOpenKeys={isRole ? ["roles-group"] : []}
         onClick={({ key }) => navigate(key)}
         // theme={"dark"}
       />

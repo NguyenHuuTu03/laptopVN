@@ -4,3 +4,7 @@ module.exports.convertToSlug = (string) => {
   const slug = unideCodeSlug.replace(/\s+/g, "-");
   return slug;
 };
+
+module.exports.convertRegex = (value) => {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+};

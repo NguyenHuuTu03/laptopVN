@@ -1,9 +1,10 @@
+import { Input, Select } from "antd";
+const { Search } = Input;
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-import "./OrderShip.scss";
-import OrderShipTable from "../../../../components/admin/OrderShipTable/OrderShipTable";
 import { getOrderShip } from "../../../../services/admin/shipper.services";
+import OrderShipTable from "../../../../components/admin/OrderShipTable/OrderShipTable";
 
 function OrderShip() {
   const [data, setData] = useState({
@@ -48,27 +49,72 @@ function OrderShip() {
     handleFilterChange("page", page);
   };
 
+  const handleSearch = (value) => {
+    handleFilterChange("keyword", value);
+  };
+
+  const handleStatusChange = (value) => {
+    handleFilterChange("orderStatus", value);
+  };
+
+  const optionStatus = [
+    {
+      value: "",
+      label: "Tất cả",
+    },
+    {
+      value: "CONFIRMED",
+      label: "Chờ giao",
+    },
+    {
+      value: "SHIPPING",
+      label: "Đang giao",
+    },
+    {
+      value: "DELIVERED",
+      label: "Đã giao",
+    },
+    {
+      value: "CANCELLED",
+      label: "Đã huỷ",
+    },
+    {
+      value: "FAILED",
+      label: "Thất bại",
+    },
+  ];
+
   return (
     <>
-      <div className="admin-ship">
-        <div className="admin-ship__header">
-          <div className="admin-ship__title">
-            <h1>Quản lý giao hàng</h1>
+      <div className="admin-orders">
+        <div className="admin-orders__header">
+          <div className="admin-orders__title">
+            <h1>Đơn hàng cần giao</h1>
           </div>
 
-          <div className="admin-ship__nav">
-            <Link
-              to={`/admin/shipper/orders/received`}
-              className="admin-ship__add"
-            >
-              <i className="fa-solid fa-clipboard-check"></i>
-              <p>Đơn hàng đã nhận</p>
-            </Link>
+          <div className="admin-orders__nav">
+            <div className="admin-orders__search">
+              <Search
+                placeholder="Tìm kiếm theo số điện thoại..."
+                onSearch={handleSearch}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="admin-ship__main">
-          <div className="admin-ship__table">
+        <div className="admin-orders__main">
+          <div className="admin-orders__filter">
+            <div className="admin-orders__filter-status">
+              <Select
+                placeholder="Trạng thái"
+                options={optionStatus}
+                onChange={handleStatusChange}
+                value={searchParams.get("orderStatus")}
+              />
+            </div>
+          </div>
+
+          <div className="admin-orders__table">
             <OrderShipTable
               data={data?.orders}
               pagination={data?.pagination}

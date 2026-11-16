@@ -19,7 +19,7 @@ const productVariantSchema = new mongoose.Schema(
     },
     thumbnail: String,
     status: {
-      type: "String",
+      type: String,
       default: "active",
     },
   },

@@ -132,14 +132,6 @@ function UserTable({ data = [], pagination, onPageChange, onReload }) {
       render: (_, record) => (
         <div className="user-action">
           <Link
-            to={`/admin/users/${record._id}`}
-            className="user-action__view"
-            title="Xem chi tiết"
-          >
-            <i className="fa-solid fa-eye"></i>
-          </Link>
-
-          <Link
             to={`/admin/users/edit/${record._id}`}
             className="user-action__edit"
             title="Chỉnh sửa"

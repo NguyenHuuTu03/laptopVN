@@ -102,14 +102,6 @@ function CategoryTable({ data = [], pagination, onPageChange, onReload }) {
       render: (_, record) => (
         <div className="category-action">
           <Link
-            to={`/admin/categories/${record._id}`}
-            className="category-action__view"
-            title="Xem chi tiết"
-          >
-            <i className="fa-solid fa-eye"></i>
-          </Link>
-
-          <Link
             to={`/admin/categories/edit/${record._id}`}
             className="category-action__edit"
             title="Chỉnh sửa"

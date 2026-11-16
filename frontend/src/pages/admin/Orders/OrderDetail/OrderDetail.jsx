@@ -15,7 +15,7 @@ import {
   getOrder,
 } from "../../../../services/admin/order.services";
 import {
-  acceptOrder,
+  assignment,
   getShipper,
 } from "../../../../services/admin/shipper.services";
 
@@ -216,7 +216,7 @@ function OrderDetail() {
     try {
       setLoading(true);
 
-      const result = await acceptOrder(orderId, selectedShipperId);
+      const result = await assignment(orderId, selectedShipperId);
 
       if (result.code === 200) {
         setOrder(result.data.order);

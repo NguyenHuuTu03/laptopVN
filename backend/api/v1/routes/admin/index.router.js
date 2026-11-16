@@ -32,7 +32,7 @@ module.exports = (app) => {
     productVariantRoutes,
   );
   app.use("/api/admin/orders", authMiddleware.requireAdminAuth, orderRoutes);
-  app.use("/api/admin/shipper", authMiddleware.requireAdminAuth, shipperRoutes);
+  app.use("/api/shipper", authMiddleware.requireAdminAuth, shipperRoutes);
   app.use("/api/admin/users", authMiddleware.requireAdminAuth, userRoutes);
   app.use("/api/admin/coupons", authMiddleware.requireAdminAuth, couponRoutes);
   app.use("/api/admin/roles", authMiddleware.requireAdminAuth, roleRoutes);

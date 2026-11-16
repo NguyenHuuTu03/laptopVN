@@ -1,5 +1,5 @@
 const Categories = require("../../../../models/category.model");
-const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
+const convertHelpers = require("../../../../helpers/convert");
 
 //[GET] /api/admin/categories
 module.exports.index = async (req, res) => {
@@ -11,7 +11,7 @@ module.exports.index = async (req, res) => {
     // search
     if (req.query.keyword) {
       const keywordRegex = new RegExp(req.query.keyword, "i");
-      const slug = convertToSlugHelpers.convertToSlug(req.query.keyword);
+      const slug = convertHelpers.convertToSlug(req.query.keyword);
       const slugRegex = new RegExp(slug, "i");
       find.$or = [{ title: keywordRegex }, { slug: slugRegex }];
     }
@@ -121,7 +121,7 @@ module.exports.detail = async (req, res) => {
 //[POST] /api/admin/categories
 module.exports.create = async (req, res) => {
   try {
-    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+    const slug = convertHelpers.convertToSlug(req.body.title);
     const exitsCategory = await Categories.findOne({
       slug: slug,
       deleted: false,
@@ -200,7 +200,7 @@ module.exports.edit = async (req, res) => {
       });
     }
 
-    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+    const slug = convertHelpers.convertToSlug(req.body.title);
     const exitsCategory = await Categories.findOne({
       _id: { $ne: categoryId },
       slug: slug,

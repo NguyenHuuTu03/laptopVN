@@ -323,7 +323,7 @@ function Cart() {
                             onClick={() => handleSubmit()}
                             className="btn-primary btn-block"
                           >
-                            Đặt hàng
+                            Thanh toán
                           </button>
                           <Link to="/" className="cart-summary__continue">
                             <i className="fa-solid fa-arrow-left"></i>

@@ -1,6 +1,6 @@
 const Roles = require("../../../../models/role.model");
 const Users = require("../../../../models/user.model");
-const convertToSlugHelpers = require("../../../../helpers/convertToSlug");
+const convertHelpers = require("../../../../helpers/convert");
 
 //[GET] /api/admin/roles
 module.exports.index = async (req, res) => {
@@ -128,7 +128,7 @@ module.exports.create = async (req, res) => {
 module.exports.edit = async (req, res) => {
   try {
     const roleId = req.params.roleId;
-    const slug = convertToSlugHelpers.convertToSlug(req.body.title);
+    const slug = convertHelpers.convertToSlug(req.body.title);
 
     const exitRole = await Roles.findOne({
       deleted: false,
