@@ -4,6 +4,7 @@ const Coupons = require("../../../../models/coupon.model");
 const Products = require("../../../../models/product.model");
 const ProductVariants = require("../../../../models/product_variants.model");
 const Users = require("../../../../models/user.model");
+const refundHelpers = require("../../../../helpers/refund");
 
 //[GET] /api/admin/orders
 module.exports.index = async (req, res) => {
@@ -149,8 +150,37 @@ module.exports.changeStatus = async (req, res) => {
       });
     }
     const { orderStatus } = req.body;
+
+    const checkedStatus = ["CONFIRMED", "CANCELLED"].includes(orderStatus);
+
+    if (!checkedStatus) {
+      return res.json({
+        code: 400,
+        message: "Trạng thái đơn hàng không hợp lệ!",
+      });
+    }
+
+    if (order.orderStatus !== "PENDING") {
+      return res.json({
+        code: 400,
+        message: "Đơn hàng không thể thay đổi trạng thái!",
+      });
+    }
+
     order.orderStatus = orderStatus;
     await order.save();
+
+    if (orderStatus === "CANCELLED") {
+      const orderItems = await OrderItems.find({
+        orderId: order._id,
+      });
+
+      await refundHelpers.restockItems(orderItems);
+
+      if (order.couponId) {
+        await refundHelpers.releaseCoupon(order.couponId);
+      }
+    }
     res.json({
       code: 200,
       message:
@@ -160,9 +190,10 @@ module.exports.changeStatus = async (req, res) => {
       data: { order },
     });
   } catch (error) {
+    console.error("LỖI CHANGE STATUS:", error);
     res.json({
       code: 500,
-      message: "Xác nhận đơn hàng thất bại!",
+      message: "Thay đổi trạng thái đơn hàng thất bại!",
     });
   }
 };

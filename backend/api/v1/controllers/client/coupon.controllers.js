@@ -7,7 +7,10 @@ module.exports.index = async (req, res) => {
       status: "active",
     }).sort({ endDate: 1 });
 
-    const result = coupons.filter((coupon) => coupon.endDate > Date.now());
+    const result = coupons.filter(
+      (coupon) =>
+        coupon.endDate > Date.now() && coupon.usedCount < coupon.quantity,
+    );
 
     res.json({
       code: 200,

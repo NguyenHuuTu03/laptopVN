@@ -5,6 +5,7 @@ const ProductVariants = require("../../../../models/product_variants.model");
 const Carts = require("../../../../models/cart.model");
 const CartItems = require("../../../../models/cart_item.model");
 const Coupons = require("../../../../models/coupon.model");
+const refundHelpers = require("../../../../helpers/refund");
 
 //[GET] /api/order/checkout
 module.exports.checkout = async (req, res) => {
@@ -380,6 +381,13 @@ module.exports.order = async (req, res) => {
         status: "active",
       });
 
+      if (!variant) {
+        return res.json({
+          code: 400,
+          message: `Phiên bản sản phẩm "${product.title}" không tồn tại!`,
+        });
+      }
+
       if (quantity > variant.stock) {
         return res.json({
           code: 400,
@@ -476,35 +484,113 @@ module.exports.order = async (req, res) => {
 
     const totalPrice = afterProductDiscount - voucherDiscount;
 
-    const orderCode = "ORD" + Date.now();
+    const resultItems = [];
 
-    const order = new Orders({
-      orderCode: orderCode,
-      userId: userId,
-      shippingName: shippingName,
-      shippingPhone: shippingPhone,
-      shippingAddress: shippingAddress,
-      couponId: coupon ? coupon._id : null,
-      totalPrice: totalPrice,
-      paymentMethod: paymentMethod,
-      paymentStatus: paymentMethod === "COD" ? "PENDING" : "WAITING_PAYMENT",
+    for (const item of orderItems) {
+      const updated = await ProductVariants.updateOne(
+        {
+          _id: item.variantId,
+          productId: item.productId,
+          stock: { $gte: item.quantity },
+        },
+        {
+          $inc: {
+            stock: -item.quantity,
+          },
+        },
+      );
 
-      orderStatus: "PENDING",
-      note: note,
-    });
+      if (updated.modifiedCount !== 1) {
+        await refundHelpers.restockItems(resultItems);
+        return res.json({
+          code: 400,
+          message: "Có sản phẩm đã hết hàng hoặc không đủ số lượng!",
+        });
+      }
+      resultItems.push(item);
+    }
 
-    await order.save();
+    if (coupon) {
+      const filter = {
+        _id: coupon._id,
+      };
 
-    await OrderItems.insertMany(
-      orderItems.map((item) => ({
-        orderId: order.id,
-        productId: item.productId,
-        variantId: item.variantId,
-        price: item.price,
-        discount: item.discount,
-        quantity: item.quantity,
-      })),
-    );
+      if (coupon.quantity != null) {
+        filter.usedCount = {
+          $lt: coupon.quantity,
+        };
+      }
+
+      const updatedCoupon = await Coupons.updateOne(filter, {
+        $inc: {
+          usedCount: 1,
+        },
+      });
+
+      if (updatedCoupon.modifiedCount !== 1) {
+        await refundHelpers.restockItems(resultItems);
+
+        return res.json({
+          code: 400,
+          message: "Mã giảm giá đã hết lượt sử dụng!",
+        });
+      }
+    }
+
+    const orderCode = "LVN" + Date.now();
+
+    let order;
+
+    try {
+      order = new Orders({
+        orderCode: orderCode,
+        userId: userId,
+        shippingName: shippingName,
+        shippingPhone: shippingPhone,
+        shippingAddress: shippingAddress,
+        couponId: coupon ? coupon._id : null,
+        totalPrice: totalPrice,
+        paymentMethod: paymentMethod,
+        paymentStatus: paymentMethod === "COD" ? "PENDING" : "WAITING_PAYMENT",
+
+        orderStatus: "PENDING",
+        note: note,
+      });
+
+      await order.save();
+
+      await OrderItems.insertMany(
+        orderItems.map((item) => ({
+          orderId: order.id,
+          productId: item.productId,
+          variantId: item.variantId,
+          price: item.price,
+          discount: item.discount,
+          quantity: item.quantity,
+        })),
+      );
+    } catch (error) {
+      console.log(error);
+      await refundHelpers.restockItems(resultItems);
+
+      if (coupon) {
+        await refundHelpers.releaseCoupon(coupon._id);
+      }
+
+      if (order && order._id) {
+        await Orders.deleteOne({
+          _id: order._id,
+        });
+
+        await Orders.deleteOne({
+          _id: order._id,
+        });
+      }
+      return res.json({
+        code: 500,
+        message: "Tạo đơn hàng thất bại!",
+      });
+    }
 
     if (!buyNow && paymentMethod === "COD") {
       await CartItems.deleteMany({
@@ -760,7 +846,7 @@ module.exports.cancel = async (req, res) => {
     }
 
     if (order.orderStatus !== "PENDING") {
-      res.json({
+      return res.json({
         code: 400,
         message: "Đơn hàng không thể huỷ",
       });
@@ -769,6 +855,16 @@ module.exports.cancel = async (req, res) => {
     order.orderStatus = "CANCELLED";
 
     await order.save();
+
+    const orderItems = await OrderItems.find({
+      orderId: order._id,
+    });
+
+    await refundHelpers.restockItems(orderItems);
+
+    if (order.couponId) {
+      await refundHelpers.releaseCoupon(order.couponId);
+    }
 
     res.json({
       code: 200,

@@ -55,27 +55,6 @@ function CouponList() {
   };
   return (
     <>
-      {/* {coupons.length > 0 && (
-        <>
-          <div className="coupon-card">
-            {coupons.map((coupon, index) => (
-              <div className="coupon-box" key={index}>
-                <div className="coupon-box__header">
-                  <span>Mã: {coupon.code}</span>
-                  <span>HSD: {formatDate(coupon.endDate)}</span>
-                </div>
-                <div className="coupon-box__content">
-                  <span>{coupon.description}</span>
-                </div>
-                <div className="coupon-box__action">
-                  <button>Điều kiện</button>
-                  <button>Sao chép</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )} */}
       <div className="coupon-card">
         <Swiper
           modules={[Navigation]}

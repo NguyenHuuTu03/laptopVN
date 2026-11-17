@@ -104,57 +104,101 @@ module.exports.assignment = async (req, res) => {
 
 //[PATCH] /api/shipper/:orderId/change-status
 module.exports.changeStatus = async (req, res) => {
-  const orderId = req.params.orderId;
-  const shipperId = req.userId;
-  const { orderStatus } = req.body;
-
-  const order = await Orders.findOne({
-    _id: orderId,
-    shipperId: shipperId,
-  });
-
-  if (!order) {
-    return res.json({
-      code: 404,
-      message: "Không tìm thấy đơn hàng!",
-    });
-  }
-
-  // if (order.orderStatus !== "SHIPPING") {
-  //   return res.json({
-  //     code: 400,
-  //     message: "Đơn hàng không ở trạng thái đang giao!",
-  //   });
-  // }
-
-  const status = ["DELIVERED", "FAILED", "SHIPPING"];
-
-  if (!status.includes(orderStatus)) {
-    return res.json({
-      code: 400,
-      message: "Trạng thái không hợp lệ!",
-    });
-  }
-
-  order.orderStatus = orderStatus;
-  if (orderStatus === "DELIVERED" && order.paymentMethod === "COD") {
-    order.paymentStatus = "PAID";
-  }
-  await order.save();
-
   try {
-    res.json({
+    const orderId = req.params.orderId;
+    const shipperId = req.userId;
+    const { orderStatus } = req.body;
+
+    const order = await Orders.findOne({
+      _id: orderId,
+      shipperId: shipperId,
+    });
+
+    if (!order) {
+      return res.json({
+        code: 404,
+        message: "Không tìm thấy đơn hàng!",
+      });
+    }
+
+    const allowedStatus = {
+      CONFIRMED: ["SHIPPING"],
+      SHIPPING: ["DELIVERED", "FAILED"],
+    };
+
+    if (!allowedStatus[order.orderStatus]?.includes(orderStatus)) {
+      return res.json({
+        code: 400,
+        message: "Trạng thái đơn hàng không hợp lệ!",
+      });
+    }
+
+    const updateData = {
+      orderStatus: orderStatus,
+    };
+
+    if (orderStatus === "DELIVERED" && order.paymentMethod === "COD") {
+      updateData.paymentStatus = "PAID";
+    }
+
+    const result = await Orders.updateOne(
+      {
+        _id: orderId,
+        shipperId: shipperId,
+        orderStatus: order.orderStatus,
+      },
+      {
+        $set: updateData,
+      },
+    );
+
+    if (result.modifiedCount !== 1) {
+      return res.json({
+        code: 400,
+        message: "Đơn hàng đã được cập nhật trước đó!",
+      });
+    }
+
+    if (orderStatus === "DELIVERED") {
+      const orderItems = await OrderItems.find({
+        orderId: order._id,
+      });
+
+      for (const item of orderItems) {
+        await ProductVariants.updateOne(
+          {
+            _id: item.variantId,
+            productId: item.productId,
+          },
+          {
+            $inc: {
+              sold: item.quantity,
+            },
+          },
+        );
+      }
+    }
+
+    const updatedOrder = await Orders.findOne({
+      _id: orderId,
+    });
+
+    return res.json({
       code: 200,
       message:
-        orderStatus === "DELIVERED"
-          ? "Giao hàng thành công!"
-          : "Giao hàng thất bại!",
+        orderStatus === "SHIPPING"
+          ? "Đã bắt đầu giao hàng!"
+          : orderStatus === "DELIVERED"
+            ? "Giao hàng thành công!"
+            : "Giao hàng thất bại!",
       data: {
-        order,
+        order: updatedOrder,
       },
     });
   } catch (error) {
-    res.json({
+    console.log(error);
+
+    return res.json({
       code: 500,
       message: "Cập nhật trạng thái đơn hàng thất bại!",
     });
