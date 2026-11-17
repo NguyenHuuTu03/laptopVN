@@ -16,8 +16,6 @@ import {
 } from "../../../actions/cartActions";
 
 function Cart() {
-  const [loading, setLoading] = useState(true);
-
   const [data, setData] = useState([]);
 
   const [summary, setSummary] = useState(null);
@@ -75,8 +73,6 @@ function Cart() {
         console.log("FETCH CART ERROR:", error);
         setData([]);
         setSummary(null);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -176,176 +172,136 @@ function Cart() {
     } else navigate("/checkout");
   };
 
-  // const handleVersion = () => {
-  //   data.forEach((item) => {
-  //     let ram = "";
-  //     let storage = "";
-  //     let color = "";
-  //     item.attributes.forEach((v) => {
-  //       const key = v.key?.toLowerCase();
-  //       if (key === "ram") {
-  //         ram = v.value;
-  //       }
-
-  //       if (key === "storage") {
-  //         storage = v.value;
-  //       }
-
-  //       if (key === "color") {
-  //         color = v.value;
-  //       }
-  //     });
-  //     item.version = `${ram ? ram + "/" : ""}${storage ? `${storage}` : ""}`;
-  //     item.color = color;
-  //   });
-  // };
-  // handleVersion();
-
   return (
     <>
-      {loading ? (
-        "Đang tải dữ liệu"
-      ) : (
-        <>
-          {data && (
-            <div className="cart-page">
-              <div className="cart-page__container">
-                <div className="cart-page__breadcrumb">
-                  <Link to="/">Trang chủ</Link>
-                  <span>/</span>
-                  <span>Giỏ hàng</span>
-                </div>
+      <div className="cart-page">
+        <div className="cart-page__container">
+          <div className="cart-page__breadcrumb">
+            <Link to="/">Trang chủ</Link>
+            <span>/</span>
+            <span>Giỏ hàng</span>
+          </div>
 
-                {data.length > 0 ? (
-                  <>
-                    <div className="cart-page__main">
-                      <div className="cart-page__list">
-                        {data.map((item, index) => (
-                          <div className="cart-item" key={index}>
-                            <div className="cart-item__image">
-                              <img src={item.thumbnail} alt="Ảnh sản phẩm" />
-                            </div>
-
-                            <div className="cart-item__content">
-                              <div className="cart-item__name">
-                                <a href="">{item.title}</a>
-                                {item.version && (
-                                  <span className="version">
-                                    {item.version}
-                                  </span>
-                                )}
-                                {item.color && (
-                                  <span className="color">{item.color}</span>
-                                )}
-                              </div>
-
-                              <div className="cart-item__block">
-                                <div className="cart-item__price">
-                                  <span className="price-new">
-                                    {formatPrice(item.priceNew)}
-                                  </span>
-                                  <span className="price-old">
-                                    {formatPrice(item.price)}
-                                  </span>
-                                </div>
-
-                                <div className="cart-item__action">
-                                  <div className="change-quantity">
-                                    <span>
-                                      <button
-                                        className="down-quantity"
-                                        onClick={() =>
-                                          handleDownQuantity(index)
-                                        }
-                                      >
-                                        <i className="fa-solid fa-minus"></i>
-                                      </button>
-                                    </span>
-
-                                    <span>{item.quantity}</span>
-                                    <span>
-                                      <button
-                                        className="up-quantity"
-                                        onClick={() => handleUpQuantity(index)}
-                                      >
-                                        <i className="fa-solid fa-plus"></i>
-                                      </button>
-                                    </span>
-                                  </div>
-                                  <button
-                                    className="remove-item"
-                                    onClick={() => handleDeleteItem(index)}
-                                  >
-                                    <i className="fa-regular fa-trash-can"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+          {data.length > 0 ? (
+            <>
+              <div className="cart-page__main">
+                <div className="cart-page__list">
+                  {data.map((item, index) => (
+                    <div className="cart-item" key={index}>
+                      <div className="cart-item__image">
+                        <img src={item.thumbnail} alt="Ảnh sản phẩm" />
                       </div>
 
-                      <div className="cart-page__summary">
-                        <div className="cart-summary__header">
-                          Thông tin đơn hàng
+                      <div className="cart-item__content">
+                        <div className="cart-item__name">
+                          <a href="">{item.title}</a>
+                          {item.version && (
+                            <span className="version">{item.version}</span>
+                          )}
+                          {item.color && (
+                            <span className="color">{item.color}</span>
+                          )}
                         </div>
 
-                        <div className="cart-summary__body">
-                          <div className="cart-summary__row">
-                            <span>
-                              Tạm tính ({summary?.totalQuantity || 0 || 0} sản
-                              phẩm)
+                        <div className="cart-item__block">
+                          <div className="cart-item__price">
+                            <span className="price-new">
+                              {formatPrice(item.priceNew)}
                             </span>
-                            <span>{formatPrice(summary?.subtotal || 0)}</span>
-                          </div>
-                          <div className="cart-summary__row">
-                            <span>Giảm giá trực tiếp</span>
-                            <span>
-                              - {formatPrice(summary?.productDiscount || 0)}
+                            <span className="price-old">
+                              {formatPrice(item.price)}
                             </span>
                           </div>
 
-                          <div className="cart-summary__row cart-summary__row--total">
-                            <span>Tổng tiền</span>
-                            <span className="cart-summary__total">
-                              {formatPrice(summary?.total || 0)}
-                            </span>
-                          </div>
+                          <div className="cart-item__action">
+                            <div className="change-quantity">
+                              <span>
+                                <button
+                                  className="down-quantity"
+                                  onClick={() => handleDownQuantity(index)}
+                                >
+                                  <i className="fa-solid fa-minus"></i>
+                                </button>
+                              </span>
 
-                          <div className="cart-summary__row">
-                            <span>Bạn đã tiết kiệm được</span>
-                            <span>- {formatPrice(summary?.saving || 0)}</span>
+                              <span>{item.quantity}</span>
+                              <span>
+                                <button
+                                  className="up-quantity"
+                                  onClick={() => handleUpQuantity(index)}
+                                >
+                                  <i className="fa-solid fa-plus"></i>
+                                </button>
+                              </span>
+                            </div>
+                            <button
+                              className="remove-item"
+                              onClick={() => handleDeleteItem(index)}
+                            >
+                              <i className="fa-regular fa-trash-can"></i>
+                            </button>
                           </div>
-                        </div>
-
-                        <div className="cart-summary__footer">
-                          <button
-                            onClick={() => handleSubmit()}
-                            className="btn-primary btn-block"
-                          >
-                            Thanh toán
-                          </button>
-                          <Link to="/" className="cart-summary__continue">
-                            <i className="fa-solid fa-arrow-left"></i>
-                            Tiếp tục mua sắm
-                          </Link>
                         </div>
                       </div>
                     </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="cart-empty">
-                      <p>Giỏ hàng đang trống</p>
-                      <Link to="/">Tiếp tục mua sắm</Link>
-                    </div>{" "}
-                  </>
-                )}
+                  ))}
+                </div>
+
+                <div className="cart-page__summary">
+                  <div className="cart-summary__header">Thông tin đơn hàng</div>
+
+                  <div className="cart-summary__body">
+                    <div className="cart-summary__row">
+                      <span>
+                        Tạm tính ({summary?.totalQuantity || 0} sản phẩm)
+                      </span>
+                      <span>{formatPrice(summary?.subtotal || 0)}</span>
+                    </div>
+                    <div className="cart-summary__row">
+                      <span>Giảm giá trực tiếp</span>
+                      <span>
+                        - {formatPrice(summary?.productDiscount || 0)}
+                      </span>
+                    </div>
+
+                    <div className="cart-summary__row cart-summary__row--total">
+                      <span>Tổng tiền</span>
+                      <span className="cart-summary__total">
+                        {formatPrice(summary?.total || 0)}
+                      </span>
+                    </div>
+
+                    <div className="cart-summary__row">
+                      <span>Bạn đã tiết kiệm được</span>
+                      <span>- {formatPrice(summary?.saving || 0)}</span>
+                    </div>
+                  </div>
+
+                  <div className="cart-summary__footer">
+                    <button
+                      onClick={() => handleSubmit()}
+                      className="btn-primary btn-block"
+                    >
+                      Thanh toán
+                    </button>
+                    <Link to="/" className="cart-summary__continue">
+                      <i className="fa-solid fa-arrow-left"></i>
+                      Tiếp tục mua sắm
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
+            </>
+          ) : (
+            <>
+              <div className="cart-empty">
+                <p>Giỏ hàng đang trống</p>
+                <Link to="/">Tiếp tục mua sắm</Link>
+              </div>
+            </>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </>
   );
 }

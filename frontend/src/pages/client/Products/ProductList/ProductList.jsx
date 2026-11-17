@@ -15,6 +15,7 @@ import banner from "../../../../assets/images/banner4.jpg";
 import "./ProductList.scss";
 import FilterSidebar from "../../../../components/client/FilterSidebar/FilterSidebar";
 import Pagination from "../../../../components/client/Pagination/Pagination";
+import { Spin } from "antd";
 
 function ProductList() {
   const { slug } = useParams();
@@ -229,7 +230,9 @@ function ProductList() {
 
             {/* Product grid */}
             {loading ? (
-              <div className="product-list__loading">Đang tải sản phẩm...</div>
+              <div className="product-list__loading">
+                <Spin size="large" description="Đang tải dữ liệu..." />
+              </div>
             ) : (
               <>
                 <div className="product-list__products">

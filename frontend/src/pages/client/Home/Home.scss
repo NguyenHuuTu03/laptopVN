@@ -1,6 +1,16 @@
 .home {
   padding: 16px 0 40px;
 
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    color: #777;
+  }
+
   // Khu vực Category + Banner
   &__top {
     display: grid;

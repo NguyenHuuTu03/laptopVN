@@ -9,7 +9,7 @@ import ProductRelated from "../../../../components/client/ProductRelated/Product
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCart } from "../../../../actions/cartActions";
 import { addCart, getCart } from "../../../../services/client/cart.services";
-import { notification } from "antd";
+import { notification, Spin } from "antd";
 
 function ProductDetail() {
   const [loading, setLoading] = useState(true);
@@ -185,185 +185,174 @@ function ProductDetail() {
     }
   };
 
-  const handleBuyNow = async () => {
-    try {
-      setLoading(true);
-      navigate("/checkout", {
-        state: {
-          buyNow: true,
-          items: {
-            productId: data.product._id,
-            variantId: selectedVariant._id,
-            quantity: 1,
-          },
+  const handleBuyNow = () => {
+    navigate("/checkout", {
+      state: {
+        buyNow: true,
+        items: {
+          productId: data.product._id,
+          variantId: selectedVariant._id,
+          quantity: 1,
         },
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+      },
+    });
   };
 
   return (
     <>
       {loading ? (
-        <div className="loading">Đang tải dữ liệu...</div>
+        <div className="product-detail__loading">
+          <Spin size="large" description="Đang tải dữ liệu..." />
+        </div>
       ) : (
-        <>
-          {data && (
-            <div className="product-detail">
-              <div className="product-detail__container">
-                <div className="product-detail__breadcrumb">
-                  <Link to="/">Trang chủ</Link>
-                  <span>/</span>
-                  <span>{data.product?.title}</span>
+        data && (
+          <div className="product-detail">
+            <div className="product-detail__container">
+              <div className="product-detail__breadcrumb">
+                <Link to="/">Trang chủ</Link>
+                <span>/</span>
+                <span>{data.product?.title}</span>
+              </div>
+
+              <div className="product-detail__main">
+                <div className="product-detail__gallery">
+                  <Gallery images={data.product?.images} />
                 </div>
-
-                <div className="product-detail__main">
-                  <div className="product-detail__gallery">
-                    <Gallery
-                      images={data.product?.images}
-                      selectedVariant={selectedVariant}
-                    />
-                  </div>
-                  <div className="product-detail__info">
-                    <div className="product-detail__header">
-                      <div className="product-detail__title">
-                        {data.product?.title}
-                      </div>
-                      <div className="product-detail__sku">
-                        <span>SKU: </span>
-                        <strong>{selectedVariant?.sku}</strong>
-                      </div>
+                <div className="product-detail__info">
+                  <div className="product-detail__header">
+                    <div className="product-detail__title">
+                      {data.product?.title}
                     </div>
-
-                    {selectedVariant && (
-                      <div className="product-detail__price">
-                        <div className="product-detail__priceNew">
-                          {formatPrice(selectedVariant.priceNew)}
-                        </div>
-
-                        <div className="product-detail__priceOld">
-                          {formatPrice(selectedVariant.price)}
-                        </div>
-
-                        {selectedVariant.discount > 0 && (
-                          <div className="product-detail__discount">
-                            -{selectedVariant.discount}%
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Danh sách Phiên bản */}
-                    {versions.length > 0 && (
-                      <div className="product-detail__option">
-                        <strong className="label">Lựa chọn phiên bản</strong>
-                        <div className="product-detail__version">
-                          {versions.map((verItem, index) => {
-                            const isAvailable = data?.variants?.some((v) => {
-                              const { version } = getVariantAttributes(v);
-                              return (
-                                version === verItem.version &&
-                                isVariantInStock(v)
-                              );
-                            });
-
-                            return (
-                              <button
-                                type="button"
-                                key={index}
-                                disabled={!isAvailable}
-                                className={`item-option ${
-                                  selectedVersion === verItem.version
-                                    ? "active"
-                                    : ""
-                                } ${!isAvailable ? "disabled" : ""}`}
-                                onClick={() =>
-                                  handleVersionChange(verItem.version)
-                                }
-                              >
-                                <span>{verItem.version}</span>
-                                <p>{formatPrice(verItem.price)}</p>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Danh sách Màu sắc */}
-                    {colors.length > 0 && (
-                      <div className="product-detail__option">
-                        <strong className="label">Lựa chọn màu</strong>
-                        <div className="product-detail__version">
-                          {colors.map((color) => {
-                            const isAvailable = data?.variants?.some((v) => {
-                              const { version: vVer, color: vColor } =
-                                getVariantAttributes(v);
-                              return (
-                                vVer === selectedVersion &&
-                                vColor === color &&
-                                isVariantInStock(v)
-                              );
-                            });
-
-                            return (
-                              <button
-                                type="button"
-                                key={color}
-                                className={`item-option ${
-                                  selectedColor === color ? "active" : ""
-                                } ${!isAvailable ? "disabled" : ""}`}
-                                disabled={!isAvailable}
-                                onClick={() => handleColorChange(color)}
-                              >
-                                <p>{color}</p>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="product-detail__order">
-                      <div className="add-to__cart">
-                        <button
-                          type="button"
-                          title={isCurrentInStock ? "Thêm vào giỏ" : "Hết hàng"}
-                          disabled={!isCurrentInStock}
-                          onClick={() => handleAddToCart()}
-                        >
-                          <i className="fa-solid fa-cart-plus"></i>
-                          {isCurrentInStock ? "Thêm vào giỏ" : "Hết hàng"}
-                        </button>
-                      </div>
-
-                      <div className="add-buy">
-                        <button
-                          type="button"
-                          title={isCurrentInStock ? "Mua ngay" : "Hết hàng"}
-                          disabled={!isCurrentInStock}
-                          onClick={handleBuyNow}
-                        >
-                          {isCurrentInStock ? "Mua ngay" : "Hết hàng"}
-                        </button>
-                      </div>
+                    <div className="product-detail__sku">
+                      <span>SKU: </span>
+                      <strong>{selectedVariant?.sku}</strong>
                     </div>
                   </div>
-                </div>
 
-                <div className="product-detail__content">
-                  <ProductDescription data={data} />
-                  <ProductSpecifications data={data} />
+                  {selectedVariant && (
+                    <div className="product-detail__price">
+                      <div className="product-detail__priceNew">
+                        {formatPrice(selectedVariant.priceNew)}
+                      </div>
+
+                      <div className="product-detail__priceOld">
+                        {formatPrice(selectedVariant.price)}
+                      </div>
+
+                      {selectedVariant.discount > 0 && (
+                        <div className="product-detail__discount">
+                          -{selectedVariant.discount}%
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Danh sách Phiên bản */}
+                  {versions.length > 0 && (
+                    <div className="product-detail__option">
+                      <strong className="label">Lựa chọn phiên bản</strong>
+                      <div className="product-detail__version">
+                        {versions.map((verItem, index) => {
+                          const isAvailable = data?.variants?.some((v) => {
+                            const { version } = getVariantAttributes(v);
+                            return (
+                              version === verItem.version && isVariantInStock(v)
+                            );
+                          });
+
+                          return (
+                            <button
+                              type="button"
+                              key={index}
+                              disabled={!isAvailable}
+                              className={`item-option ${
+                                selectedVersion === verItem.version
+                                  ? "active"
+                                  : ""
+                              } ${!isAvailable ? "disabled" : ""}`}
+                              onClick={() =>
+                                handleVersionChange(verItem.version)
+                              }
+                            >
+                              <span>{verItem.version}</span>
+                              <p>{formatPrice(verItem.price)}</p>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Danh sách Màu sắc */}
+                  {colors.length > 0 && (
+                    <div className="product-detail__option">
+                      <strong className="label">Lựa chọn màu</strong>
+                      <div className="product-detail__version">
+                        {colors.map((color) => {
+                          const isAvailable = data?.variants?.some((v) => {
+                            const { version: vVer, color: vColor } =
+                              getVariantAttributes(v);
+                            return (
+                              vVer === selectedVersion &&
+                              vColor === color &&
+                              isVariantInStock(v)
+                            );
+                          });
+
+                          return (
+                            <button
+                              type="button"
+                              key={color}
+                              className={`item-option ${
+                                selectedColor === color ? "active" : ""
+                              } ${!isAvailable ? "disabled" : ""}`}
+                              disabled={!isAvailable}
+                              onClick={() => handleColorChange(color)}
+                            >
+                              <p>{color}</p>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="product-detail__order">
+                    <div className="add-to__cart">
+                      <button
+                        type="button"
+                        title={isCurrentInStock ? "Thêm vào giỏ" : "Hết hàng"}
+                        disabled={!isCurrentInStock}
+                        onClick={() => handleAddToCart()}
+                      >
+                        <i className="fa-solid fa-cart-plus"></i>
+                        {isCurrentInStock ? "Thêm vào giỏ" : "Hết hàng"}
+                      </button>
+                    </div>
+
+                    <div className="add-buy">
+                      <button
+                        type="button"
+                        title={isCurrentInStock ? "Mua ngay" : "Hết hàng"}
+                        disabled={!isCurrentInStock}
+                        onClick={handleBuyNow}
+                      >
+                        {isCurrentInStock ? "Mua ngay" : "Hết hàng"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <ProductRelated />
+              <div className="product-detail__content">
+                <ProductDescription data={data} />
+                <ProductSpecifications data={data} />
+              </div>
             </div>
-          )}
-        </>
+
+            <ProductRelated />
+          </div>
+        )
       )}
     </>
   );

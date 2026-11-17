@@ -3,6 +3,13 @@
   min-height: 100vh;
   padding: 16px 0 40px;
 
+  &__loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__container {
     width: 1200px;
     max-width: calc(100% - 32px);

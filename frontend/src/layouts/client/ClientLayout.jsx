@@ -82,8 +82,6 @@ function ClientLayout() {
     <div className="client-layout">
       <Header />
 
-      {/* <Navigation /> */}
-
       <main className="client-layout__main">
         <Outlet />
       </main>
