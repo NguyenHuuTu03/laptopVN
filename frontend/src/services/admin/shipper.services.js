@@ -27,7 +27,7 @@ export const getShipper = async () => {
 };
 
 export const assignment = async (orderId, shipperId) => {
-  const result = await get(`/shipper/${orderId}/assignment`, { shipperId });
+  const result = await patch(`/shipper/${orderId}/assignment`, { shipperId });
 
   return result;
 };

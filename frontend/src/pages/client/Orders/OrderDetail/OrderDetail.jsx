@@ -6,7 +6,7 @@ import {
   getOrderDetail,
   patchOrderCancel,
 } from "../../../../services/client/order.services";
-import { notification } from "antd";
+import { notification, Spin } from "antd";
 
 function OrderDetail() {
   const { orderCode } = useParams();
@@ -109,7 +109,9 @@ function OrderDetail() {
   return (
     <>
       {loading ? (
-        "Đang tải dữ liệu"
+        <div className="order-detail__loading">
+          <Spin size="large" description="Đang tải dữ liệu..." />
+        </div>
       ) : (
         <div className="order-detail">
           <div className="order-detail__container">

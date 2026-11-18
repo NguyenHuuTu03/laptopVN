@@ -7,7 +7,7 @@ function PrivateRoute() {
     (state) => state.authReducer.client,
   );
   if (!checked) {
-    return <Spin fullscreen={true}></Spin>;
+    return <Spin fullscreen size="large" description="Đang tải dữ liệu..." />;
   }
   if (!isLoggedIn) {
     return <Navigate to="/users/login" replace />;

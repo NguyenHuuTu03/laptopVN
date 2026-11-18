@@ -845,7 +845,8 @@ module.exports.cancel = async (req, res) => {
       return;
     }
 
-    if (order.orderStatus !== "PENDING") {
+    const checkedStatus = ["PENDING", "CONFIRMED"].includes(order.orderStatus);
+    if (!checkedStatus) {
       return res.json({
         code: 400,
         message: "Đơn hàng không thể huỷ",

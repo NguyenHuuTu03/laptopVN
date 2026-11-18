@@ -4,18 +4,17 @@
   background: #f5f6f8;
   color: #222;
 
-  // ========================================
-  // CONTAINER
-  // ========================================
+  &__loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   &__container {
     width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
   }
-
-  // ========================================
-  // BREADCRUMB
-  // ========================================
 
   &__breadcrumb {
     display: flex;

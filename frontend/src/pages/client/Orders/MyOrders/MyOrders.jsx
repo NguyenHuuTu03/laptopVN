@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { getMyOrders } from "../../../../services/client/order.services";
+import {
+  getMyOrders,
+  patchOrderCancel,
+} from "../../../../services/client/order.services";
 
 import "./MyOrders.scss";
 import Pagination from "../../../../components/client/Pagination/Pagination";
+import { notification } from "antd";
 
 function MyOrders() {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -30,8 +33,6 @@ function MyOrders() {
         }
       } catch (error) {
         console.error("Lỗi lấy danh sách đơn hàng:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -92,13 +93,38 @@ function MyOrders() {
     setSearchParams(params);
   };
 
-  if (loading) {
-    return (
-      <div className="my-order">
-        <div className="my-order__container">Đang tải dữ liệu...</div>
-      </div>
-    );
-  }
+  const handleCancelOrder = async (orderCode) => {
+    try {
+      const result = await patchOrderCancel(orderCode);
+
+      if (result.code === 200) {
+        notification.success({
+          title: "Hủy đơn hàng thành công!",
+        });
+
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.orderCode === orderCode
+              ? {
+                  ...order,
+                  orderStatus: "CANCELLED",
+                }
+              : order,
+          ),
+        );
+      } else {
+        notification.error({
+          title: result.message || "Hủy đơn hàng thất bại!",
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi hủy đơn hàng:", error);
+
+      notification.error({
+        title: "Không thể hủy đơn hàng!",
+      });
+    }
+  };
 
   return (
     <>
@@ -166,13 +192,19 @@ function MyOrders() {
 
                   <strong>{getPaymentStatusText(order.paymentStatus)}</strong>
                 </div>
-
                 <div>
                   <span>Tổng tiền:</span>
 
                   <strong>{formatPrice(order.totalPrice)}</strong>
                 </div>
-
+                {["PENDING", "CONFIRMED"].includes(order.orderStatus) && (
+                  <button
+                    className="btn-cancel"
+                    onClick={() => handleCancelOrder(order.orderCode)}
+                  >
+                    Hủy đơn
+                  </button>
+                )}
                 <Link to={`/orders/${order.orderCode}`}>Xem chi tiết</Link>
               </div>
             </div>
