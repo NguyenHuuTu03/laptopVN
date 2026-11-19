@@ -12,6 +12,7 @@ import { getCart } from "../../services/client/cart.services";
 import { setCart } from "../../actions/cartActions";
 import { getSettings } from "../../services/client/setting.services";
 import { setSettings } from "../../actions/settingActions";
+import Chatbot from "../../components/client/Chatbot/Chatbot";
 
 function ClientLayout() {
   const dispatch = useDispatch();
@@ -81,6 +82,8 @@ function ClientLayout() {
   return (
     <div className="client-layout">
       <Header />
+
+      <Chatbot />
 
       <main className="client-layout__main">
         <Outlet />

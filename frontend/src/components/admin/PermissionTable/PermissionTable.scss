@@ -1,6 +1,5 @@
 .permission-table {
   width: 100%;
-  overflow-x: auto;
 
   .ant-table-wrapper {
     width: 100%;
@@ -11,8 +10,6 @@
     background: #fff;
     font-size: 14px;
   }
-
-  // ================= TABLE HEADER =================
 
   .ant-table-thead > tr > th {
     height: 52px;
@@ -36,8 +33,6 @@
       text-align: left;
     }
   }
-
-  // ================= TABLE BODY =================
 
   .ant-table-tbody > tr {
     transition: background 0.2s ease;
@@ -64,8 +59,6 @@
     }
   }
 
-  // ================= FUNCTION =================
-
   .permission-function {
     display: inline-flex;
     align-items: center;
@@ -76,16 +69,6 @@
     line-height: 1.5;
   }
 
-  // ================= CHECKBOX =================
-
-  // ================= SCROLL =================
-
-  .ant-table-container {
-    overflow-x: auto;
-  }
-
-  // ================= EMPTY =================
-
   .ant-empty {
     margin: 40px 0;
 
@@ -94,8 +77,6 @@
       font-size: 14px;
     }
   }
-
-  // ================= RESPONSIVE =================
 
   @media (max-width: 1200px) {
     .ant-table {

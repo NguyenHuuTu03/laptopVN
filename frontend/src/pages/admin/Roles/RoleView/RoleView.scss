@@ -113,44 +113,6 @@
     }
   }
 
-  &__assign {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    height: 40px;
-    padding: 0 16px;
-
-    color: #1677ff;
-    background: #fff;
-    border: 1px solid #1677ff;
-    border-radius: 7px;
-
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-    white-space: nowrap;
-
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    i {
-      font-size: 13px;
-    }
-
-    &:hover {
-      color: #fff;
-      background: #1677ff;
-      border-color: #1677ff;
-      box-shadow: 0 4px 10px rgba(22, 119, 255, 0.2);
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
-  }
-
   &__add {
     display: flex;
     align-items: center;

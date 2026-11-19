@@ -1,0 +1,376 @@
+.chatbot {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  font-family: inherit;
+
+  // ================= NÚT MỞ CHATBOT =================
+
+  &__launcher {
+    width: 58px !important;
+    height: 58px !important;
+    font-size: 25px !important;
+    background: #1677ff !important;
+    box-shadow: 0 4px 16px rgba(22, 119, 255, 0.35);
+    transition: all 0.25s ease;
+
+    &:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 7px 20px rgba(22, 119, 255, 0.4);
+    }
+  }
+
+  // ================= KHUNG CHAT =================
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    width: 390px;
+    height: 570px;
+    max-height: calc(100vh - 110px);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e8edf3;
+    border-radius: 16px;
+    box-shadow: 0 8px 35px rgba(0, 0, 0, 0.16);
+    animation: chatbot-appear 0.25s ease;
+  }
+
+  // ================= HEADER =================
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    padding: 14px 16px;
+    color: #fff;
+    background: linear-gradient(135deg, #1677ff, #4096ff);
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__brand-avatar {
+    color: #1677ff !important;
+    background: #fff !important;
+  }
+
+  &__brand-name {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  &__brand-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 3px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.85);
+
+    span {
+      width: 7px;
+      height: 7px;
+      background: #52c41a;
+      border-radius: 50%;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    .ant-btn {
+      color: #fff;
+
+      &:hover {
+        color: #fff !important;
+        background: rgba(255, 255, 255, 0.18) !important;
+      }
+
+      &:disabled {
+        color: rgba(255, 255, 255, 0.45);
+      }
+    }
+  }
+
+  // ================= KHU VỰC TIN NHẮN =================
+
+  &__messages {
+    flex: 1;
+    min-height: 0;
+    padding: 18px 14px;
+    overflow-y: auto;
+    background: #f7f9fc;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #d5dce5;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  }
+
+  // ================= GỢI Ý CÂU HỎI =================
+
+  &__suggestions {
+    margin-bottom: 20px;
+
+    p {
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #7b8492;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 9px 12px;
+      text-align: left;
+      font-size: 12px;
+      color: #1677ff;
+      background: #fff;
+      border: 1px solid #d6e4ff;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #eaf3ff;
+        border-color: #1677ff;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // ================= TIN NHẮN =================
+
+  &__message {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    &--user {
+      justify-content: flex-end;
+    }
+
+    &--assistant {
+      justify-content: flex-start;
+    }
+  }
+
+  &__message-avatar {
+    flex-shrink: 0;
+    color: #fff !important;
+    background: #1677ff !important;
+  }
+
+  &__user-avatar {
+    flex-shrink: 0;
+    color: #fff !important;
+    background: #8c96a5 !important;
+  }
+
+  // ================= NỘI DUNG TIN NHẮN =================
+
+  &__bubble {
+    max-width: 78%;
+    padding: 10px 13px;
+    background: #fff;
+    border: 1px solid #edf0f4;
+    border-radius: 12px 12px 12px 3px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.025);
+
+    .chatbot__message--user & {
+      color: #fff;
+      background: #1677ff;
+      border: none;
+      border-radius: 12px 12px 3px 12px;
+    }
+
+    &--error {
+      background: #fff2f0;
+      border-color: #ffccc7;
+    }
+  }
+
+  &__sender {
+    margin-bottom: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #8c96a5;
+
+    .chatbot__message--user & {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  &__content {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #303846;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+
+    .chatbot__message--user & {
+      color: #fff;
+    }
+  }
+
+  // ================= HIỆU ỨNG ĐANG SUY NGHĨ =================
+
+  &__typing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid #edf0f4;
+    border-radius: 12px 12px 12px 3px;
+
+    span {
+      width: 6px;
+      height: 6px;
+      background: #1677ff;
+      border-radius: 50%;
+      animation: chatbot-typing 1s infinite ease-in-out;
+
+      &:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+    }
+
+    small {
+      margin-left: 5px;
+      font-size: 11px;
+      color: #8c96a5;
+    }
+  }
+
+  // ================= FOOTER =================
+
+  &__footer {
+    flex-shrink: 0;
+    padding: 12px 14px 10px;
+    background: #fff;
+    border-top: 1px solid #edf0f4;
+  }
+
+  &__composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 7px 8px 7px 12px;
+    background: #f7f9fc;
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+    transition: border-color 0.2s ease;
+
+    &:focus-within {
+      border-color: #1677ff;
+    }
+
+    .ant-input {
+      padding: 5px 0;
+      font-size: 13px;
+      line-height: 1.5;
+      background: transparent;
+      border: none;
+      box-shadow: none !important;
+      resize: none;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  &__send {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  &__hint {
+    margin-top: 7px;
+    text-align: center;
+    font-size: 10px;
+    color: #a0a8b4;
+  }
+}
+
+// ================= ANIMATION =================
+
+@keyframes chatbot-appear {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes chatbot-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+// ================= RESPONSIVE =================
+
+@media (max-width: 480px) {
+  .chatbot {
+    right: 12px;
+    bottom: 12px;
+
+    &__panel {
+      width: calc(100vw - 24px);
+      height: min(570px, calc(100dvh - 90px));
+      max-height: calc(100dvh - 90px);
+    }
+
+    &__launcher {
+      width: 54px !important;
+      height: 54px !important;
+    }
+
+    &__bubble {
+      max-width: 82%;
+    }
+  }
+}

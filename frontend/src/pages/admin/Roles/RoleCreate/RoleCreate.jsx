@@ -4,15 +4,20 @@ import "./RoleCreate.scss";
 import { useState } from "react";
 import { postRole } from "../../../../services/admin/role.services";
 import { Link, useNavigate } from "react-router-dom";
+import PermissionTable from "../../../../components/admin/PermissionTable/PermissionTable";
 
 function RoleCreate() {
   const [loading, setLoading] = useState(false);
+  const [permissions, setPermissions] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const result = await postRole(values);
+      const result = await postRole({
+        ...values,
+        permissions,
+      });
       if (result.code === 200) {
         notification.success({
           title: result.message,
@@ -79,6 +84,14 @@ function RoleCreate() {
               </Form.Item>
               <Form.Item label="Mô tả" name="description">
                 <TextArea rows={3} />
+              </Form.Item>
+              <Form.Item label="Phân quyền">
+                <div className="admin-permissions__table">
+                  <PermissionTable
+                    permissions={permissions}
+                    onChange={setPermissions}
+                  />
+                </div>
               </Form.Item>
             </Form>
           </Spin>

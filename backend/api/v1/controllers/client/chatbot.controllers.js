@@ -12,7 +12,7 @@ module.exports.chat = async (req, res) => {
     }
 
     if (message.length > 2000) {
-      return res.status.json({
+      return res.json({
         code: 400,
         message: "Tin nhắn không được vượt quá 2000 ký tự",
       });
@@ -26,7 +26,7 @@ module.exports.chat = async (req, res) => {
 
     const result = await chatWithAI(message.trim(), safeHistory);
 
-    return res.status.json({
+    return res.json({
       code: 200,
       message: "Chat thành công",
       data: result,

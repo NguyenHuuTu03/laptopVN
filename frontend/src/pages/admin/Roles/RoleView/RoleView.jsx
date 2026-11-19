@@ -85,10 +85,7 @@ function RoleView() {
                 onSearch={handleSearch}
               />
             </div>
-            <Link to="/admin/roles/permissions" className="admin-roles__assign">
-              <i className="fa-solid fa-key"></i>
-              Phân quyền
-            </Link>
+
             <Link to={"/admin/roles/create"} className="admin-roles__add">
               <i className="fa-solid fa-plus"></i>
               <p>Thêm vai trò</p>

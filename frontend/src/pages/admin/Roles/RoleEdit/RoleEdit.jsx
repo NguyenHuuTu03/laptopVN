@@ -5,9 +5,11 @@ import { useState } from "react";
 import { getRole, patchRole } from "../../../../services/admin/role.services";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import PermissionTable from "../../../../components/admin/PermissionTable/PermissionTable";
 
 function RoleEdit() {
   const [loading, setLoading] = useState(false);
+  const [permissions, setPermissions] = useState([]);
   const { roleId } = useParams();
   const [form] = Form.useForm();
 
@@ -23,6 +25,7 @@ function RoleEdit() {
             title: data.title,
             description: data.description,
           });
+          setPermissions(data.permissions || []);
         }
       } catch (error) {
         console.log(error);
@@ -36,7 +39,10 @@ function RoleEdit() {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const result = await patchRole(roleId, values);
+      const result = await patchRole(roleId, {
+        ...values,
+        permissions,
+      });
       if (result.code === 200) {
         notification.success({
           title: result.message,
@@ -104,6 +110,15 @@ function RoleEdit() {
               </Form.Item>
               <Form.Item label="Mô tả" name="description">
                 <TextArea rows={3} />
+              </Form.Item>
+
+              <Form.Item label="Phân quyền">
+                <div className="admin-permissions__table">
+                  <PermissionTable
+                    permissions={permissions}
+                    onChange={setPermissions}
+                  />
+                </div>
               </Form.Item>
             </Form>
           </Spin>

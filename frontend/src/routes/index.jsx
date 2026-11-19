@@ -19,7 +19,6 @@ import ProductView from "../pages/admin/Products/ProductView/ProductView";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
 import OrderView from "../pages/admin/Orders/OrderView/OrderView";
 import RoleList from "../pages/admin/Roles/RoleView/RoleView";
-import Permission from "../pages/admin/Roles/Permission/Permission";
 import Setting from "../pages/admin/Setting/Setting";
 import CategoryView from "../pages/admin/Categories/CategoryView/CategoryView";
 import BrandView from "../pages/admin/Brands/BrandView/BrandView";
@@ -232,10 +231,6 @@ export const routes = [
               {
                 path: "edit/:roleId",
                 element: <RoleEdit />,
-              },
-              {
-                path: "permissions",
-                element: <Permission />,
               },
             ],
           },
